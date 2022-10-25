@@ -14,6 +14,27 @@
       </v-col>
     </v-row> -->
     <v-row>
+      <v-spacer />
+      <v-col cols="1">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <download-csv
+              :data="filteredRooms"
+              :labels="headers"
+              name="rooms.csv"
+            >
+              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
+                <v-icon>
+                  mdi-download
+                </v-icon>
+              </v-chip>
+            </download-csv>
+          </template>
+          <span>Download CSV</span>
+        </v-tooltip>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <v-data-table
           :headers="headers"
@@ -22,6 +43,7 @@
           :items="rooms"
           :loading="loadingRooms"
           @click:row="openRoomDetails"
+          @current-items="currentItems"
         >
           <template v-slot:item.name="{ item }">
             <!-- <v-icon>
@@ -51,15 +73,16 @@ export default {
   props: {
     search: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
 
   data: () => ({
     // formAItems: [],
     // loadingFormA: false,
     loadingRooms: true,
-    dialog: false
+    dialog: false,
+    filteredRooms: [],
   }),
   computed: {
     ...mapState("administration/users", ["user"]),
@@ -72,10 +95,10 @@ export default {
       return [
         { text: "Name", value: "name" },
         { text: "Purpose", value: "purpose" },
-        { text: "Status", value: "status" }
+        { text: "Status", value: "status" },
       ];
       // return Object.keys(this.rooms)
-    }
+    },
   },
   mounted: async function() {
     this.loadingRooms = false;
@@ -85,6 +108,9 @@ export default {
     // this.loadingFormA = false;
   },
   methods: {
+    currentItems: function(value) {
+      this.filteredRooms = value;
+    },
     ...mapActions("rooms", ["getAllRooms", "getRoom"]),
 
     openRoomDetails(item) {
@@ -92,7 +118,7 @@ export default {
     },
     closeRoomDetails() {
       this.dialog = false;
-    }
-  }
+    },
+  },
 };
 </script>
