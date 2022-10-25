@@ -4,6 +4,7 @@ import router from "@/router";
 import store from "./store";
 import "./plugins/base";
 import axios from "axios";
+import JsonCSV from "vue-json-csv";
 import vuetify from "./plugins/vuetify";
 import VueCurrencyInput from "vue-currency-input";
 
@@ -13,6 +14,7 @@ Vue.config.productionTip = false;
 
 axios.defaults.withCredentials = true;
 
+Vue.component("downloadCsv", JsonCSV);
 Vue.component("notifications", Notifications);
 
 Vue.use(VueCurrencyInput, { globalOptions: { currency: "USD", locale: "en" } });
@@ -23,18 +25,18 @@ Vue.use(Auth0Plugin, {
   domain: process.env.VUE_APP_AUTH_DOMAIN,
   client_id: process.env.VUE_APP_AUTH_CLIENTID,
   audience: process.env.VUE_APP_AUTH_AUDIENCE,
-  onRedirectCallback: appState => {
+  onRedirectCallback: (appState) => {
     router.push(
       appState && appState.targetUrl
         ? appState.targetUrl
         : window.location.pathname
     );
-  }
+  },
 });
 
 new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
