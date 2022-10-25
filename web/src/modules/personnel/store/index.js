@@ -14,7 +14,7 @@ const testPersonnel = [
     title: "Director, Business and Industry Development",
     department: "Economic Development",
     officeLocation: "303 Alexander",
-    userPrincipalName: "llfaryno@ynet.gov.yk.ca"
+    userPrincipalName: "llfaryno@ynet.gov.yk.ca",
   },
   {
     display_name: "Carolyn Relf",
@@ -26,7 +26,7 @@ const testPersonnel = [
     title: "Director",
     department: "Energy Mines and Resources",
     officeLocation: "Yukon Geological Survey",
-    userPrincipalName: "crelf@ynet.gov.yk.ca"
+    userPrincipalName: "crelf@ynet.gov.yk.ca",
   },
   {
     display_name: "Benton Foster",
@@ -39,7 +39,7 @@ const testPersonnel = [
     title: "Director, Community Health Programs",
     department: "Health and Social Services",
     officeLocation: "Vendome Place",
-    userPrincipalName: "bfoster@ynet.gov.yk.ca"
+    userPrincipalName: "bfoster@ynet.gov.yk.ca",
   },
   {
     display_name: "ecc director",
@@ -51,7 +51,7 @@ const testPersonnel = [
     title: "Unknown title",
     department: "Community Services",
     officeLocation: null,
-    userPrincipalName: "eccdirector@ynet.gov.yk.ca"
+    userPrincipalName: "eccdirector@ynet.gov.yk.ca",
   },
   {
     display_name: "Anton Solomon",
@@ -64,7 +64,7 @@ const testPersonnel = [
     title: "Director, Post Secondary and Labour Market",
     department: "Economic Development",
     officeLocation: "303 Alexander",
-    userPrincipalName: "ajsolomo@ynet.gov.yk.ca"
+    userPrincipalName: "ajsolomo@ynet.gov.yk.ca",
   },
   {
     display_name: "Simon Blakesley",
@@ -77,13 +77,14 @@ const testPersonnel = [
     title: "Director, Student Information & Assessment",
     department: "Education",
     officeLocation: "Education Building",
-    userPrincipalName: "sblakesl@ynet.gov.yk.ca"
-  }
+    userPrincipalName: "sblakesl@ynet.gov.yk.ca",
+  },
 ];
 
 const state = {
   currentEmployee: {},
-  employees: []
+  employees: [],
+  employee: {},
 };
 
 const getters = {};
@@ -105,27 +106,15 @@ const actions = {
 
     return await auth
       .get(`${EMPLOYEE_URL}/${id}`)
-      .then(resp => {
+      .then((resp) => {
         commit("setCurrentEmployee", resp.data.data);
         return resp.data.data;
       })
       .catch(() => {
-        commit("setCurrentEmployee", { testPersonnel });
+        const testEmployee = testPersonnel.find((e) => e.ynet_id === id);
+        commit("setCurrentEmployee", testEmployee);
       });
   },
-  // async loadEmployeeAuthorities({ commit }, id) {
-  //   const auth = getInstance();
-
-  //   return await auth
-  //     .get(`${EMPLOYEE_URL}/${id}/authorities`)
-  //     .then(resp => {
-  //       commit("setEmployeeAuthorities", resp.data.data);
-  //       return resp.data.data;
-  //     })
-  //     .catch(() => {
-  //       commit("setEmployeeAuthorities", {});
-  //     });
-  // },
   async saveEmployee(store) {
     const auth = getInstance();
 
@@ -137,12 +126,12 @@ const actions = {
       employee_id: employee.employee_id,
       ynet_id: employee.ynet_id,
       email: employee.email,
-      primary_department: employee.primary_department
+      primary_department: employee.primary_department,
     };
 
     return await auth
       .put(`${EMPLOYEE_URL}/${employee._id}`, body)
-      .then(resp => {
+      .then((resp) => {
         //commit("setEmployee", resp.data.data);
         return resp.data.data;
       })
@@ -156,11 +145,13 @@ const actions = {
     // return auth.post(`${EMPLOYEE_URL}/search`, { terms }).then(resp => {
     //   return resp.data.data;
     // });
-    console.log(EMPLOYEE_URL)
-    return axios.post(`${EMPLOYEE_URL}/search-directory`, { terms }).then(resp => {
-      return resp.data.data;
-    });
-  }
+    console.log(EMPLOYEE_URL);
+    return axios
+      .post(`${EMPLOYEE_URL}/search-directory`, { terms })
+      .then((resp) => {
+        return resp.data.data;
+      });
+  },
 };
 
 const mutations = {
@@ -169,7 +160,7 @@ const mutations = {
   },
   setEmployees(state, payload) {
     state.employees = payload;
-  }
+  },
   // setEmployeeAuthorities(state, value) {
   //   state.authorities = value;
   // }
@@ -180,5 +171,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

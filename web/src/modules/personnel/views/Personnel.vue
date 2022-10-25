@@ -32,8 +32,7 @@
       </template>
       <v-card class="default">
         <v-card-text>
-
-          <personnel-table :all="true"></personnel-table>
+          <personnel-table :search="search" :all="true"></personnel-table>
         </v-card-text>
       </v-card>
     </BaseCard>
@@ -48,7 +47,7 @@ import _ from "lodash";
 import { mapActions, mapState } from "vuex";
 import userEditor from "../components/UserEditor.vue";
 import CreateUserBtn from "../components/createUserBtn.vue";
-import PersonnelTable from '../components/personnelTable.vue';
+import PersonnelTable from "../components/personnelTable.vue";
 
 export default {
   name: "Personnel",
@@ -57,40 +56,40 @@ export default {
   data: () => ({
     page: { title: "Personnel" },
 
-
+    search: "",
     isLoading: false,
     users: [],
-    editUser: null
+    editUser: null,
   }),
   async mounted() {
     this.loadUserList();
   },
   computed: {
-    localHeaders: function () {
+    localHeaders: function() {
       if (this.headers) {
-        return this.headers
-      }else{
+        return this.headers;
+      } else {
         return [
-              { text: 'Name', value: 'display_name' },
-              { text: 'Email', value: 'email' },
-              { text: 'Title', value: 'title' },
-            ];
+          { text: "Name", value: "display_name" },
+          { text: "Email", value: "email" },
+          { text: "Title", value: "title" },
+        ];
       }
     },
-    localItems: function () {
+    localItems: function() {
       if (this.items) {
-        return this.items
-      }else {
-        return this.employees
-      };
+        return this.items;
+      } else {
+        return this.employees;
+      }
     },
     ...mapState("personnel", ["employees"]),
     breadcrumbs: function() {
       return [
         { text: "Home", to: "/dashboard", exact: true },
-        { text: "Personnel" }
+        { text: "Personnel" },
       ];
-    }
+    },
   },
   methods: {
     ...mapActions("personnel", ["loadUsers"]),
@@ -105,7 +104,7 @@ export default {
     },
     rowClick(item) {
       this.$refs.userEditor.show(_.clone(item));
-    }
-  }
+    },
+  },
 };
 </script>

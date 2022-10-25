@@ -1,27 +1,6 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-spacer />
-      <v-col cols="1">
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <download-csv
-              :data="filteredPersonnel"
-              :labels="headers"
-              name="personnel.csv"
-            >
-              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
-                <v-icon>
-                  mdi-download
-                </v-icon>
-              </v-chip>
-            </download-csv>
-          </template>
-          <span>Download CSV</span>
-        </v-tooltip>
-      </v-col>
-    </v-row>
-    <v-row>
       <v-col>
         <v-data-table
           :items="localItems"
@@ -31,7 +10,26 @@
           class="row-clickable"
           :loading="isLoading"
           @current-items="currentItems"
-        ></v-data-table>
+        >
+          <template v-slot:footer.prepend>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <download-csv
+                  :data="filteredPersonnel"
+                  :labels="headers"
+                  name="personnel.csv"
+                >
+                  <v-chip label outlined v-on="on" v-bind="attrs">
+                    <v-icon>
+                      mdi-download
+                    </v-icon>
+                  </v-chip>
+                </download-csv>
+              </template>
+              <span>Download CSV</span>
+            </v-tooltip>
+          </template>
+        </v-data-table>
       </v-col>
     </v-row>
   </v-container>
