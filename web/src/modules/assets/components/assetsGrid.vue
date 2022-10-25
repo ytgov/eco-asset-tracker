@@ -10,7 +10,7 @@
               :labels="headers"
               name="assets.csv"
             >
-              <v-chip label outlined v-on="on" v-bind="attrs">
+              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
                 <v-icon>
                   mdi-download
                 </v-icon>
