@@ -1,6 +1,27 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-spacer />
+      <v-col cols="1">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <download-csv
+              :data="filteredAssets"
+              :labels="headers"
+              name="assets.csv"
+            >
+              <v-chip label outlined v-on="on" v-bind="attrs">
+                <v-icon>
+                  mdi-download
+                </v-icon>
+              </v-chip>
+            </download-csv>
+          </template>
+          <span>Download CSV</span>
+        </v-tooltip>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <v-data-table
           :headers="headers"
@@ -8,6 +29,7 @@
           :search="search"
           :loading="loading"
           @click:row="openAssetDetails"
+          @current-items="currentItems"
         >
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
@@ -33,18 +55,19 @@ export default {
   props: {
     search: {
       type: String,
-      default: ""
+      default: "",
     },
     items: {
-      type: Array
+      type: Array,
     },
     all: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data: () => ({
-    loading: true
+    loading: true,
+    filteredAssets: [],
   }),
 
   computed: {
@@ -71,11 +94,14 @@ export default {
         { text: "Room", value: "room" },
         { text: "Status", value: "status" },
         { text: "Purchased", value: "purchaseDate" },
-        { text: "Installed", value: "installDate" }
+        { text: "Installed", value: "installDate" },
       ];
-    }
+    },
   },
   methods: {
+    currentItems: function(value) {
+      this.filteredAssets = value;
+    },
     ...mapActions("assets", ["getAllAssets"]),
     openAssetDetails: function(item) {
       // alert("Asset detail goes here!");
@@ -84,15 +110,15 @@ export default {
     roomName: function(roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
-        return this.rooms.find(room => room._id == roomID).name;
+        return this.rooms.find((room) => room._id == roomID).name;
       }
       return "";
-    }
+    },
   },
 
   async mounted() {
     this.loading = false;
-  }
+  },
 };
 </script>
 
