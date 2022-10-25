@@ -1,6 +1,27 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-spacer />
+      <v-col cols="1">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <download-csv
+              :data="filteredKeys"
+              :labels="headers"
+              name="keys.csv"
+            >
+              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
+                <v-icon>
+                  mdi-download
+                </v-icon>
+              </v-chip>
+            </download-csv>
+          </template>
+          <span>Download CSV</span>
+        </v-tooltip>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <v-data-table
           :headers="localHeaders"
@@ -8,6 +29,7 @@
           :search="search"
           :loading="loading"
           @click:row="openKeyDetails"
+          @current-items="currentItems"
         >
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
@@ -29,21 +51,22 @@ export default {
   props: {
     search: {
       type: String,
-      default: ""
+      default: "",
     },
     items: {
-      type: Array
+      type: Array,
     },
     all: {
       type: Boolean,
-      default: false
+      default: false,
     },
     headers: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data: () => ({
-    loading: true
+    loading: true,
+    filteredKeys: [],
   }),
 
   computed: {
@@ -72,12 +95,15 @@ export default {
           { text: "Status", value: "status" },
           { text: "Assigned to", value: "assignedTo" },
           { text: "Room", value: "room" },
-          { text: "Notes", value: "notes" }
+          { text: "Notes", value: "notes" },
         ];
       }
-    }
+    },
   },
   methods: {
+    currentItems: function(value) {
+      this.filteredKeys = value;
+    },
     openKeyDetails: function(item) {
       // alert("Asset detail goes here!");
       this.$router.push("/keys/" + item._id);
@@ -85,15 +111,15 @@ export default {
     roomName: function(roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
-        return this.rooms.find(room => room._id == roomID).name;
+        return this.rooms.find((room) => room._id == roomID).name;
       }
       return "";
-    }
+    },
   },
 
   async mounted() {
     this.loading = false;
-  }
+  },
 };
 </script>
 
