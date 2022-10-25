@@ -1,13 +1,40 @@
 <template>
- <v-data-table
-    :items="localItems"
-    :search="search"
-    :headers="localHeaders"
-    @click:row="rowClick"
-    class="row-clickable"
-    :loading="isLoading"
-  ></v-data-table>
-
+  <v-container fluid>
+    <v-row>
+      <v-spacer />
+      <v-col cols="1">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <download-csv
+              :data="filteredPersonnel"
+              :labels="headers"
+              name="personnel.csv"
+            >
+              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
+                <v-icon>
+                  mdi-download
+                </v-icon>
+              </v-chip>
+            </download-csv>
+          </template>
+          <span>Download CSV</span>
+        </v-tooltip>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-data-table
+          :items="localItems"
+          :search="search"
+          :headers="localHeaders"
+          @click:row="rowClick"
+          class="row-clickable"
+          :loading="isLoading"
+          @current-items="currentItems"
+        ></v-data-table>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -18,49 +45,53 @@ export default {
   props: {
     search: {
       type: String,
-      default: ""
+      default: "",
     },
 
     all: {
       type: Boolean,
-      default: true
+      default: true,
     },
     items: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     headers: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data: () => ({
     isLoading: false,
-    editUser: null
+    editUser: null,
+    filteredPersonnel: [],
   }),
 
   computed: {
-    localHeaders: function () {
-      if (this.headers.length > 0)  {
-        return this.headers
-      }else{
+    localHeaders: function() {
+      if (this.headers.length > 0) {
+        return this.headers;
+      } else {
         return [
-              { text: 'Name', value: 'display_name' },
-              { text: 'Email', value: 'email' },
-              { text: 'Title', value: 'title' },
-            ];
+          { text: "Name", value: "display_name" },
+          { text: "Email", value: "email" },
+          { text: "Title", value: "title" },
+        ];
       }
     },
-    localItems: function () {
+    localItems: function() {
       if (this.items) {
-        return this.items
-      }else {
-        return this.employees
-      };
+        return this.items;
+      } else {
+        return this.employees;
+      }
     },
     ...mapState("personnel", ["employees"]),
   },
   methods: {
+    currentItems: function(value) {
+      this.filteredPersonnel = value;
+    },
     saveComplete(resp) {
       this.$refs.notifier.showAPIMessages(resp.data);
       this.loadUserList();
@@ -71,11 +102,9 @@ export default {
       //then go to the employee details page
       this.$router.push("/personnel/" + item.ynet_id);
       // this.$refs.userEditor.show(_.clone(item));
-    }
+    },
   },
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
