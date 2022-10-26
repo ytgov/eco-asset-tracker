@@ -1,15 +1,16 @@
 import { ASSETS_URL } from "@/urls";
 import axios from "axios";
+import randomID from "./utils";
 // import store from  "@/store";
 
 const state = {
   assets: [],
-  currentAsset: {}
+  currentAsset: {},
 };
 const getters = {
-  getAssetsByRoom: state => roomID => {
-    return state.assets.filter(asset => asset.room == roomID);
-  }
+  getAssetsByRoom: (state) => (roomID) => {
+    return state.assets.filter((asset) => asset.room == roomID);
+  },
 };
 const actions = {
   async initialize({ state, dispatch }) {
@@ -22,17 +23,17 @@ const actions = {
     console.log(`Assigned room ${roomID} to asset ${state.currentAsset._id}`);
   },
   async getAllAssets({ commit }) {
-    await axios.get(ASSETS_URL).then(response => {
+    await axios.get(ASSETS_URL).then((response) => {
       commit("SET_ASSET_LIST", response.data);
     });
   },
   async getAsset({ commit }, assetID) {
     await axios
       .get(`${ASSETS_URL}/ ${assetID}`)
-      .then(response => {
+      .then((response) => {
         commit("SET_ASSET", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`Error retrieving asset ${assetID}`);
         console.error(error);
       });
@@ -41,7 +42,7 @@ const actions = {
     console.log(`Saving asset with id: ${state.currentAsset._id}`);
     await axios
       .put(`${ASSETS_URL}/${state.currentAsset._id}`, state.currentAsset)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           commit("SET_ASSET", state.currentAsset);
           dispatch("getAllAssets");
@@ -52,9 +53,8 @@ const actions = {
       });
   },
   async createAsset({ commit, dispatch }, asset) {
-    let randomID = Math.floor(Math.random() * 10000);
-    asset._id = randomID;
-    await axios.post(`${ASSETS_URL}`, asset).then(response => {
+    asset._id = randomID();
+    await axios.post(`${ASSETS_URL}`, asset).then((response) => {
       if (response.status === 200) {
         dispatch("getAllAssets");
         commit("SET_ASSET", asset);
@@ -66,7 +66,7 @@ const actions = {
     });
   },
   deleteAsset({ commit, dispatch }, assetID) {
-    axios.delete(`${ASSETS_URL}/${assetID}`).then(response => {
+    axios.delete(`${ASSETS_URL}/${assetID}`).then((response) => {
       if (response.status === 200) {
         dispatch("getAllAssets");
         commit("SET_ASSET", {});
@@ -83,13 +83,13 @@ const actions = {
   async getAssetPurposes() {
     return axios
       .get(`${ASSETS_URL}/purposes`)
-      .then(response => {
+      .then((response) => {
         return response.data;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-  }
+  },
 };
 
 const mutations = {
@@ -102,7 +102,7 @@ const mutations = {
   },
   ASSIGN_ROOM(state, payload) {
     state.currentAsset.room = payload;
-  }
+  },
 };
 
 export default {
@@ -110,5 +110,5 @@ export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 };

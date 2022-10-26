@@ -1,10 +1,11 @@
 import { ROOMS_URL } from "@/urls";
 import axios from "axios";
+import randomID from "./utils";
 // import store from  "@/store";
 
 const state = {
   rooms: [],
-  currentRoom: {}
+  currentRoom: {},
 };
 
 const actions = {
@@ -13,12 +14,12 @@ const actions = {
     console.log(`Loaded ${state.rooms.length} rooms`);
   },
   async getAllRooms({ commit }) {
-    await axios.get(ROOMS_URL).then(response => {
+    await axios.get(ROOMS_URL).then((response) => {
       commit("SET_ROOM_LIST", response.data);
     });
   },
   getRoom({ commit }, roomID) {
-    axios.get(`${ROOMS_URL}/${roomID}`).then(response => {
+    axios.get(`${ROOMS_URL}/${roomID}`).then((response) => {
       if (response.status === 200) {
         commit("SET_ROOM", response.data);
       } else {
@@ -31,7 +32,7 @@ const actions = {
     console.log(`Saving room with id: ${state.currentRoom._id}`);
     axios
       .put(`${ROOMS_URL}/${state.currentRoom._id}`, state.currentRoom)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           commit("SET_ROOM", state.currentRoom);
           dispatch("getAllRooms");
@@ -42,9 +43,8 @@ const actions = {
       });
   },
   async createRoom({ commit, dispatch }, room) {
-    let randomID = Math.floor(Math.random() * 10000);
-    room._id = randomID;
-    await axios.post(`${ROOMS_URL}`, room).then(response => {
+    room._id = randomID();
+    await axios.post(`${ROOMS_URL}`, room).then((response) => {
       if (response.status === 200) {
         dispatch("getAllRooms");
         commit("SET_ROOM", room);
@@ -56,7 +56,7 @@ const actions = {
     });
   },
   deleteRoom({ commit, dispatch }, roomID) {
-    axios.delete(`${ROOMS_URL}/${roomID}`).then(response => {
+    axios.delete(`${ROOMS_URL}/${roomID}`).then((response) => {
       if (response.status === 200) {
         dispatch("getAllRooms");
         commit("SET_ROOM", {});
@@ -73,27 +73,27 @@ const actions = {
   async getRoomPurposes() {
     return axios
       .get(`${ROOMS_URL}/purposes`)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return response.data;
         } else throw new Error(response.statusText);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   },
   async getRoomStatuses() {
     return axios
       .get(`${ROOMS_URL}/statuses`)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return response.data;
         } else throw new Error(response.statusText);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-  }
+  },
 };
 
 const mutations = {
@@ -102,12 +102,12 @@ const mutations = {
   },
   SET_ROOM(state, payload) {
     state.currentRoom = payload;
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
   actions,
-  mutations
+  mutations,
 };

@@ -1,15 +1,16 @@
 import { KEYS_URL } from "@/urls";
 import axios from "axios";
+import randomID from "./utils";
 // import store from  "@/store";
 
 const state = {
   keys: [],
-  currentKey: {}
+  currentKey: {},
 };
 const getters = {
-  getKeysByRoom: state => roomID => {
-    return state.keys.filter(key => key.room == roomID);
-  }
+  getKeysByRoom: (state) => (roomID) => {
+    return state.keys.filter((key) => key.room == roomID);
+  },
 };
 
 const actions = {
@@ -18,18 +19,18 @@ const actions = {
     console.log(`Loaded ${state.keys.length} keys`);
   },
   async getAllKeys({ commit }) {
-    await axios.get(KEYS_URL).then(response => {
+    await axios.get(KEYS_URL).then((response) => {
       commit("SET_KEY_LIST", response.data);
     });
   },
   async getKey({ commit }, keyID) {
     return await axios
       .get(`${KEYS_URL}/ ${keyID}`)
-      .then(response => {
+      .then((response) => {
         commit("SET_KEY", response.data);
         return response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`Error retrieving key ${keyID}}`);
         console.error(error);
         return error;
@@ -39,7 +40,7 @@ const actions = {
     console.log(`Saving key with id: ${state.currentKey._id}`);
     axios
       .put(`${KEYS_URL}/${state.currentKey._id}`, state.currentKey)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           commit("SET_KEY", state.currentKey);
           dispatch("getAllKeys");
@@ -50,10 +51,9 @@ const actions = {
       });
   },
   async createKey({ commit, dispatch }, key) {
-    let randomID = Math.floor(Math.random() * 10000);
-    key._id = randomID;
+    key._id = randomID();
     console.log(key);
-    await axios.post(`${KEYS_URL}`, key).then(response => {
+    await axios.post(`${KEYS_URL}`, key).then((response) => {
       if (response.status === 200) {
         dispatch("getAllKeys");
         commit("SET_KEY", key);
@@ -65,7 +65,7 @@ const actions = {
     });
   },
   deleteKey({ commit, dispatch }, keyID) {
-    axios.delete(`${KEYS_URL}/${keyID}`).then(response => {
+    axios.delete(`${KEYS_URL}/${keyID}`).then((response) => {
       if (response.status === 200) {
         dispatch("getAllKeys");
         commit("SET_KEY", {});
@@ -82,13 +82,13 @@ const actions = {
   async getKeyPurposes() {
     return axios
       .get(`${KEYS_URL}/purposes`)
-      .then(response => {
+      .then((response) => {
         return response.data;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-  }
+  },
 };
 
 const mutations = {
@@ -97,7 +97,7 @@ const mutations = {
   },
   SET_KEY(state, payload) {
     state.currentKey = payload;
-  }
+  },
 };
 
 export default {
@@ -105,5 +105,5 @@ export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 };
