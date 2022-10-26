@@ -1,8 +1,24 @@
 <template>
-  <div class="home">
-    <h1>Administration: <small>Home</small></h1>
+  <v-container fluid class="down-top-padding">
+    <BaseBreadcrumb
+      :title="page.title"
+      :icon="page.icon"
+      :breadcrumbs="breadcrumbs"
+    >
+      <template v-slot:right>
+        <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
+      </template>
+    </BaseBreadcrumb>
+
+    <v-tabs v-model="currentTab">
+      <v-tab to="/administration/users">Users</v-tab>
+
+      <v-tab to="/administration/asset-types">Lookup Tables </v-tab>
+      <v-tab to="administrations/system">System</v-tab>
+    </v-tabs>
+
     <router-view></router-view>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-4">
         <v-card class="mt-5 default">
           <healthCheck></healthCheck>
@@ -11,28 +27,43 @@
       <div class="col-md-4">
         <v-card class="mt-5 default">
           <seed-data></seed-data>
-          <!-- Seed Data -->
+
         </v-card>
       </div>
-    </div>
+    </div> -->
 
     <notifications ref="notifier"></notifications>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import healthCheck from "../components/health/healthCheck.vue";
-import SeedData from "../components/seed/seedData.vue";
+// import healthCheck from "../components/health/healthCheck.vue";
+// import SeedData from "../components/seed/seedData.vue";
 
 export default {
   name: "Home",
   components: {
-    healthCheck,
-    SeedData
+    // healthCheck,
+    // SeedData,
   },
-  data: () => ({}),
+  data: () => ({
+    items: [
+      { title: "Users", to: "/administration/users" },
+      { title: "Lookup Tables", to: "/administration/lookupTables" },
+      { title: "System", to: "/administration/system" },
+    ],
+    currentTab: "",
+    page: { title: "Administration" },
+  }),
   created() {},
-  computed: {},
-  methods: {}
+  computed: {
+    breadcrumbs: function() {
+      return [
+        { text: "Home", to: "/dashboard", exact: true },
+        { text: "Administration" },
+      ];
+    },
+  },
+  methods: {},
 };
 </script>

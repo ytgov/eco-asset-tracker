@@ -36,6 +36,25 @@
               {{ roomName(item.room) }}
             </span>
           </template>
+
+          <template v-slot:footer.prepend>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <download-csv
+                  :data="filteredKeys"
+                  :labels="headers"
+                  name="keys.csv"
+                >
+                  <v-chip label outlined v-on="on" v-bind="attrs">
+                    <v-icon>
+                      mdi-download
+                    </v-icon>
+                  </v-chip>
+                </download-csv>
+              </template>
+              <span>Download CSV</span>
+            </v-tooltip>
+          </template>
         </v-data-table>
       </v-col>
     </v-row>
