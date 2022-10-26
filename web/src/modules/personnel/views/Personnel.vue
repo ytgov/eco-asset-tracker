@@ -26,6 +26,7 @@
       </template>
       <template v-slot:right>
         <create-user-btn
+          v-if="isAdmin"
           ref="create-user-btn"
           :onSave="saveComplete"
         ></create-user-btn>
@@ -44,7 +45,7 @@
 
 <script>
 import _ from "lodash";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import userEditor from "../components/UserEditor.vue";
 import CreateUserBtn from "../components/createUserBtn.vue";
 import PersonnelTable from "../components/personnelTable.vue";
@@ -83,6 +84,7 @@ export default {
         return this.employees;
       }
     },
+    ...mapGetters("administration/users", ["isAdmin"]),
     ...mapState("personnel", ["employees"]),
     breadcrumbs: function() {
       return [
@@ -99,6 +101,7 @@ export default {
       // this.isLoading = false;
     },
     saveComplete(resp) {
+      console.log(resp);
       this.$refs.notifier.showAPIMessages(resp.data);
       this.loadUserList();
     },

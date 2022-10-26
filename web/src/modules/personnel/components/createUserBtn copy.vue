@@ -49,6 +49,34 @@
               readonly
               append-icon="mdi-lock"
             ></v-text-field>
+
+            <v-select
+              label="Status"
+              v-model="selectedEmployee.status"
+              dense
+              outlined
+              :items="['Active', 'Inactive']"
+            ></v-select>
+            <v-select
+              label="Role"
+              dense
+              outlined
+              v-model="selectedEmployee.roles"
+              :items="roleOptions"
+              clearable
+            ></v-select>
+            <v-select
+              v-if="isDepartmentAdmin"
+              class="pl-2"
+              label="Department"
+              dense
+              outlined
+              v-model="selectedEmployee.department_admin_for"
+              :items="departmentList"
+              item-text="display_name"
+              item-value="dept"
+              clearable
+            ></v-select>
           </div>
 
           <div>
@@ -93,7 +121,7 @@ export default {
 
     selectedEmployee: {},
     selectedSupervisor: {},
-    supervisorTitle: "",
+    supervisorTitle: ""
   }),
   computed: {
     isDepartmentAdmin: function() {
@@ -106,7 +134,7 @@ export default {
         return true;
 
       return false;
-    },
+    }
   },
   watch: {
     employeeSearch(val) {
@@ -120,19 +148,20 @@ export default {
 
       // Lazily load input items
       this.searchEmployees({ terms: val })
-        .then((res) => {
+        .then(res => {
           this.employeeItems = res;
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         })
         .finally(() => (this.isEmployeeLoading = false));
-    },
+    }
   },
 
   mounted: async function() {},
   methods: {
-    ...mapActions("personnel", ["searchEmployees", "createEmployee", "thing"]),
+    ...mapActions("employee", ["searchEmployees"]),
+    ...mapActions("administration", ["createUser"]),
 
     async doShow() {
       // this.selectedEmployee = {};
@@ -142,7 +171,7 @@ export default {
       // this.supervisorTitle = "";
     },
     async doCreate() {
-      let resp = await this.createEmployee(this.selectedEmployee);
+      let resp = await this.createUser(this.selectedEmployee);
       this.$emit("update");
       this.show = false;
       this.onSave(resp);
@@ -160,7 +189,7 @@ export default {
     },
     unselectSupervisor() {
       this.selectedSupervisor = {};
-    },
-  },
+    }
+  }
 };
 </script>

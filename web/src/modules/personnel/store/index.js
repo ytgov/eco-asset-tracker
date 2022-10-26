@@ -2,85 +2,6 @@ import { EMPLOYEE_URL } from "@/urls";
 import { getInstance } from "@/auth/auth0-plugin";
 import axios from "axios";
 
-const testPersonnel = [
-  {
-    display_name: "Lise Farynowski",
-    first_name: "Lise",
-    last_name: "Farynowski",
-    ynet_id: "llfaryno",
-    email: "Lise.Farynowski@yukon.ca",
-    long_name:
-      "Lise Farynowski (llfaryno) Economic Development :  Director, Business and Industry Development",
-    title: "Director, Business and Industry Development",
-    department: "Economic Development",
-    officeLocation: "303 Alexander",
-    userPrincipalName: "llfaryno@ynet.gov.yk.ca",
-  },
-  {
-    display_name: "Carolyn Relf",
-    first_name: "Carolyn",
-    last_name: "Relf",
-    ynet_id: "crelf",
-    email: "Carolyn.Relf@yukon.ca",
-    long_name: "Carolyn Relf (crelf) Energy Mines and Resources :  Director",
-    title: "Director",
-    department: "Energy Mines and Resources",
-    officeLocation: "Yukon Geological Survey",
-    userPrincipalName: "crelf@ynet.gov.yk.ca",
-  },
-  {
-    display_name: "Benton Foster",
-    first_name: "Benton",
-    last_name: "Foster",
-    ynet_id: "bfoster",
-    email: "Benton.Foster@yukon.ca",
-    long_name:
-      "Benton Foster (bfoster) Health and Social Services :  Director, Community Health Programs",
-    title: "Director, Community Health Programs",
-    department: "Health and Social Services",
-    officeLocation: "Vendome Place",
-    userPrincipalName: "bfoster@ynet.gov.yk.ca",
-  },
-  {
-    display_name: "ecc director",
-    first_name: "ecc",
-    last_name: "director",
-    ynet_id: "eccdirector",
-    email: "ecc.director@yukon.ca",
-    long_name: "ecc director (eccdirector) Community Services",
-    title: "Unknown title",
-    department: "Community Services",
-    officeLocation: null,
-    userPrincipalName: "eccdirector@ynet.gov.yk.ca",
-  },
-  {
-    display_name: "Anton Solomon",
-    first_name: "Anton",
-    last_name: "Solomon",
-    ynet_id: "ajsolomo",
-    email: "Anton.Solomon@yukon.ca",
-    long_name:
-      "Anton Solomon (ajsolomo) Economic Development :  Director, Post Secondary and Labour Market",
-    title: "Director, Post Secondary and Labour Market",
-    department: "Economic Development",
-    officeLocation: "303 Alexander",
-    userPrincipalName: "ajsolomo@ynet.gov.yk.ca",
-  },
-  {
-    display_name: "Simon Blakesley",
-    first_name: "Simon",
-    last_name: "Blakesley",
-    ynet_id: "sblakesl",
-    email: "Simon.Blakesley@yukon.ca",
-    long_name:
-      "Simon Blakesley (sblakesl) Education :  Director, Student Information & Assessment",
-    title: "Director, Student Information & Assessment",
-    department: "Education",
-    officeLocation: "Education Building",
-    userPrincipalName: "sblakesl@ynet.gov.yk.ca",
-  },
-];
-
 const state = {
   currentEmployee: {},
   employees: [],
@@ -92,27 +13,76 @@ const getters = {};
 const actions = {
   async initialize({ dispatch, state }) {
     //load personnel from the database
-    //*note* personnel different than users users are managed through the administation module
+    //*note* personnel different than users. Users are managed through the administation module
     await dispatch("getAllEmployees");
     console.log(`Loaded ${state.employees.length} personnel`);
   },
-
+  async thing() {
+    console.log("thing");
+  },
   async getAllEmployees({ commit }) {
-    commit("setEmployees", testPersonnel);
+    const response = await axios
+      .get(EMPLOYEE_URL)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("setEmployees", response.data);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    return response;
+  },
+  async createEmployee({ dispatch }, employee) {
+    const auth = axios;
+    //employee.created_by = auth.user.sub;
+    employee.created_at = new Date();
+    delete employee.long_name;
+    delete employee.officeLocation;
+    delete employee.userPrincipalName;
+
+    return await auth
+      .post(EMPLOYEE_URL, employee)
+      .then((response) => {
+        if (response.status === 201 || response.status === 200) {
+          // commit("setCurrentEmployee", response.data);
+          dispatch("getAllEmployees");
+          return response;
+        } else {
+          console.log("Didn't save...");
+
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
   },
 
   async loadEmployee({ commit }, id) {
-    const auth = getInstance();
-
+    // const auth = getInstance();
+    const auth = axios;
     return await auth
       .get(`${EMPLOYEE_URL}/${id}`)
       .then((resp) => {
-        commit("setCurrentEmployee", resp.data.data);
-        return resp.data.data;
+        if (resp.status === 200) {
+          console.log(resp.data);
+          commit("setCurrentEmployee", resp.data);
+          return resp.data;
+        } else {
+          return null;
+        }
       })
-      .catch(() => {
-        const testEmployee = testPersonnel.find((e) => e.ynet_id === id);
-        commit("setCurrentEmployee", testEmployee);
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+        // const testEmployee = testPersonnel.find((e) => e.ynet_id === id);
+        // commit("setCurrentEmployee", testEmployee);
       });
   },
   async saveEmployee(store) {
@@ -127,6 +97,7 @@ const actions = {
       ynet_id: employee.ynet_id,
       email: employee.email,
       primary_department: employee.primary_department,
+      updated_at: new Date(),
     };
 
     return await auth
