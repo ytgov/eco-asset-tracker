@@ -17,9 +17,6 @@ const actions = {
     await dispatch("getAllEmployees");
     console.log(`Loaded ${state.employees.length} personnel`);
   },
-  async thing() {
-    console.log("thing");
-  },
   async getAllEmployees({ commit }) {
     const response = await axios
       .get(EMPLOYEE_URL)
@@ -71,7 +68,6 @@ const actions = {
       .get(`${EMPLOYEE_URL}/${id}`)
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp.data);
           commit("setCurrentEmployee", resp.data);
           return resp.data;
         } else {
@@ -116,7 +112,6 @@ const actions = {
     // return auth.post(`${EMPLOYEE_URL}/search`, { terms }).then(resp => {
     //   return resp.data.data;
     // });
-    console.log(EMPLOYEE_URL);
     return axios
       .post(`${EMPLOYEE_URL}/search-directory`, { terms })
       .then((resp) => {

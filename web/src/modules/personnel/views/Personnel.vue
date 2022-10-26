@@ -101,7 +101,6 @@ export default {
       // this.isLoading = false;
     },
     saveComplete(resp) {
-      console.log(resp);
       this.$refs.notifier.showAPIMessages(resp.data);
       this.loadUserList();
     },

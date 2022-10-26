@@ -145,6 +145,7 @@ export default {
       let resp = await this.createEmployee(this.selectedEmployee);
       this.$emit("update");
       this.show = false;
+      this.selectedEmployee = {};
       this.onSave(resp);
     },
     pickEmployee(item) {
