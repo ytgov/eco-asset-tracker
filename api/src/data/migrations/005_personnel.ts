@@ -15,6 +15,7 @@ exports.up = function (knex: knex.Knex, Promise: any) {
     //audit
     table.date("modified");
     table.string("modified_by");
+    table.date("created_at");
   });
 };
 
