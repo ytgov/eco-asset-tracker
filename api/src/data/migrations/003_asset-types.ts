@@ -1,23 +1,21 @@
 import * as knex from "knex";
 
-
 exports.up = function (knex: knex.Knex, Promise: any) {
-  console.log ("Creating asset-type table...")
+  console.log("Creating asset-type table...");
   return knex.schema.createTable("asset-type", function (table) {
-  table.integer('_id');
-  table.string('name');
-  table.boolean('office');
-  table.boolean('person');
-  table.boolean('infrastructure');
+    table.integer("_id").notNullable().primary();
+    table.string("name");
+    table.boolean("office");
+    table.boolean("person");
+    table.boolean("infrastructure");
 
-
-  //audit
-  table.date('modified');
-  table.string('modified_by');
-  })
-}
+    //audit
+    table.date("modified");
+    table.string("modified_by");
+  });
+};
 
 exports.down = function (knex: knex.Knex, Promise: any) {
-  console.log('dropping asset-type table');
+  console.log("dropping asset-type table");
   return knex.schema.dropTable("asset-type");
-}
+};

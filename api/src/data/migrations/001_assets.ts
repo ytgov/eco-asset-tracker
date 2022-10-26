@@ -1,7 +1,7 @@
 import * as knex from "knex";
 
 exports.up = function (knex: knex.Knex, Promise: any) {
-  console.log("Creating assets table...")
+  console.log("Creating assets table...");
   return knex.schema.createTable("assets", function (table) {
     table.integer("_id").notNullable().primary(); //TODO: convert to increment
     table.string("assetNum").notNullable().unique();
@@ -18,10 +18,14 @@ exports.up = function (knex: knex.Knex, Promise: any) {
     table.string("room"); //TODO: Make foreign key (on delete Null)
     table.json("person");
     table.string("note");
+
+    //audit
+    table.date("modified");
+    table.string("modified_by");
   });
 };
 
 exports.down = function (knex: knex.Knex, Promise: any) {
-  console.log("Droping assets table...")
+  console.log("Droping assets table...");
   return knex.schema.dropTable("assets");
 };
