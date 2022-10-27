@@ -9,8 +9,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in items" :key="item.index">
-          <td class="text-right">{{ item.assetName }}</td>
+        <tr v-for="item in assetTypes" :key="item.index">
+          <td class="text-right">{{ item.name }}</td>
           <td class="text-center">
             <v-icon>{{ isOffice(item) }}</v-icon>
           </td>
@@ -50,24 +50,19 @@ export default {
         value: "infrastructure",
       },
     ],
-    items: [
-      { assetName: "Cellphone", types: ["person"] },
-      { assetName: "Laptop", types: ["person", "office"] },
-      { assetName: "Tablet", types: ["office"] },
-    ],
   }),
   computed: {
-    ...mapState("administration/assets", ["assetTypes"]),
+    ...mapState("administration/assetTypes", ["assetTypes"]),
   },
   methods: {
     isInfrastructure(assetType) {
-      return this.pickIcon(assetType.types.includes("infrastructure"));
+      return this.pickIcon(assetType.infrastructure);
     },
     isPerson(assetType) {
-      return this.pickIcon(assetType.types.includes("person"));
+      return this.pickIcon(assetType.person);
     },
     isOffice(assetType) {
-      return this.pickIcon(assetType.types.includes("office"));
+      return this.pickIcon(assetType.office);
     },
     pickIcon(result) {
       if (result === true) {

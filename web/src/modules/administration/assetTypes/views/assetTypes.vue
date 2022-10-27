@@ -7,7 +7,7 @@
         </v-card>
       </v-col>
       <v-col>
-        <add-asset-type-btn />
+        <add-asset-type-btn @notify="doApiNotification" />
       </v-col>
     </v-row>
   </v-container>
@@ -24,5 +24,14 @@ export default {
   data: () => ({
     page: { title: "Asset Types" },
   }),
+  methods: {
+    doApiNotification: function(apiResult) {
+      if (apiResult.status === 200) {
+        console.log("Asset Type added");
+      } else {
+        console.log("Create Asset Type failed check the logs");
+      }
+    },
+  },
 };
 </script>

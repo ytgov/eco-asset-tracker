@@ -3,7 +3,7 @@ import * as knex from "knex";
 exports.up = function (knex: knex.Knex, Promise: any) {
   console.log("Creating asset-type table...");
   return knex.schema.createTable("asset-type", function (table) {
-    table.string("_id").notNullable().primary();
+    table.increments("_id").notNullable().primary();
     table.string("name");
     table.boolean("office");
     table.boolean("person");
