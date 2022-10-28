@@ -29,7 +29,7 @@
       <v-col>
         <v-autocomplete
           v-model="asset.type"
-          :items="assetTypes"
+          :items="allTypes"
           label="Type"
           :rules="[rules.required]"
           :readonly="!edit"
@@ -174,24 +174,25 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "AssetDetailForm",
   props: {
     edit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data: () => ({
     rules: {
-      required: value => !!value || "Required."
+      required: (value) => !!value || "Required.",
     },
     valid: true,
     DumbRoom: null,
     menu: false,
     menu2: false,
+    items: ["Tablet", "Desktop"],
     // asset: {
     //   type: "",
     //   assetNum: "",
@@ -204,19 +205,21 @@ export default {
     //   status: "",
     //   statusReason: ""
     // },
-    assetTypes: ["Computer", "Printer", "Monitor", "Scanner", "Phone", "Other"],
-    statuses: ["Active", "Inactive", "Broken", "Lost"]
+    // assetTypes: ["Computer", "Printer", "Monitor", "Scanner", "Phone", "Other"],
+    statuses: ["Active", "Inactive", "Broken", "Lost"],
   }),
   computed: {
+    ...mapGetters("administration/assetTypes", ["allTypes"]),
     ...mapState("assets", ["currentAsset"]),
     ...mapState("rooms", ["rooms"]),
+
     asset: {
       get() {
         return this.currentAsset;
       },
       set(value) {
         this.$store.commit("assets/SET_ASSET", value);
-      }
+      },
     },
     activeLabel: function() {
       if (this.asset.active == true) {
@@ -224,16 +227,16 @@ export default {
       } else {
         return { text: "Inactive", color: "red" };
       }
-    }
+    },
   },
   methods: {
     roomName: function(roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
-        return this.rooms.find(room => room._id == roomID).name;
+        return this.rooms.find((room) => room._id == roomID).name;
       }
       return "";
-    }
-  }
+    },
+  },
 };
 </script>

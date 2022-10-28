@@ -4,38 +4,13 @@ import { ASSETS_URL } from "@/urls";
 // import store from  "@/store";
 
 const state = {
-  assetTypes: [
-    {
-      _id: 0,
-      name: "Cell Phone",
-      office: true,
-      person: false,
-      infrastructure: false,
-    },
-    {
-      _id: 1,
-      name: "Laptop",
-      office: true,
-      person: true,
-      infrastructure: false,
-    },
-    {
-      _id: 2,
-      name: "Landline",
-      office: false,
-      person: false,
-      infrastructure: true,
-    },
-    {
-      _id: 3,
-      name: "Pack Pole",
-      office: false,
-      person: false,
-      infrastructure: true,
-    },
-  ],
+  assetTypes: [],
 };
-const getters = {};
+const getters = {
+  allTypes: (state) => {
+    return state.assetTypes.map((type) => type.name);
+  },
+};
 const actions = {
   async initialize({ state, dispatch }) {
     await dispatch("getAssetTypes");
