@@ -29,7 +29,7 @@ const actions = {
   },
   async getAsset({ commit }, assetID) {
     await axios
-      .get(`${ASSETS_URL}/ ${assetID}`)
+      .get(`${ASSETS_URL}/${assetID}`)
       .then((response) => {
         commit("SET_ASSET", response.data);
       })
@@ -65,15 +65,17 @@ const actions = {
       //  }
     });
   },
-  deleteAsset({ commit, dispatch }, assetID) {
-    axios.delete(`${ASSETS_URL}/${assetID}`).then((response) => {
+  async deleteAsset({ commit, dispatch }, assetID) {
+    return await axios.delete(`${ASSETS_URL}/${assetID}`).then((response) => {
       if (response.status === 200) {
         dispatch("getAllAssets");
         commit("SET_ASSET", {});
-        return response.status;
+        return response;
       } else {
         console.log("Error deleting asset: " + assetID);
         commit("SET_ASSET", {});
+        response.messages = "Error deleting asset";
+        return response;
       }
     });
   },
