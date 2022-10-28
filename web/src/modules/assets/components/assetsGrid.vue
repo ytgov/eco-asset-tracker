@@ -1,30 +1,9 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-spacer />
-      <v-col cols="1">
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <download-csv
-              :data="filteredAssets"
-              :labels="headers"
-              name="assets.csv"
-            >
-              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
-                <v-icon>
-                  mdi-download
-                </v-icon>
-              </v-chip>
-            </download-csv>
-          </template>
-          <span>Download CSV</span>
-        </v-tooltip>
-      </v-col>
-    </v-row>
-    <v-row>
       <v-col>
         <v-data-table
-          :headers="headers"
+          :headers="localHeaders"
           :items="dataset"
           :search="search"
           :loading="loading"
@@ -36,6 +15,24 @@
               <!-- {{item.room}} -->
               {{ roomName(item.room) }}
             </span>
+          </template>
+          <template v-slot:footer.prepend>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <download-csv
+                  :data="filteredAssets"
+                  :labels="headers"
+                  name="assets.csv"
+                >
+                  <v-chip label outlined v-on="on" v-bind="attrs">
+                    <v-icon>
+                      mdi-download
+                    </v-icon>
+                  </v-chip>
+                </download-csv>
+              </template>
+              <span>Download CSV</span>
+            </v-tooltip>
           </template>
         </v-data-table>
       </v-col>
@@ -64,6 +61,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    headers: {
+      type: Array,
+      default: () => [],
+    },
   },
   data: () => ({
     loading: true,
@@ -86,16 +87,20 @@ export default {
       return this.user.admin;
     },
 
-    headers: function() {
-      return [
-        { text: "Asset", value: "assetNum" },
-        { text: "Type", value: "type" },
-        { text: "Description", value: "description" },
-        { text: "Room", value: "room" },
-        { text: "Status", value: "status" },
-        { text: "Purchased", value: "purchaseDate" },
-        { text: "Installed", value: "installDate" },
-      ];
+    localHeaders: function() {
+      if (this.headers.length > 0) {
+        return this.headers;
+      } else {
+        return [
+          { text: "Asset", value: "assetNum" },
+          { text: "Type", value: "type" },
+          { text: "Description", value: "description" },
+          // { text: "Room", value: "room" },
+          { text: "Status", value: "status" },
+          { text: "Purchased", value: "purchaseDate" },
+          { text: "Installed", value: "installDate" },
+        ];
+      }
     },
   },
   methods: {

@@ -10,6 +10,10 @@ const getters = {
   allTypes: (state) => {
     return state.assetTypes.map((type) => type.name);
   },
+  infrastructureTypes: (state) => {
+    let infra = state.assetTypes.filter((type) => type.infrastructure === true);
+    return infra.map((type) => type.name);
+  },
 };
 const actions = {
   async initialize({ state, dispatch }) {

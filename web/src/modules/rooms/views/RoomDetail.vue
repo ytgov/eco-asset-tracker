@@ -12,8 +12,8 @@
     <v-row>
       <v-col>
         <BaseCard class="default">
-          <v-row>
-            <v-col cols="5">
+          <v-row justify="space-between">
+            <v-col cols="4">
               <room-card>
                 <!-- <template v-slot:top-right-action>
             <v-icon>
@@ -22,10 +22,8 @@
           </template> -->
               </room-card>
             </v-col>
-            <v-col cols="4">
-              <infrastructure-card> </infrastructure-card>
-            </v-col>
-            <v-col cols="3">
+
+            <v-col cols="6">
               <personnel-card> </personnel-card>
             </v-col>
           </v-row>
@@ -35,6 +33,11 @@
             </v-col>
             <v-col cols="4">
               <keys-card :roomID="this.roomID"></keys-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="5">
+              <infrastructure-card :roomID="this.roomID"> </infrastructure-card>
             </v-col>
           </v-row>
         </BaseCard>
@@ -57,15 +60,15 @@ export default {
     InfrastructureCard,
     personnelCard,
     AssetsCard,
-    KeysCard
+    KeysCard,
   },
   data: () => ({
     headingStyle: "text-overline",
     page: {
-      title: "Room Details"
+      title: "Room Details",
     },
     // breadcrumbs: [],
-    dialog: false
+    dialog: false,
   }),
   created() {},
   computed: {
@@ -78,17 +81,17 @@ export default {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Rooms", to: "/rooms", exact: true },
-        { text: `${this.currentRoom.name}` }
+        { text: `${this.currentRoom.name}` },
       ];
-    }
+    },
   },
   methods: {
-    ...mapActions("rooms", ["getRoom"])
+    ...mapActions("rooms", ["getRoom"]),
   },
   mounted() {
     this.getRoom(this.roomID);
 
     //load room to store
-  }
+  },
 };
 </script>

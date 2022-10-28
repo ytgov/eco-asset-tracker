@@ -1,27 +1,28 @@
 <template>
-  <v-card tile>
-    <v-toolbar>
+  <div>
+    <v-toolbar dark color="yg_moss">
       <v-toolbar-title>
-        Personel
+        Personnel
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-icon v-if="isAdmin">
         mdi-plus
       </v-icon>
     </v-toolbar>
+    <v-card tile>
+      <v-card-text>
+        <p>These are people who are assigned to the room.</p>
 
-    <v-card-text>
-      <p>These are people who are assigned to the room.</p>
-
-      <!-- <v-data-table
+        <!-- <v-data-table
       :headers="headers"
       dense
       :search="search"
       :items="personel"
       :loading="loading">
     </v-data-table> -->
-    </v-card-text>
-  </v-card>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -32,15 +33,15 @@ export default {
   props: {
     search: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
 
   data: () => ({
     // formAItems: [],
     // loadingFormA: false,
     loading: true,
-    dialog: false
+    dialog: false,
   }),
   computed: {
     ...mapGetters("administration/users", ["isAdmin"]),
@@ -49,14 +50,14 @@ export default {
         { text: "Name", value: "name" },
         { text: "Purpose", value: "purpose" },
         { text: "Status", value: "status" },
-        { text: "Actions", value: "actions" }
+        { text: "Actions", value: "actions" },
       ];
       // return Object.keys(this.rooms)
-    }
+    },
   },
   mounted: async function() {
     this.loading = false;
   },
-  methods: {}
+  methods: {},
 };
 </script>

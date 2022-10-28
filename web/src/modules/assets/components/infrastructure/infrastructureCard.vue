@@ -5,58 +5,58 @@
         Infrastructure
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-icon v-if="isAdmin">
-        mdi-plus
-      </v-icon>
     </v-toolbar>
 
     <v-card-text>
-      <p>A list of infrastructure (a subset of assets) assigned to the room</p>
-
-      <!-- <v-data-table
-      :headers="headers"
-      dense
-      :search="search"
-      :items="infrastructure"
-      :loading="loading">
-    </v-data-table> -->
+      <assets-grid :headers="headers" :items="items"> </assets-grid>
     </v-card-text>
   </v-card>
 </template>
 <script>
 import { mapGetters } from "vuex";
+import AssetsGrid from "../assetsGrid.vue";
 
 export default {
   name: "RoomTable",
-  components: {},
+  components: { AssetsGrid },
   props: {
     search: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
+    roomID: {
+      type: String,
+      default: "",
+    },
   },
 
   data: () => ({
     // formAItems: [],
     // loadingFormA: false,
     loading: true,
-    dialog: false
+    dialog: false,
   }),
   computed: {
+    items: function() {
+      return this.getAssetsByRoom(this.roomID).filter((asset) =>
+        this.infrastructureTypes.includes(asset.type)
+      );
+    },
     ...mapGetters("administration/users", ["isAdmin"]),
+    ...mapGetters("administration/assetTypes", ["infrastructureTypes"]),
+    ...mapGetters("assets", ["getAssetsByRoom"]),
     headers: function() {
       return [
-        { text: "Name", value: "name" },
-        { text: "Purpose", value: "purpose" },
-        { text: "Status", value: "status" },
-        { text: "Actions", value: "actions" }
+        { text: "Type", value: "type" },
+        // { text: "Name", value: "name" },
+        { text: "Description", value: "description" },
       ];
       // return Object.keys(this.rooms)
-    }
+    },
   },
   mounted: async function() {
     this.loading = false;
   },
-  methods: {}
+  methods: {},
 };
 </script>
