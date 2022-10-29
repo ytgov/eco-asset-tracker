@@ -1,5 +1,5 @@
-import users from "../users/store/index";
-import assetTypes from "../assetTypes/store/index";
+import users from "../modules/users/store/index";
+import assetTypes from "../modules/assetTypes/store/index";
 
 import { HEALTHCHECK_URL } from "../../../urls";
 
@@ -10,8 +10,8 @@ const state = {
     name: "",
     status: false,
     loading: true,
-    helpNotes: "" //what to do if something this component is broken
-  }
+    helpNotes: "", //what to do if something this component is broken
+  },
 };
 
 const actions = {
@@ -28,22 +28,22 @@ const actions = {
     let resopnse = await fetch("http://localhost:3000/seed");
     let data = await resopnse.text();
     return data;
-  }
+  },
 };
 
 const mutations = {
   SET_APP_HEALTH(state, payload) {
     state.appHealth = payload.appHealth;
-  }
+  },
 };
 
 export default {
   namespaced: true,
   modules: {
     users,
-    assetTypes
+    assetTypes,
   },
   state,
   actions,
-  mutations
+  mutations,
 };

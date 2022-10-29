@@ -1,4 +1,4 @@
-import assetTypesRoutes from "../assetTypes/router/index.js";
+import assetTypesRoutes from "../modules/assetTypes/router/index.js";
 const routes = [
   {
     path: "/administration",
