@@ -25,13 +25,13 @@ const actions = {
   },
   async getKey({ commit }, keyID) {
     return await axios
-      .get(`${KEYS_URL}/ ${keyID}`)
+      .get(`${KEYS_URL}/${keyID}`)
       .then((response) => {
         commit("SET_KEY", response.data);
         return response.data;
       })
       .catch((error) => {
-        console.log(`Error retrieving key ${keyID}}`);
+        console.log(`Error retrieving key ${keyID}`);
         console.error(error);
         return error;
       });
@@ -52,17 +52,19 @@ const actions = {
   },
   async createKey({ commit, dispatch }, key) {
     key._id = randomID();
-    console.log(key);
-    await axios.post(`${KEYS_URL}`, key).then((response) => {
-      if (response.status === 200) {
-        dispatch("getAllKeys");
-        commit("SET_KEY", key);
-        return "Key created";
-      }
-      // else {
-      return "Error creating ";
-      //  }
-    });
+    await axios
+      .post(`${KEYS_URL}`, key)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch("getAllKeys");
+          commit("SET_KEY", key);
+          return "Key created";
+        }
+      })
+      .catch((error) => {
+        console.log("Error creating key: " + error);
+        return error;
+      });
   },
   deleteKey({ commit, dispatch }, keyID) {
     axios.delete(`${KEYS_URL}/${keyID}`).then((response) => {
