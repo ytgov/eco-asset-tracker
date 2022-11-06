@@ -3,6 +3,7 @@
     <v-row>
       <v-col cols="5">
         <v-card class="default">
+          <v-card-title class="pb-0"> Asset Types </v-card-title>
           <asset-type-table> </asset-type-table>
         </v-card>
       </v-col>
