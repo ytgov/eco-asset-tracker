@@ -1,27 +1,6 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-spacer />
-      <v-col cols="1">
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <download-csv
-              :data="filteredKeys"
-              :labels="headers"
-              name="keys.csv"
-            >
-              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
-                <v-icon>
-                  mdi-download
-                </v-icon>
-              </v-chip>
-            </download-csv>
-          </template>
-          <span>Download CSV</span>
-        </v-tooltip>
-      </v-col>
-    </v-row>
-    <v-row>
       <v-col>
         <v-data-table
           :headers="localHeaders"
