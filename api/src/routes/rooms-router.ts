@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import { Room, roomPurposes, roomStatuses } from "../data/models/eco-room";
-import { roomSeed } from "../data/seed-data/eco-room"
-import  { KnexService }  from "../services/knex-service"
+import { roomSeed } from "../data/seed-data/eco-room";
+import { KnexService } from "../services/knex-service";
 
 export const roomsRouter = express.Router();
 
-const db = new KnexService("rooms")
+const db = new KnexService("rooms");
 
 const tableName = "rooms";
 
@@ -72,64 +72,59 @@ const tableName = "rooms";
 //   return res.json({done: 'built'});
 // });
 
-roomsRouter.get('/purposes', async (req: Request, res: Response) => {
+roomsRouter.get("/purposes", async (req: Request, res: Response) => {
   return res.json(roomPurposes);
 });
-roomsRouter.get('/statuses', async (req: Request, res: Response) => {
+roomsRouter.get("/statuses", async (req: Request, res: Response) => {
   return res.json(roomStatuses);
 });
-roomsRouter.get('/', async (req: Request, res: Response) => {
+roomsRouter.get("/", async (req: Request, res: Response) => {
   const query = {};
-  const fields = req.body.fields // if null return all fields
+  const fields = req.body.fields; // if null return all fields
   // const result = await knex.select(fields).from(tableName);
-  let result = await db.getAll(query, fields)
+  let result = await db.getAll(query, fields);
   return res.json(result);
 });
 
-roomsRouter.get('/:roomID', async (req: Request, res: Response) => {
-  const roomID = req.params.roomID
-  const fields = req.body.fields // if null return all fields
+roomsRouter.get("/:roomID", async (req: Request, res: Response) => {
+  const roomID = req.params.roomID;
+  const fields = req.body.fields; // if null return all fields
   // const result = await knex.select(fields).from(tableName).where({_id: roomID})
-  const result = await db.getAll({_id: roomID}, fields)
-  if (result.length === 0)  {
+  const result = await db.getAll({ _id: roomID }, fields);
+  if (result.length === 0) {
     res.status(404).send(`No results found for room ID: ${roomID}`);
-  }else if(result.length === 1 ) {
+  } else if (result.length === 1) {
     return res.json(result[0]);
-  }else {
-    return res.status(418).send(`Too many results found for room ID: ${roomID}`)
+  } else {
+    return res
+      .status(418)
+      .send(`Too many results found for room ID: ${roomID}`);
   }
-})
-roomsRouter.put('/:roomID', async (req: Request, res: Response) => {
+});
+roomsRouter.put("/:roomID", async (req: Request, res: Response) => {
   //update a room
-  const roomID = req.params.roomID
-  const room = req.body
-  const result = await db.update({_id: roomID}, room)
-  return res.json(result)
-})
-roomsRouter.delete('/:roomID', async (req: Request, res: Response) => {
-  const roomID = req.params.roomID
-  const result = await db.delete({_id: roomID})
+  const roomID = req.params.roomID;
+  const room = req.body;
+  const result = await db.update({ _id: roomID }, room);
   return res.json(result);
-})
+});
+roomsRouter.delete("/:roomID", async (req: Request, res: Response) => {
+  const roomID = req.params.roomID;
+  const result = await db.delete({ _id: roomID });
+  return res.json(result);
+});
 
-roomsRouter.post('/', async (req: Request, res: Response) => {
+roomsRouter.post("/", async (req: Request, res: Response) => {
   //create a new room
 
-  const room = req.body
-  let result = await db.create(room)
-  return res.json (result)
-})
+  const room = req.body;
+  let result = await db.create(room);
+  return res.json(result);
+});
 
-roomsRouter.post('/killit', async (req: Request, res: Response) => {
+roomsRouter.post("/killit", async (req: Request, res: Response) => {
   //create a new room
 
-
-  let result = await db.db.schema.dropTable("rooms")
-  return res.json (result)
-})
-
-
-
-
-
-
+  let result = await db.db.schema.dropTable("rooms");
+  return res.json(result);
+});
