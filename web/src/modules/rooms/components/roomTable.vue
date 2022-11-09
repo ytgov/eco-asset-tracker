@@ -1,39 +1,5 @@
 <template>
   <v-container fluid>
-    <!-- <v-row
-      justify="end"
-      v-if="isAdmin">
-
-      <v-col
-        cols=1
-        class=""
-      >
-        <add-room-btn
-          @close="closeRoomDetails">
-        </add-room-btn>
-      </v-col>
-    </v-row> -->
-    <v-row>
-      <v-spacer />
-      <v-col cols="1">
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <download-csv
-              :data="filteredRooms"
-              :labels="headers"
-              name="rooms.csv"
-            >
-              <v-chip class="ml-11" label outlined v-on="on" v-bind="attrs">
-                <v-icon>
-                  mdi-download
-                </v-icon>
-              </v-chip>
-            </download-csv>
-          </template>
-          <span>Download CSV</span>
-        </v-tooltip>
-      </v-col>
-    </v-row>
     <v-row>
       <v-col>
         <v-data-table
@@ -53,6 +19,24 @@
               mdi-pencil
             </v-icon> -->
             {{ item.name }}
+          </template>
+          <template v-slot:footer.prepend>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <download-csv
+                  :data="filteredRooms"
+                  :labels="headers"
+                  name="rooms.csv"
+                >
+                  <v-chip label outlined v-on="on" v-bind="attrs">
+                    <v-icon>
+                      mdi-download
+                    </v-icon>
+                  </v-chip>
+                </download-csv>
+              </template>
+              <span>Download CSV</span>
+            </v-tooltip>
           </template>
         </v-data-table>
       </v-col>
