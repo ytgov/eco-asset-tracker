@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="warn" width="500">
     <v-toolbar dark :color="appbarColor">
-      <v-toolbar-title> Warning </v-toolbar-title>
+      <v-toolbar-title> Warning - Asset already assigned </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- <v-icon @click="close()">
           mdi-close
@@ -13,21 +13,21 @@
         <v-spacer></v-spacer>
       </v-card-actions>
       <v-card-text class="py-15">
-        <div>
-          This asset: {{ asset.assetNum }} is already assigned to
-          {{ roomName(asset.room) }}.
+        <div class="text-h6 text-center">
+          Asset <span class="font-weight-bold">{{ asset.assetNum }}</span> is
+          already assigned to {{ roomName(asset.room) }}.
         </div>
 
-        <div class="pt-5">
-          Would you you like reassign this asset to {{ room.name }}
+        <div class="pt-15 pb-0 text-subtitle-1  text-center">
+          Would you you like reassign this asset to {{ room.name }}?
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn dark color="yg_moss" @click="accept()">
-          Reassign
+        <v-btn dark color="primary" @click="accept()">
+          Re-Assign
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="yg_lichen" class="mr-3" dark @click="cancel()">
+        <v-btn outlined color="primary" class="mr-3" dark @click="cancel()">
           Cancel
         </v-btn>
       </v-card-actions>
@@ -43,21 +43,21 @@ export default {
   props: {
     warn: {
       type: Boolean,
-      value: false
+      value: false,
     },
     asset: {
-      type: Object
+      type: Object,
     },
     room: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data: () => ({}),
   computed: {
     appbarColor: function() {
       return "yg_sun";
     },
-    ...mapState("rooms", ["rooms"])
+    ...mapState("rooms", ["rooms"]),
   },
   methods: {
     accept: function() {
@@ -69,10 +69,10 @@ export default {
     roomName: function(roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
-        return this.rooms.find(room => room._id == roomID).name;
+        return this.rooms.find((room) => room._id == roomID).name;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
