@@ -1,7 +1,7 @@
 const routes = [
   {
     path: "",
-    component: () => import("../views/UsersThing.vue"),
+    component: () => import("../views/System.vue"),
     meta: { requiresAuth: false },
 
     children: [
@@ -11,12 +11,12 @@ const routes = [
       //   meta: { requiresAuth: false }
       //   // component: () => import("../views/Rooms.vue"),
       // },
-      {
-        name: "UserDetail",
-        path: ":userID",
-        meta: { requiresAuth: false },
-        // component: () => import("../views/RoomDetail.vue"),
-      },
+      // {
+      //   name: "UserDetail",
+      //   path: ":userID",
+      //   meta: { requiresAuth: false },
+      //   // component: () => import("../views/RoomDetail.vue"),
+      // },
       // {
       //   path: 'users',
       //   name: "AdminUsers",

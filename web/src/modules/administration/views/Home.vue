@@ -14,7 +14,7 @@
       <v-tab to="/administration/users">Users</v-tab>
 
       <v-tab to="/administration/asset-types">Lookup Tables </v-tab>
-      <v-tab to="administrations/system">System</v-tab>
+      <v-tab to="/administration/system">System</v-tab>
     </v-tabs>
 
     <router-view></router-view>

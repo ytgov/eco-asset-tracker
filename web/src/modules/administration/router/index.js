@@ -1,8 +1,10 @@
 import assetTypesRoutes from "../modules/assetTypes/router/index.js";
+import usersRoutes from "../modules/users/router/index.js";
+import systemRoutes from "../modules/system/router/index.js";
 const routes = [
   {
     path: "/administration",
-    name: "AdministrationHome",
+    name: "",
     component: () => import("@/layouts/Layout.vue"),
     // component: () => import("../views/Home.vue"),
 
@@ -16,9 +18,17 @@ const routes = [
       },
       {
         path: "users",
-        name: "AdminUsers",
+        name: "UserAdmin",
         component: () => import("../views/Home.vue"),
         meta: { requiresAuth: true },
+        children: [...usersRoutes],
+      },
+      {
+        path: "system",
+        name: "system",
+        component: () => import("../views/Home.vue"),
+        meta: { requiresAuth: true },
+        children: [...systemRoutes],
       },
       {
         path: "",
