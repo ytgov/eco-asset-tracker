@@ -65,18 +65,6 @@
               :items="roleOptions"
               clearable
             ></v-select>
-            <v-select
-              v-if="isDepartmentAdmin"
-              class="pl-2"
-              label="Department"
-              dense
-              outlined
-              v-model="selectedEmployee.department_admin_for"
-              :items="departmentList"
-              item-text="display_name"
-              item-value="dept"
-              clearable
-            ></v-select>
           </div>
 
           <div>
@@ -99,15 +87,15 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import EmployeeLookup from "@/modules/employee/components/employeeLookup.vue";
+import { mapActions, mapState } from "vuex";
+import EmployeeLookup from "./employeeLookup.vue";
 
 export default {
   name: "CreateUserBtn",
   props: ["onSave"],
   components: { EmployeeLookup },
   data: () => ({
-    roleOptions: ["System Admin", "Finance Admin", "Department Admin"],
+    //roleOptions: ["System Admin", "Editor", "User"],
     item: {},
     show: false,
 
@@ -121,20 +109,17 @@ export default {
 
     selectedEmployee: {},
     selectedSupervisor: {},
-    supervisorTitle: ""
+    supervisorTitle: "",
   }),
   computed: {
-    isDepartmentAdmin: function() {
-      return this.item.roles === "Department Admin";
-    },
-    ...mapGetters("department", ["departmentList"]),
+    ...mapState("administration/users", ["roleOptions"]),
 
     isValid() {
       if (this.selectedEmployee.email && this.selectedEmployee.title.length > 0)
         return true;
 
       return false;
-    }
+    },
   },
   watch: {
     employeeSearch(val) {
@@ -148,20 +133,20 @@ export default {
 
       // Lazily load input items
       this.searchEmployees({ terms: val })
-        .then(res => {
+        .then((res) => {
           this.employeeItems = res;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         })
         .finally(() => (this.isEmployeeLoading = false));
-    }
+    },
   },
 
   mounted: async function() {},
   methods: {
     ...mapActions("employee", ["searchEmployees"]),
-    ...mapActions("administration", ["createUser"]),
+    ...mapActions("administration/users", ["createUser"]),
 
     async doShow() {
       // this.selectedEmployee = {};
@@ -189,7 +174,7 @@ export default {
     },
     unselectSupervisor() {
       this.selectedSupervisor = {};
-    }
-  }
+    },
+  },
 };
 </script>

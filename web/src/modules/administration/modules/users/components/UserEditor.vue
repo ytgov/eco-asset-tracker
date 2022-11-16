@@ -39,18 +39,6 @@
           :items="roleOptions"
           clearable
         ></v-select>
-        <v-select
-          v-if="isDepartmentAdmin"
-          class="pl-2"
-          label="Department"
-          dense
-          outlined
-          v-model="item.department_admin_for"
-          :items="departmentList"
-          item-text="display_name"
-          item-value="dept"
-          clearable
-        ></v-select>
 
         <v-btn @click="save" color="primary">Save</v-btn>
       </v-card-text>
@@ -59,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "UserEdtior",
@@ -67,16 +55,11 @@ export default {
   data: () => ({
     showDialog: false,
     item: {},
-    roleOptions: ["System Admin", "Finance Admin", "Department Admin"]
+    roleOptions: ["System Admin", "Editor", "User"],
   }),
-  computed: {
-    isDepartmentAdmin: function() {
-      return this.item.roles === "Department Admin";
-    },
-    ...mapGetters("department", ["departmentList"])
-  },
+  computed: {},
   methods: {
-    ...mapActions("administration", ["saveUser"]),
+    ...mapActions("administration/users", ["saveUser"]),
     show(item) {
       this.item = item;
       this.showDialog = true;
@@ -85,7 +68,7 @@ export default {
       let resp = await this.saveUser(this.item);
       console.log(resp);
       this.showDialog = false;
-    }
-  }
+    },
+  },
 };
 </script>

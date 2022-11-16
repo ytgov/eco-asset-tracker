@@ -1,81 +1,90 @@
 <template>
-  <div>
+  <v-container fluid class="down-top-padding">
     <!-- <admin-sidebar></admin-sidebar> -->
-    <h1>Administration: <small>Manage Users</small></h1>
 
-    <div class="row">
-      <div class="col-md-12">
-        <v-card class="mt-5 default">
-          <v-card-text>
-            <v-text-field
-              v-model="search"
-              dense
-              outlined
-              background-color="white"
-              label="Search"
-              prepend-icon="mdi-magnify"
-            ></v-text-field>
+    <BaseCard show-header="true">
+      <template v-slot:left>
+        <v-text-field
+          v-model="search"
+          hide-details
+          background-color="white"
+          label="Search"
+          prepend-icon="mdi-magnify"
+          :loading="isLoading"
+          clearable
+        ></v-text-field>
+      </template>
+      <template v-slot:right>
+        <create-user-btn
+          ref="create-user-btn"
+          :onSave="saveComplete"
+        ></create-user-btn>
+      </template>
 
-            <v-data-table
-              :items="users"
-              :search="search"
-              :headers="[
-                { text: 'Name', value: 'display_name' },
-                { text: 'Email', value: 'email' },
-                { text: 'Roles', value: 'roles' },
-                { text: 'Mail Code', value: 'mailcode' },
-                { text: 'Managing Mail Codes', value: 'manage_mailcodes' }
-              ]"
-              @click:row="rowClick"
-              class="row-clickable"
-            ></v-data-table>
-          </v-card-text>
-        </v-card>
-      </div>
-    </div>
+      <v-card class="default">
+        <v-card-text>
+          <v-data-table
+            :items="userList"
+            :search="search"
+            :headers="[
+              { text: 'Name', value: 'display_name' },
+              { text: 'Email', value: 'email' },
+              { text: 'Status', value: 'status' },
+              { text: 'Roles', value: 'roles' },
+            ]"
+            @click:row="rowClick"
+            class="row-clickable"
+            :loading="isLoading"
+          ></v-data-table>
+        </v-card-text>
+      </v-card>
+    </BaseCard>
 
     <user-editor ref="userEditor" :onSave="saveComplete"></user-editor>
     <notifications ref="notifier"></notifications>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import axios from "axios";
-import { USER_URL } from "@/urls";
+import _ from "lodash";
+import { mapActions, mapState } from "vuex";
+import userEditor from "../components/UserEditor.vue";
+import CreateUserBtn from "../components/createUserBtn.vue";
+
 export default {
   name: "Home",
+  components: { userEditor, CreateUserBtn },
   data: () => ({
+    page: { title: "Manage Users" },
+    breadcrumbs: [
+      { text: "Administration", to: "/administration", exact: true },
+      { text: "Manage users", disabled: true },
+    ],
     search: "",
-    is_loading: false,
+    isLoading: false,
     users: [],
-    editUser: null
+    editUser: null,
   }),
-  created() {
-    this.loadUserList();
+  async mounted() {
+    this.getAllUsers();
+  },
+  computed: {
+    ...mapState("administration/users", ["userList"]),
   },
   methods: {
-    loadUserList() {
-      this.is_loading = true;
-      axios
-        .get(USER_URL)
-        .then(resp => {
-          this.users = resp.data.data;
-          this.is_loading = false;
-        })
-        .catch(error => {
-          console.log("ERROR", error);
-          this.is_loading = false;
-        });
+    ...mapActions("administration/users", ["getAllUsers"]),
+    async loadUserList() {
+      this.isLoading = true;
+      this.users = await this.loadUsers();
+      this.isLoading = false;
     },
-
     saveComplete(resp) {
       this.$refs.notifier.showAPIMessages(resp.data);
       this.loadUserList();
     },
-
     rowClick(item) {
-      this.$refs.userEditor.show(item);
-    }
-  }
+      this.$refs.userEditor.show(_.clone(item));
+    },
+  },
 };
 </script>
