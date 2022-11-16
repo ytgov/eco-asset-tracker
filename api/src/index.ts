@@ -15,6 +15,7 @@ import {
   assetsRouter,
   employeeRouter,
   keysRouter,
+  userRouter,
 } from "./routes";
 import { migrateLatest, migrateDown, migrateUp } from "./data/migrator";
 
@@ -65,6 +66,7 @@ app.use("/api/rooms", roomsRouter);
 app.use("/api/assets", assetsRouter);
 app.use("/api/employees", employeeRouter);
 app.use("/api/keys", keysRouter);
+app.use("/api/users", userRouter);
 
 app.use("/migrate/latest", async (req: Request, res: Response) => {
   await migrateLatest();

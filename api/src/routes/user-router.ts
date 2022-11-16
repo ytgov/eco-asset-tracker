@@ -1,50 +1,82 @@
 import express, { Request, Response } from "express";
+import { KnexService } from "../services/knex-service";
 import { body, param } from "express-validator";
-// import { RequiresData, ReturnValidationErrors } from "../middleware";
-// import { UserService } from "../services";
+
 import _ from "lodash";
+
+import { ReturnValidationErrors } from "../middleware";
 import { checkJwt, loadUser } from "../middleware/authz.middleware";
 
+const db = new KnexService("personnel");
+
 export const userRouter = express.Router();
-// userRouter.use(RequiresData);
-userRouter.use(checkJwt, loadUser);
+//userRouter.use(checkJwt, loadUser);
 
-// userRouter.get("/me",
-//     async (req: Request, res: Response) => {
-//         const db = req.store.Users as UserService;
-//         let person = req.user;
-//         let me = await db.getByEmail(person.email);
-//         return res.json({ data: Object.assign(req.user, me) });
-//     });
+userRouter.get("/me", async (req: Request, res: Response) => {
+  return res.json({
+    name: "John Doe",
+    email: "john.doe@yukon.ca",
+    roles: ["Sytem Administrator"],
+  });
 
-// userRouter.get("/",
-//     async (req: Request, res: Response) => {
-//         const db = req.store.Users as UserService;
-//         let list = await db.getAll();
+  // let person = req.user;
+  // let me = await db.getByEmail(person.email);
+  // return res.json({ data: Object.assign(req.user, me) });
+});
 
-//         /*  for (let user of list) {
-//              user = await db.makeDTO(user)
-//          } */
+userRouter.get("/", async (req: Request, res: Response) => {
+  const query = {};
+  const fields = req.body.fields; // if null return all fields
+  let result = await db.getAll(query, fields);
+  return res.json(result);
+});
 
-//         return res.json({ data: list });
-//     });
+userRouter.get(
+  "/:user",
+  [param("email").notEmpty().isString()],
+  ReturnValidationErrors,
+  async (req: Request, res: Response) => {
+    //get one, and only one user
+    let { email } = req.params;
+    const query = { email: email };
+    const fields = req.body.fields; // if null return all fields
+    let result = await db.getAll(query, fields);
+    if (result.length === 0) {
+      res.status(404).send(`No results found for: ${email}`);
+    } else if (result.length === 1) {
+      return res.json(result[0]);
+    } else {
+      return res.status(418).send(`Too many results found for: ${email}`);
+    }
+    return res.json(result);
+  }
+);
 
-// userRouter.put("/:email",
-//     // [param("email").notEmpty().isString()], ReturnValidationErrors,
-//     async (req: Request, res: Response) => {
-//         const db = req.store.Users as UserService;
-//         let { email } = req.params;
-//         let { roles, status } = req.body;
-
-//         let user = {
-//             roles: _.join(roles, ","),
-//             status,
-//         };
-
-//         await db.update(email, user);
-
-//         return res.json({ messages: [{ variant: "success", text: "User saved" }] });
-//     });
+userRouter.put(
+  "/:email",
+  [param("email").notEmpty().isString()],
+  ReturnValidationErrors,
+  async (req: Request, res: Response) => {
+    // update a user using email as the key
+    const { email } = req.params;
+    const user = req.body;
+    const result = await db.update({ email: email }, user);
+    return res.json(result);
+    // return res.json({ messages: [{ variant: "success", text: "User saved" }] });
+  }
+);
+userRouter.post(
+  "/",
+  [param("email").notEmpty().isString()],
+  ReturnValidationErrors,
+  async (req: Request, res: Response) => {
+    // create a new user
+    const user = req.body;
+    const result = await db.create(user);
+    return res.json(result);
+    // return res.json({ messages: [{ variant: "success", text: "User saved" }] });
+  }
+);
 
 // userRouter.delete("/:id",
 //     // [param("id").notEmpty()], ReturnValidationErrors,

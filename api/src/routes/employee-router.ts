@@ -31,7 +31,7 @@ employeeRouter.get("/:employeeID", async (req: Request, res: Response) => {
   // const result = await knex.select(fields).from(tableName).where({_id: keyID})
   const result = await db.getAll({ ynet_id: employeeID }, fields);
   if (result.length === 0) {
-    res.status(404).send(`No results found for room ID: ${employeeID}`);
+    res.status(404).send(`No results found for employee ID: ${employeeID}`);
   } else if (result.length === 1) {
     return res.json(result[0]);
   } else {
