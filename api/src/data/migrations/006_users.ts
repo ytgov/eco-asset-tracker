@@ -9,7 +9,6 @@ exports.up = function (knex: knex.Knex, Promise: any) {
     table.string("ynet_id");
     table.string("status");
     table.string("roles");
-    table.string("display_name");
     table.string("title");
     table.string("department");
 
