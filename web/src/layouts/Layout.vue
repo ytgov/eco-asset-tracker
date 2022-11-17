@@ -177,7 +177,7 @@ export default {
     hasSidebarClosable: config.hasSidebarClosable,
     search: "",
     showAdmin: true,
-    showOverlay: true
+    showOverlay: true,
   }),
   computed: {
     ...mapState("administration/users", ["user"]),
@@ -188,7 +188,7 @@ export default {
 
     returnTo: function() {
       return config.applicationUrl;
-    }
+    },
   },
   async mounted() {
     //let auth = await getInstance();
@@ -211,7 +211,7 @@ export default {
     roles: function(val) {
       this.showAdmin = false;
       if (val.indexOf("Admin") >= 0) this.showAdmin = true;
-    }
+    },
   },
   methods: {
     ...mapActions("administration/users", ["toggleAdmin"]),
@@ -228,7 +228,7 @@ export default {
     },
     signOut: function() {
       window.location = LOGOUT_URL;
-    }
-  }
+    },
+  },
 };
 </script>
