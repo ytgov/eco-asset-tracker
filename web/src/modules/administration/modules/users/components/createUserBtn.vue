@@ -158,6 +158,7 @@ export default {
     async doCreate() {
       let resp = await this.createUser(this.selectedEmployee);
       this.$emit("update");
+      this.unselectEmployee();
       this.show = false;
       this.onSave(resp);
     },

@@ -62,7 +62,7 @@ export default {
     ],
     search: "",
     isLoading: false,
-    users: [],
+    // users: [],
     editUser: null,
   }),
   async mounted() {
@@ -75,7 +75,7 @@ export default {
     ...mapActions("administration/users", ["getAllUsers"]),
     async loadUserList() {
       this.isLoading = true;
-      this.users = await this.loadUsers();
+      await this.getAllUsers();
       this.isLoading = false;
     },
     saveComplete(resp) {

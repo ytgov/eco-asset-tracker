@@ -1,8 +1,13 @@
-// import { ROOMS_URL } from "@/urls";
-// import axios from "axios";
+import { USER_URL } from "@/urls";
+import axios from "axios";
 // import store from  "@/store";
 
 const state = {
+  currentUser: {
+    name: "Test User",
+    email: "john.doe@yukon.ca",
+    roles: "System Admin",
+  },
   user: {
     username: "Offline User",
     admin: false,
@@ -14,22 +19,59 @@ const getters = {
   isAdmin: (state) => {
     return state.user.admin;
   },
+  isEditor: (state) => {
+    if (state.currentUser.roles.includes("Editor") || getters.isAdmin) {
+      return true;
+    }
+  },
   // admins (state => users.filter("group.admin === true"))
 };
 const actions = {
-  async createUser({ commit }, user) {
-    //axios.post(USERS_URL, user);
+  async createUser({ dispatch }, user) {
+    const auth = axios;
+    user.modified_by = state.currentUser.email;
+    user.created_at = new Date();
+    delete user.long_name;
+    delete user.officeLocation;
+    delete user.userPrincipalName;
 
-    commit("ADD_USER", user);
-    return user;
+    return await auth
+      .post(USER_URL, user)
+      .then((response) => {
+        if (response.status === 201 || response.status === 200) {
+          // commit("setCurrentEmployee", response.data);
+          dispatch("getAllUsers");
+          return response;
+        } else {
+          console.log("Unable to save user...");
+
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
   },
-  async saveUser({ commit }, user) {
-    let q = state.userList.findIndex((u) => u.email === user.email);
-    console.log(q);
-    console.log(state.userList[q]);
-    commit("SET_USER", user);
-
-    return user;
+  async saveUser({ dispatch }, user) {
+    const auth = axios;
+    user.modified_by = state.currentUser.email;
+    user.modified = new Date();
+    return await auth
+      .put(`${USER_URL}/${user.email}`, user)
+      .then((response) => {
+        if (response.status === 201 || response.status === 200) {
+          dispatch("getAllUsers");
+          return response;
+        } else {
+          console.log("Unable to save user...");
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
   },
 
   // async getAllUsers ({commit}) {
@@ -38,23 +80,21 @@ const actions = {
   //   })
   // },
   async getAllUsers({ commit }) {
-    commit("SET_USER_LIST", [
-      {
-        display_name: "John Smith",
-        email: "me@Headers.com",
-        status: "Active",
-        roles: "User",
-      },
-      {
-        display_name: "Jane Doe",
-        email: "them@here.com",
-        status: "Inactive",
-        roles: "Admin",
-      },
-    ]);
-
-    console.log(`Loaded ${state.userList.length} users`);
-    return "Future home of users";
+    const response = await axios
+      .get(USER_URL)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("SET_USER_LIST", response.data);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    return response;
   },
   async toggleAdmin({ commit, state }) {
     commit("SET_ADMIN", !state.user.admin);
@@ -74,11 +114,10 @@ const mutations = {
   ADD_USER(state, user) {
     state.userList.push(user);
   },
-  SAVE_USER(state, user) {
-    let q = state.userList.findIndex((u) => u.email === user.email);
-    console.log(q);
-    state.userList[q] = user;
-  },
+  // SAVE_USER(state, user) {
+  //   // let q = state.userList.findIndex((u) => u.email === user.email);
+  //   // state.userList[q] = user;
+  // },
 };
 
 export default {

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { KnexService } from "../services/knex-service";
+import { KnexUserService } from "../services";
 import { body, param } from "express-validator";
 
 import _ from "lodash";
@@ -7,7 +7,7 @@ import _ from "lodash";
 import { ReturnValidationErrors } from "../middleware";
 import { checkJwt, loadUser } from "../middleware/authz.middleware";
 
-const db = new KnexService("personnel");
+const db = new KnexUserService("users");
 
 export const userRouter = express.Router();
 //userRouter.use(checkJwt, loadUser);
@@ -59,22 +59,27 @@ userRouter.put(
   async (req: Request, res: Response) => {
     // update a user using email as the key
     const { email } = req.params;
+
+    const query = { email: email };
+    let u = await db.getAll(query);
     const user = req.body;
-    const result = await db.update({ email: email }, user);
+    user._id = u[0]._id;
+    console.log(u);
+    const result = await db.update({ _id: user._id }, user);
     return res.json(result);
     // return res.json({ messages: [{ variant: "success", text: "User saved" }] });
   }
 );
 userRouter.post(
   "/",
-  [param("email").notEmpty().isString()],
+  [body("email").notEmpty().isString()],
   ReturnValidationErrors,
   async (req: Request, res: Response) => {
     // create a new user
     const user = req.body;
     const result = await db.create(user);
-    return res.json(result);
-    // return res.json({ messages: [{ variant: "success", text: "User saved" }] });
+    // return res.json(result);
+    return res.json({ messages: [{ variant: "success", text: "User saved" }] });
   }
 );
 
