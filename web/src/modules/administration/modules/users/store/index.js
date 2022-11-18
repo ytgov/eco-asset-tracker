@@ -6,7 +6,7 @@ const state = {
   currentUser: {
     name: "Test User",
     email: "john.doe@yukon.ca",
-    roles: "System Admin",
+    roles: "User",
   },
   user: {
     username: "Offline User",
@@ -19,10 +19,10 @@ const getters = {
   isAdmin: (state) => {
     return state.user.admin;
   },
-  isEditor: (state) => {
-    if (state.currentUser.roles.includes("Editor") || getters.isAdmin) {
+  isEditor: (state, getters) => {
+    if (state.currentUser.roles.includes("Editor") || getters.isAdmin == true) {
       return true;
-    }
+    } else return false;
   },
   // admins (state => users.filter("group.admin === true"))
 };
