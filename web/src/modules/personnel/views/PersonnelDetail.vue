@@ -69,6 +69,20 @@
                 <v-card-title>
                   Rooms Assigned
                 </v-card-title>
+                <v-card-text>
+                  <v-row
+                    v-for="(room, index) in employee.assignedRooms"
+                    :key="index"
+                  >
+                    <v-col>
+                      <span class="text-subtitle-1 ml-5">
+                        <router-link :to="roomLink(room.room_id)" exact>
+                          {{ room.name }} - {{ room.purpose }}
+                        </router-link></span
+                      >
+                    </v-col>
+                  </v-row>
+                </v-card-text>
               </v-card>
             </v-col>
           </v-row>
@@ -104,11 +118,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions("personnel", ["getAll", "loadEmployee"]),
+    ...mapActions("personnel", ["getAll", "loadEmployee", "getAssignedRooms"]),
+    roomLink: function(roomID) {
+      return "/rooms/" + roomID;
+    },
   },
   async mounted() {
     this.loading = true;
     await this.loadEmployee(this.personnelID);
+    await this.getAssignedRooms(this.personnelID);
     this.loading = false;
   },
 };
