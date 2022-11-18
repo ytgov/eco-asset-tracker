@@ -53,4 +53,11 @@ export class KnexService {
   async deleteWhere(query: any): Promise<any> {
     return await this.db(this.tableName).where(query).del();
   }
+  async innerJoin(config: any): Promise<any> {
+    return await this.db
+      .select(config.fields)
+      .from(config.tableName)
+      .innerJoin(config.joinTable, config.joinField, config.joinTableField)
+      .where(config.query);
+  }
 }

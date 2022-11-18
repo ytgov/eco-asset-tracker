@@ -1,80 +1,51 @@
 import express, { Request, Response } from "express";
 import { KnexService } from "../services/knex-service";
-import { assignRoom } from "./assign-room-router";
 import { ReturnValidationErrors } from "../middleware";
 import _, { join } from "lodash";
-import { DirectoryService } from "../services";
 import { Employee, emptyEmployee } from "../data/models";
 import { body, param } from "express-validator";
 import moment from "moment";
 import { checkJwt } from "../middleware/authz.middleware";
 
-const db = new KnexService("personnel");
+const db = new KnexService("personnel_room");
 
-export const employeeRouter = express.Router();
-// employeeRouter.use(RequiresData, checkJwt);
-const directoryService = new DirectoryService();
+export const assignRoom = express.Router();
+// assignRoom.use(RequiresData, checkJwt);
 
-employeeRouter.use("/assign-personnel", assignRoom);
-
-employeeRouter.get(
-  "/:employeeID/rooms",
-  async (req: Request, res: Response) => {
-    //get the rooms for a given employee
-    const q = new KnexService("personnel_room");
-    // let result = await q.getAll({});
-
-    const config: any = {
-      fields: ["rooms.name as room", "rooms._id as room_id"],
-      tableName: "rooms",
-      joinTable: "personnel_room",
-      joinField: "rooms._id",
-      joinTableField: "room_id",
-      query: { personnel_id: req.params.employeeID },
-    };
-    let result = await db.innerJoin(config);
-    console.log(result);
-    return res.json(result);
-  }
-);
-employeeRouter.post(
-  "/:employeeID/rooms",
-  async (req: Request, res: Response) => {
-    //assign room to an employee
-    const q = new KnexService("personnel_room");
-    let { employeeID } = req.params;
-    let assignments = req.body.rooms.map((x: any) => ({
-      personnel_id: employeeID,
-      room_id: x,
-    }));
-    // assignments.forEach(async (x: any) => {
-    //   await q.create(x);
-    // });
-    await q.delete({ personnel_id: employeeID });
-    await q.create(assignments);
-
-    return res.json({ Done: true });
-    // return res.json(q);
-    // db.create(
-    // return res.json({
-    //   employeeID: req.params.employeeID,
-    //   roomsAssigned: ["room1", "room2"],
-    // });
-  }
-);
-
-employeeRouter.get("/empty", async (req: Request, res: Response) => {
-  return res.json(emptyEmployee);
-});
-
-employeeRouter.get("/", async (req: Request, res: Response) => {
+assignRoom.get("/", async (req: Request, res: Response) => {
+  //get all personnel_room assignments
   const query = {};
   const fields = req.body.fields; // if null return all fields
   let result = await db.getAll(query, fields);
   return res.json(result);
 });
 
-employeeRouter.get("/:employeeID", async (req: Request, res: Response) => {
+assignRoom.post("/", async (req: Request, res: Response) => {
+  //put something into the room join
+  const assignment = req.body;
+  let result = await db.create(assignment);
+  return res.json(result);
+});
+assignRoom.get(
+  "/personnel/:employeeID",
+  async (req: Request, res: Response) => {
+    const employeeID = req.params.employeeID;
+    const fields = req.body.fields; // if null return all fields
+    // const result = await knex.select(fields).from(tableName).where({_id: keyID})
+    const result = await db.getAll({ ynet_id: employeeID }, fields);
+    if (result.length === 0) {
+      res.status(404).send(`No results found for employee ID: ${employeeID}`);
+    } else if (result.length === 1) {
+      return res.json(result[0]);
+    } else {
+      return res
+        .status(418)
+        .send(`Too many results found for Employee ID: ${employeeID}`);
+    }
+  }
+);
+
+assignRoom.get("/room/:roomID", async (req: Request, res: Response) => {
   const employeeID = req.params.employeeID;
   const fields = req.body.fields; // if null return all fields
   // const result = await knex.select(fields).from(tableName).where({_id: keyID})
@@ -90,7 +61,7 @@ employeeRouter.get("/:employeeID", async (req: Request, res: Response) => {
   }
 });
 
-employeeRouter.put("/:employeeID", async (req: Request, res: Response) => {
+assignRoom.put("/:employeeID", async (req: Request, res: Response) => {
   //update a room
   const employeeID = req.params.employeeID;
   const employee = req.body;
@@ -98,14 +69,14 @@ employeeRouter.put("/:employeeID", async (req: Request, res: Response) => {
   return res.json(result);
 });
 
-employeeRouter.post("/", async (req: Request, res: Response) => {
+assignRoom.post("/", async (req: Request, res: Response) => {
   //create a new employee
   console.log(`Creating employee ${req.body.email}`);
   const employee = req.body;
   let result = await db.create(employee);
   return res.json(result);
 });
-employeeRouter.delete("/:employeeID", async (req: Request, res: Response) => {
+assignRoom.delete("/:employeeID", async (req: Request, res: Response) => {
   //create a new employee
 
   const employeeID = req.params.employeeID;
@@ -119,7 +90,7 @@ employeeRouter.delete("/:employeeID", async (req: Request, res: Response) => {
   }
 });
 
-// employeeRouter.post('/search',
+// assignRoom.post('/search',
 //   [body("terms").notEmpty().trim()], ReturnValidationErrors,
 //   async (req: Request, res: Response) => {
 //     let { terms } = req.body;
@@ -147,20 +118,20 @@ employeeRouter.delete("/:employeeID", async (req: Request, res: Response) => {
 //     return res.json({ data: list });
 //   });
 
-employeeRouter.post(
-  "/search-directory",
-  //[body("terms").notEmpty().trim()], ReturnValidationErrors,
-  async (req: Request, res: Response) => {
-    let { terms } = req.body;
-    console.log("Search Directory");
-    await directoryService.connect();
-    let results = await directoryService.search(terms);
+// assignRoom.post(
+//   "/search-directory",
+//   //[body("terms").notEmpty().trim()], ReturnValidationErrors,
+//   async (req: Request, res: Response) => {
+//     let { terms } = req.body;
+//     console.log("Search Directory");
+//     await directoryService.connect();
+//     let results = await directoryService.search(terms);
 
-    return res.json({ data: results });
-  }
-);
+//     return res.json({ data: results });
+//   }
+// );
 
-// employeeRouter.get('/:id',
+// assignRoom.get('/:id',
 // [param("id").notEmpty()], ReturnValidationErrors,
 // async (req: Request, res: Response) => {
 //   let empDb = req.store.Employees as GenericService<Employee>;
@@ -195,7 +166,7 @@ employeeRouter.post(
 //   res.status(404).send();
 // });
 
-// employeeRouter.put('/:id',
+// assignRoom.put('/:id',
 //   [param("id").isMongoId()], ReturnValidationErrors,
 //   async (req: Request, res: Response) => {
 // update local employee

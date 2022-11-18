@@ -86,6 +86,25 @@ roomsRouter.get("/", async (req: Request, res: Response) => {
   return res.json(result);
 });
 
+roomsRouter.get("/:roomID/personnel", async (req: Request, res: Response) => {
+  //get the rooms for a given employee
+  const q = new KnexService("personnel_room");
+  // let result = await q.getAll({});
+
+  const config: any = {
+    // fields: ["rooms.name as room", "rooms._id as room_id"],
+    fields: "*",
+    tableName: "personnel",
+    joinTable: "personnel_room",
+    joinField: "personnel.ynet_id",
+    joinTableField: "personnel_id",
+    query: { room_id: req.params.roomID },
+  };
+  let result = await db.innerJoin(config);
+  console.log(result);
+  return res.json(result);
+});
+
 roomsRouter.get("/:roomID", async (req: Request, res: Response) => {
   const roomID = req.params.roomID;
   const fields = req.body.fields; // if null return all fields
