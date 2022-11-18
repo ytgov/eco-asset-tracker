@@ -13,7 +13,8 @@ const getters = {};
 const actions = {
   async initialize({ dispatch, state }) {
     //load personnel from the database
-    //*note* personnel different than users. Users are managed through the administation module
+    //*note* personnel are different than users.
+    //Users are managed through the administation module
     await dispatch("getAllEmployees");
     console.log(`Loaded ${state.employees.length} personnel`);
   },
@@ -33,6 +34,23 @@ const actions = {
         return { error: err };
       });
     return response;
+  },
+  async getAssignedRooms({ state, commit }) {
+    const auth = axios;
+    await auth
+      .get(`${EMPLOYEE_URL}/${state.employee.ynet_id}/rooms`)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("setAssignedRooms", response.data);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
   },
   async createEmployee({ dispatch }, employee) {
     const auth = axios;
@@ -127,9 +145,9 @@ const mutations = {
   setEmployees(state, payload) {
     state.employees = payload;
   },
-  // setEmployeeAuthorities(state, value) {
-  //   state.authorities = value;
-  // }
+  setAssignedRooms(state, payload) {
+    state.employee.assignedRooms = payload;
+  },
 };
 
 export default {
