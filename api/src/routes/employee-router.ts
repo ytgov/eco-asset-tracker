@@ -25,7 +25,8 @@ employeeRouter.get(
     // let result = await q.getAll({});
 
     const config: any = {
-      fields: ["rooms.name as room", "rooms._id as room_id"],
+      // fields: ["rooms.name as name", "rooms._id as room_id"],
+      fields: "*",
       tableName: "rooms",
       joinTable: "personnel_room",
       joinField: "rooms._id",

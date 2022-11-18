@@ -92,7 +92,11 @@ roomsRouter.get("/:roomID/personnel", async (req: Request, res: Response) => {
   // let result = await q.getAll({});
 
   const config: any = {
-    // fields: ["rooms.name as room", "rooms._id as room_id"],
+    // fields: [
+    //   "rooms.name as name",
+    //   "rooms._id as room_id",
+    //   "rooms.purpose as purpose",
+    // ],
     fields: "*",
     tableName: "personnel",
     joinTable: "personnel_room",
