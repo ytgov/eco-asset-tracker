@@ -8,6 +8,12 @@ const state = {
   currentRoom: {},
 };
 
+const getters = {
+  assignedPersonnel: function(state) {
+    return state.currentRoom.assignedPersonnel;
+  },
+};
+
 const actions = {
   async initialize({ state, dispatch }) {
     await dispatch("getAllRooms");
@@ -28,8 +34,27 @@ const actions = {
       }
     });
   },
+  getAssignedPersonnel({ commit }, roomID) {
+    const auth = axios;
+    let response = auth
+      .get(`${ROOMS_URL}/${roomID}/personnel`)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("SET_ASSIGNED_PERSONNEL", response.data);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    return response;
+  },
   async saveRoom({ commit, state, dispatch }) {
     console.log(`Saving room with id: ${state.currentRoom._id}`);
+
     axios
       .put(`${ROOMS_URL}/${state.currentRoom._id}`, state.currentRoom)
       .then((response) => {
@@ -103,6 +128,9 @@ const mutations = {
   SET_ROOM(state, payload) {
     state.currentRoom = payload;
   },
+  SET_ASSIGNED_PERSONNEL(state, payload) {
+    state.currentRoom.assignedPersonnel = payload;
+  },
 };
 
 export default {
@@ -110,4 +138,5 @@ export default {
   state,
   actions,
   mutations,
+  getters,
 };
