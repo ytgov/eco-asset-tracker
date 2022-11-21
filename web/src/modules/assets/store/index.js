@@ -92,6 +92,9 @@ const actions = {
         console.log(err);
       });
   },
+  async updateAssetPerson({ commit }, person) {
+    await commit("SET_ASSET_PERSON", person);
+  },
 };
 
 const mutations = {
@@ -104,6 +107,9 @@ const mutations = {
   },
   ASSIGN_ROOM(state, payload) {
     state.currentAsset.room = payload;
+  },
+  SET_ASSET_PERSON(state, payload) {
+    state.currentAsset.person = payload;
   },
 };
 

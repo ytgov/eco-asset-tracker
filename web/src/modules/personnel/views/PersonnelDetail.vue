@@ -12,7 +12,7 @@
 
     <!-- <admin-sidebar></admin-sidebar> -->
 
-    <BaseCard>
+    <BaseCard class="default">
       <v-row>
         <v-col>
           <v-progress-circular
@@ -42,16 +42,7 @@
         </v-col>
         <v-col>
           <!-- Assigned Assets -->
-          <v-row>
-            <v-col>
-              <v-card>
-                <v-card-title>
-                  Assets Assigned
-                </v-card-title>
-              </v-card>
-              <!-- <assets-grid :all="true" ></assets-grid> -->
-            </v-col>
-          </v-row>
+          <v-row> </v-row>
           <!-- Assigned Keys -->
           <v-row>
             <v-col>
@@ -88,13 +79,29 @@
           </v-row>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-card>
+            <v-card-title>
+              Assets Assigned
+            </v-card-title>
+
+            <assets-grid :items="employee.assets" :loading="loading">
+            </assets-grid>
+          </v-card>
+          <!-- <assets-grid :all="true" ></assets-grid> -->
+        </v-col>
+      </v-row>
     </BaseCard>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import assetsGrid from "@/modules/assets/components/assetsGrid.vue";
+
 export default {
+  components: { assetsGrid },
   name: "PersonnelDetail",
   data: () => ({
     loading: true,
@@ -118,7 +125,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions("personnel", ["getAll", "loadEmployee", "getAssignedRooms"]),
+    ...mapActions("personnel", [
+      "getAll",
+      "loadEmployee",
+      "getAssignedRooms",
+      "getEmployeeAssets",
+    ]),
     roomLink: function(roomID) {
       return "/rooms/" + roomID;
     },
@@ -127,6 +139,8 @@ export default {
     this.loading = true;
     await this.loadEmployee(this.personnelID);
     await this.getAssignedRooms(this.personnelID);
+    await this.getEmployeeAssets(this.personnelID);
+
     this.loading = false;
   },
 };

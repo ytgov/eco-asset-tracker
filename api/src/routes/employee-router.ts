@@ -98,6 +98,21 @@ employeeRouter.put("/:employeeID", async (req: Request, res: Response) => {
   const result = await db.update({ _id: employeeID }, employee);
   return res.json(result);
 });
+employeeRouter.get(
+  "/:employeeID/assets",
+  async (req: Request, res: Response) => {
+    const assetDB = new KnexService("assets");
+    const employeeID = req.params.employeeID;
+    const fields = req.body.fields;
+
+    const result = await assetDB.getAll({ person: employeeID }, fields);
+    if (result.length === 0) {
+      res.status(404).send(`No assets found for employee ID: ${employeeID}`);
+    } else {
+      return res.json(result);
+    }
+  }
+);
 
 employeeRouter.post("/", async (req: Request, res: Response) => {
   //create a new employee

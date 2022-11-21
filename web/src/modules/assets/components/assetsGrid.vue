@@ -6,7 +6,7 @@
           :headers="localHeaders"
           :items="dataset"
           :search="search"
-          :loading="loading"
+          :loading="localLoading"
           @click:row="openAssetDetails"
           @current-items="currentItems"
         >
@@ -65,13 +65,24 @@ export default {
       type: Array,
       default: () => [],
     },
+    loading: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => ({
-    loading: true,
     filteredAssets: [],
   }),
 
   computed: {
+    localLoading: function() {
+      if (this.items) {
+        return this.loading;
+      } else if (this.all) {
+        return false;
+      }
+      return false;
+    },
     ...mapState("administration/users", ["user"]),
     ...mapState("rooms", ["rooms"]),
     ...mapState("assets", ["assets"]),
@@ -121,9 +132,7 @@ export default {
     },
   },
 
-  async mounted() {
-    this.loading = false;
-  },
+  async mounted() {},
 };
 </script>
 

@@ -8,7 +8,12 @@ const state = {
   employee: {},
 };
 
-const getters = {};
+const getters = {
+  getEmployeeDetails: (state) => (ynet_id) => {
+    console.log("ynet_id: " + ynet_id);
+    return state.employees.find((employee) => employee.ynet_id === ynet_id);
+  },
+};
 
 const actions = {
   async initialize({ dispatch, state }) {
@@ -18,8 +23,25 @@ const actions = {
     await dispatch("getAllEmployees");
     console.log(`Loaded ${state.employees.length} personnel`);
   },
+  async getEmployeeAssets({ commit }, ynet_id) {
+    const auth = axios;
+    const response = await auth
+      .get(`${EMPLOYEE_URL}/${ynet_id}/assets`)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("setEmployeeAssets", response.data);
+          return response.data;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+    return response;
+  },
   async getAllEmployees({ commit }) {
-    const response = await axios
+    const auth = axios;
+    const response = await auth
       .get(EMPLOYEE_URL)
       .then((response) => {
         if (response.status === 200) {
@@ -147,6 +169,9 @@ const mutations = {
   },
   setAssignedRooms(state, payload) {
     state.employee.assignedRooms = payload;
+  },
+  setEmployeeAssets(state, payload) {
+    state.employee.assets = payload;
   },
 };
 

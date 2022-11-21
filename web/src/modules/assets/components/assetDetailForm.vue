@@ -139,6 +139,10 @@
               <v-tab>
                 Person
               </v-tab>
+              <v-tab-item>
+                <asset-person-assignment-widget :edit="edit">
+                </asset-person-assignment-widget>
+              </v-tab-item>
             </v-tabs>
           </v-card-text>
         </v-card>
@@ -175,8 +179,13 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import assetPersonAssignmentWidget from "./linkPerson/assetPersonAssignmentWidget.vue";
 export default {
   name: "AssetDetailForm",
+  components: {
+    assetPersonAssignmentWidget,
+  },
+
   props: {
     edit: {
       type: Boolean,
@@ -192,20 +201,7 @@ export default {
     DumbRoom: null,
     menu: false,
     menu2: false,
-    items: ["Tablet", "Desktop"],
-    // asset: {
-    //   type: "",
-    //   assetNum: "",
-    //   make: "",
-    //   model: "",
-    //   description: "",
-    //   purchaseDate: "",
-    //   installDate: "",
-    //   assignedTo: "",
-    //   status: "",
-    //   statusReason: ""
-    // },
-    // assetTypes: ["Computer", "Printer", "Monitor", "Scanner", "Phone", "Other"],
+    showPersonAssignment: false,
     statuses: ["Active", "Inactive", "Broken", "Lost"],
   }),
   computed: {
