@@ -78,6 +78,13 @@ export default {
     ...mapActions("administration/assetTypes", ["addAssetType"]),
     doAddAssetType: async function() {
       const resp = await this.addAssetType(this.newAssetType);
+      if (resp) {
+        this.dialog = false;
+        this.name = "";
+        this.office = false;
+        this.person = false;
+        this.infrastructure = false;
+      }
       this.dialog = false;
       this.$emit("notify", resp);
     },
