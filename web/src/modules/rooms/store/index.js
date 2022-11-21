@@ -6,6 +6,7 @@ import randomID from "./utils";
 const state = {
   rooms: [],
   currentRoom: {},
+  assignedPeopletoRooms: [],
 };
 
 const getters = {
@@ -24,8 +25,8 @@ const actions = {
       commit("SET_ROOM_LIST", response.data);
     });
   },
-  getRoom({ commit }, roomID) {
-    axios.get(`${ROOMS_URL}/${roomID}`).then((response) => {
+  async getRoom({ commit }, roomID) {
+    await axios.get(`${ROOMS_URL}/${roomID}`).then((response) => {
       if (response.status === 200) {
         commit("SET_ROOM", response.data);
       } else {
@@ -34,9 +35,28 @@ const actions = {
       }
     });
   },
-  getAssignedPersonnel({ commit }, roomID) {
+  async assignPeopletoRooms({ dispatch }, assignments) {
     const auth = axios;
-    let response = auth
+    let roomID = assignments.room;
+    let response = await auth
+      .post(`${ROOMS_URL}/${roomID}/personnel`, assignments)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch("getAssignedPersonnel", assignments.room);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    return response;
+  },
+  async getAssignedPersonnel({ commit }, roomID) {
+    const auth = axios;
+    let response = await auth
       .get(`${ROOMS_URL}/${roomID}/personnel`)
       .then((response) => {
         if (response.status === 200) {
@@ -130,6 +150,7 @@ const mutations = {
   },
   SET_ASSIGNED_PERSONNEL(state, payload) {
     state.currentRoom.assignedPersonnel = payload;
+    state.assignedPeopletoRooms = payload;
   },
 };
 

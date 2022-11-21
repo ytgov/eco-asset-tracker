@@ -8,7 +8,7 @@
           :headers="localHeaders"
           @click:row="rowClick"
           class="row-clickable"
-          :loading="isLoading"
+          :loading="loading"
           @current-items="currentItems"
         >
           <template v-slot:footer.prepend>
@@ -51,18 +51,21 @@ export default {
       default: true,
     },
     items: {
-      type: Object,
-      default: () => {},
+      type: Array,
     },
     headers: {
       type: Array,
       default: () => [],
     },
+    isLoading: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => ({
-    isLoading: false,
     editUser: null,
     filteredPersonnel: [],
+    loading: true,
   }),
 
   computed: {
@@ -78,7 +81,7 @@ export default {
       }
     },
     localItems: function() {
-      if (this.items) {
+      if (this.items && this.items != "all") {
         return this.items;
       } else {
         return this.employees;
@@ -101,6 +104,10 @@ export default {
       this.$router.push("/personnel/" + item.ynet_id);
       // this.$refs.userEditor.show(_.clone(item));
     },
+  },
+  mounted() {
+    this.loading = this.isLoading;
+    this.loading = false;
   },
 };
 </script>

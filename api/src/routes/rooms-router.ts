@@ -86,6 +86,29 @@ roomsRouter.get("/", async (req: Request, res: Response) => {
   return res.json(result);
 });
 
+roomsRouter.post("/:roomID/personnel", async (req: Request, res: Response) => {
+  //assign room to an employee
+  const q = new KnexService("personnel_room");
+  let { roomID } = req.params;
+  let assignments = req.body.people.map((x: any) => ({
+    room_id: roomID,
+    personnel_id: x,
+  }));
+  // assignments.forEach(async (x: any) => {
+  //   await q.create(x);
+  // });
+  await q.delete({ room_id: roomID });
+  await q.create(assignments);
+
+  return res.json({ Done: true });
+  // return res.json(q);
+  // db.create(
+  // return res.json({
+  //   employeeID: req.params.employeeID,
+  //   roomsAssigned: ["room1", "room2"],
+  // });
+});
+
 roomsRouter.get("/:roomID/personnel", async (req: Request, res: Response) => {
   //get the rooms for a given employee
   const q = new KnexService("personnel_room");
