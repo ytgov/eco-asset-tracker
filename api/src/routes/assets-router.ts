@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { assetTypeList, AssetType } from "../data/models/eco-asset";
+import { AssetType } from "../data/models/eco-asset";
 import { assetSeed } from "../data/seed-data/eco-asset";
 import { KnexService } from "../services/knex-service";
 

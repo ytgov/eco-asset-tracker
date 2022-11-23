@@ -17,7 +17,7 @@ export interface Asset {
   active: Boolean;
   room: Room["_id"];
   // person: Employee["_id"];
-  person: JSON;
+  person: String;
   note: String;
 }
 
@@ -41,34 +41,3 @@ export class AssetType {
   person: boolean; // is this a foreign key?
   infrastructure: boolean; // is this a foreign key?
 }
-
-export const assetTypeList: AssetType[] = [
-  {
-    _id: 0,
-    name: "Cell Phone",
-    office: true,
-    person: false,
-    infrastructure: false,
-  },
-  {
-    _id: 1,
-    name: "Laptop",
-    office: true,
-    person: true,
-    infrastructure: false,
-  },
-  {
-    _id: 2,
-    name: "Landline",
-    office: false,
-    person: false,
-    infrastructure: true,
-  },
-  {
-    _id: 3,
-    name: "Pack Pole",
-    office: false,
-    person: false,
-    infrastructure: true,
-  },
-];
