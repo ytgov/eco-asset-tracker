@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { AssetType } from "../data/models/eco-asset";
-import { assetSeed } from "../data/seed-data/eco-asset";
 import { KnexService } from "../services/knex-service";
 
 export const assetsRouter = express.Router();
@@ -26,7 +25,6 @@ assetsRouter.get("/", async (req: Request, res: Response) => {
 
   let result = await db.getAll(query, fields);
   return res.json(result);
-  // return res.json(assetSeed)
 });
 
 assetsRouter.get("/:assetID", async (req: Request, res: Response) => {
