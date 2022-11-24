@@ -74,6 +74,23 @@ const actions = {
         return { error: err };
       });
   },
+  async getAssignedKeys({ commit, state }) {
+    const auth = axios;
+    await auth
+      .get(`${EMPLOYEE_URL}/${state.employee.ynet_id}/keys`)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("setAssignedKeys", response.data);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+  },
   async createEmployee({ dispatch }, employee) {
     const auth = axios;
     //employee.created_by = auth.user.sub;
@@ -172,6 +189,9 @@ const mutations = {
   },
   setEmployeeAssets(state, payload) {
     state.employee.assets = payload;
+  },
+  setAssignedKeys(state, payload) {
+    state.employee.keys = payload;
   },
 };
 

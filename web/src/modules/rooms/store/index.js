@@ -38,6 +38,7 @@ const actions = {
   async assignPeopletoRooms({ dispatch }, assignments) {
     const auth = axios;
     let roomID = assignments.room;
+    console.log(assignments);
     let response = await auth
       .post(`${ROOMS_URL}/${roomID}/personnel`, assignments)
       .then((response) => {

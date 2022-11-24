@@ -50,6 +50,31 @@
                 <v-card-title>
                   Keys Assigned
                 </v-card-title>
+                <v-card-text>
+                  <v-row v-for="(key, index) in employee.keys" :key="index">
+                    <v-col>
+                      <span class="text-subtitle-1 ml-5">
+                        <router-link :to="keyLink(key.key_id)" exact>
+                          Tag: {{ key.code }} Stamp: {{ key.number }}
+                        </router-link></span
+                      >
+                    </v-col>
+                  </v-row>
+                  <!-- <v-data-table
+                    :headers="headers"
+                    :items="employee.keys"
+                    :search="search"
+                    :loading="loading"
+                  >
+                    <template v-slot:item.key="{ item }">
+                      <v-simple-checkbox
+                        :value="isAssigned(item._id)"
+                        @click="doAssignKey(item)"
+                      >
+                      </v-simple-checkbox>
+                    </template>
+                  </v-data-table> -->
+                </v-card-text>
               </v-card>
             </v-col>
           </v-row>
@@ -130,9 +155,13 @@ export default {
       "loadEmployee",
       "getAssignedRooms",
       "getEmployeeAssets",
+      "getAssignedKeys",
     ]),
     roomLink: function(roomID) {
       return "/rooms/" + roomID;
+    },
+    keyLink: function(keyID) {
+      return "/keys/" + keyID;
     },
   },
   async mounted() {
@@ -140,6 +169,7 @@ export default {
     await this.loadEmployee(this.personnelID);
     await this.getAssignedRooms(this.personnelID);
     await this.getEmployeeAssets(this.personnelID);
+    await this.getAssignedKeys(this.personnelID);
 
     this.loading = false;
   },

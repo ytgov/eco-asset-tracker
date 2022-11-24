@@ -102,7 +102,7 @@ export default {
   },
   async mounted() {
     // this.loading = true;
-    // await this.getAssignedPersonnel();
+    await this.getAssignedPersonnel();
     this.assignments = await this.cleanAssignments(
       this.currentRoom.assignedPersonnel
     );

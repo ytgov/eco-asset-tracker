@@ -1,6 +1,5 @@
-import express, { Request, Response } from "express";
+import express, { Request, response, Response } from "express";
 import { KnexService } from "../services/knex-service";
-import { assignRoom } from "./assign-room-router";
 import { ReturnValidationErrors } from "../middleware";
 import _, { join } from "lodash";
 import { DirectoryService } from "../services";
@@ -15,7 +14,9 @@ export const employeeRouter = express.Router();
 // employeeRouter.use(RequiresData, checkJwt);
 const directoryService = new DirectoryService();
 
-employeeRouter.use("/assign-personnel", assignRoom);
+////////////////////////////////////
+// GET EMPLOYEE'S ROOMS           //
+////////////////////////////////////
 
 employeeRouter.get(
   "/:employeeID/rooms",
@@ -55,12 +56,46 @@ employeeRouter.post(
     await q.create(assignments);
 
     return res.json({ Done: true });
-    // return res.json(q);
-    // db.create(
-    // return res.json({
-    //   employeeID: req.params.employeeID,
-    //   roomsAssigned: ["room1", "room2"],
+  }
+);
+////////////////////////////////////
+// GET EMPLOYEE'S KEYS           //
+////////////////////////////////////
+
+employeeRouter.get("/:employeeID/keys", async (req: Request, res: Response) => {
+  //get the keys for a given employee
+  const q = new KnexService("personnel_key");
+  let { employeeID } = req.params;
+  console.log(await q.getAll({ personnel_id: employeeID }));
+  const config: any = {
+    fields: "*",
+    tableName: "keys",
+    joinTable: "personnel_key",
+    joinField: "keys._id",
+    joinTableField: "key_id",
+    query: { personnel_id: employeeID },
+  };
+  let result = await db.innerJoin(config);
+  console.log(result.length);
+  return res.json(result);
+});
+employeeRouter.post(
+  "/:employeeID/keys",
+  async (req: Request, res: Response) => {
+    //assign room to an employee
+    const q = new KnexService("personnel_key");
+    let { employeeID } = req.params;
+    let assignments = req.body.keys.map((x: any) => ({
+      personnel_id: employeeID,
+      key_id: x,
+    }));
+    // assignments.forEach(async (x: any) => {
+    //   await q.create(x);
     // });
+    await q.delete({ personnel_id: employeeID });
+    await q.create(assignments);
+
+    return res.json({ Done: true });
   }
 );
 
