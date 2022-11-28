@@ -101,12 +101,6 @@ roomsRouter.post("/:roomID/personnel", async (req: Request, res: Response) => {
   await q.create(assignments);
 
   return res.json({ Done: true });
-  // return res.json(q);
-  // db.create(
-  // return res.json({
-  //   employeeID: req.params.employeeID,
-  //   roomsAssigned: ["room1", "room2"],
-  // });
 });
 
 roomsRouter.get("/:roomID/personnel", async (req: Request, res: Response) => {

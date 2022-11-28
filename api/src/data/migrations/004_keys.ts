@@ -7,7 +7,6 @@ exports.up = function (knex: knex.Knex, Promise: any) {
     table.string("code");
     table.string("number");
     table.string("status");
-    table.integer("room"); // TODO: move to a separate table for many to many
     table.integer("assignedUser");
     table.string("notes");
 

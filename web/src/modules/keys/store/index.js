@@ -4,8 +4,10 @@ import randomID from "./utils";
 // import store from  "@/store";
 
 const state = {
+  updating: false,
   keys: [],
   currentKey: {},
+  assignedRooms: [], //hack becuase Vue doesn't catch the update to currentKey.assignedRooms
 };
 const getters = {
   getKeysByRoom: (state) => (roomID) => {
@@ -26,9 +28,14 @@ const actions = {
   async getKey({ commit }, keyID) {
     return await axios
       .get(`${KEYS_URL}/${keyID}`)
-      .then((response) => {
-        commit("SET_KEY", response.data);
-        return response.data;
+      .then((resp) => {
+        if (resp.status === 200) {
+          commit("SET_KEY", resp.data);
+          return resp.data;
+        } else {
+          commit("SET_KEY", {});
+          return null;
+        }
       })
       .catch((error) => {
         console.log(`Error retrieving key ${keyID}`);
@@ -91,6 +98,44 @@ const actions = {
         console.log(err);
       });
   },
+  async getAssignedRoomKeys({ commit, state }) {
+    let auth = axios;
+    let response = await auth
+      .get(`${KEYS_URL}/${state.currentKey._id}/rooms`)
+      .then((resp) => {
+        if (resp.status == 200) {
+          commit("SET_ASSIGNED_ROOMS", resp.data);
+          return resp.data;
+        } else {
+          return { error: "Error retrieving assigned rooms" };
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return response;
+  },
+  async assignRoomsToKey({ dispatch, commit }, assignments) {
+    commit("SET_UPDATE", true);
+    let auth = axios;
+    let keyID = assignments.key;
+    let response = await auth
+      .post(`${KEYS_URL}/${keyID}/rooms`, assignments)
+      .then(async (response) => {
+        if (response.status === 200) {
+          await dispatch("getAssignedRoomKeys", keyID);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    commit("SET_UPDATE", false);
+    return response;
+  },
 };
 
 const mutations = {
@@ -99,6 +144,13 @@ const mutations = {
   },
   SET_KEY(state, payload) {
     state.currentKey = payload;
+  },
+  SET_ASSIGNED_ROOMS(state, payload) {
+    state.assignedRooms = payload;
+    // state.currentKey.assignedRooms = payload;
+  },
+  SET_UPDATE(state, payload) {
+    state.updating = payload;
   },
 };
 

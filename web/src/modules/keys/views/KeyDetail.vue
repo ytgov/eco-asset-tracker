@@ -10,34 +10,54 @@
       </template>
     </BaseBreadcrumb>
     <v-row>
-      <v-col cols="6">
+      <v-col cols="8">
         <v-toolbar dark :color="appbarColor">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-toolbar-title v-bind="attrs" v-on="on">
-                Key Code
+                Details for Key {{ keyID }}
               </v-toolbar-title>
             </template>
             <span>ID: Key ID</span>
           </v-tooltip>
           <v-spacer></v-spacer>
           <slot name="top-right-action">
-            <v-icon v-if="isAdmin && !edit" dark @click="doEdit()">
+            <v-icon v-if="isEditor && !edit" dark @click="doEdit()">
               mdi-pencil
             </v-icon>
-            <v-icon v-else-if="isAdmin && edit" dark @click="doSave()">
+            <v-icon v-else-if="isEditor && edit" dark @click="doSave()">
               mdi-content-save
             </v-icon>
           </slot>
         </v-toolbar>
-        <v-card tile>
+        <v-card tile class="">
           <v-card-text>
-            <key-form-detail :edit.sync="edit"></key-form-detail>
+            <v-row>
+              <v-col cols="4">
+                <key-form-detail :edit.sync="edit"></key-form-detail>
+              </v-col>
+              <v-col cols="8">
+                <v-row>
+                  <v-col>
+                    <!-- Key to People -->
+                    <!-- <link-personnel-card> </link-personnel-card> -->
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <!-- Key to Rooms  -->
+
+                    <key-room-details-card :edit="edit" :loading="loading">
+                    </key-room-details-card>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-              v-if="edit && isAdmin"
+              v-if="edit && isEditor"
               dark
               color="yg_moss"
               @click="doSave()"
@@ -50,6 +70,14 @@
           </v-card-actions>
         </v-card>
       </v-col>
+      <v-col cols="6">
+        <v-row>
+          <v-col> </v-col>
+        </v-row>
+        <v-row>
+          <v-col> </v-col>
+        </v-row>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -57,18 +85,24 @@
 <script>
 import KeyFormDetail from "../components/keyDetailForm.vue";
 import { mapActions, mapGetters } from "vuex";
+import KeyRoomDetailsCard from "../components/linkRoom/KeyRoomDetailsCard.vue";
+// import LinkPersonnelCard from "../components/linkPersonnel/linkPersonnelCard.vue";
 export default {
   name: "",
   components: {
-    KeyFormDetail
+    KeyFormDetail,
+    KeyRoomDetailsCard,
+    // LinkPersonnelCard,
   },
   data: () => ({
     edit: false,
     headingStyle: "text-overline",
     page: {
-      title: "Keys"
+      title: "Keys",
     },
-    dialog: false
+    dialog: false,
+    things: [],
+    loading: true,
   }),
   created() {},
   computed: {
@@ -79,19 +113,19 @@ export default {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Keys", to: "/keys", exact: true },
-        { text: `${this.$route.params.keyID} ` }
+        { text: `${this.$route.params.keyID} ` },
       ];
     },
-    ...mapGetters("administration/users", ["isAdmin"]),
+    ...mapGetters("administration/users", ["isEditor"]),
     appbarColor() {
       let color = "";
       if (this.edit) color = "yg_sun";
       else color = "yg_twilight";
       return color;
-    }
+    },
   },
   methods: {
-    ...mapActions("keys", ["getKey", "saveKey"]),
+    ...mapActions("keys", ["getKey", "saveKey", "getAssignedRoomKeys"]),
     doEdit: function() {
       this.getKey(this.keyID);
       this.edit = true;
@@ -102,11 +136,16 @@ export default {
     },
     close: function() {
       this.$router.push(`/keys`);
-    }
+    },
   },
   async mounted() {
-    // load key to store
+    this.loading = true;
+
     await this.getKey(this.keyID);
-  }
+
+    await this.getAssignedRoomKeys();
+    this.loading = false;
+    // await this.getAssignedPersonnelKeys();
+  },
 };
 </script>
