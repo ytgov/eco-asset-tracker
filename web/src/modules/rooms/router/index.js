@@ -9,14 +9,14 @@ const routes = [
         name: "Rooms",
         path: "",
         meta: { requiresAuth: false },
-        component: () => import("../views/Rooms.vue")
+        component: () => import("../views/Rooms.vue"),
       },
       {
-        name: "RoomDetail",
+        name: "room",
         path: ":roomID",
         meta: { requiresAuth: false },
-        component: () => import("../views/RoomDetail.vue")
-      }
+        component: () => import("../views/RoomDetail.vue"),
+      },
       // {
       //   path: 'users',
       //   name: "AdminUsers",
@@ -24,8 +24,8 @@ const routes = [
       //     import("../views/Users"),
       //   meta: { requiresAuth: true },
       // }
-    ]
-  }
+    ],
+  },
 ];
 
 export default routes;
