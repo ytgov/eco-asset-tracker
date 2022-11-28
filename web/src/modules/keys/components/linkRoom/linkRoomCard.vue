@@ -44,7 +44,7 @@ export default {
       this.$emit("close");
     },
     save: function() {
-      this.close(); //replace with link asset methed (then close)
+      this.close();
     },
   },
 };
