@@ -5,6 +5,7 @@
       class="text-subtitle-1 font-italic my-10 ml-15 font-weight-light"
     >
       No people are assigned to this asset.
+      {{ person }}
     </div>
 
     <v-card-text v-else-if="!editPerson">

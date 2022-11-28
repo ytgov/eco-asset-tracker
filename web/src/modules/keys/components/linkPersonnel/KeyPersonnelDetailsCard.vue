@@ -1,15 +1,17 @@
 <template>
   <div>
-    <v-card tile>
+    <v-card>
       <v-card-title>
-        Rooms <v-spacer />
-        <link-room-dialog v-if="edit" @close="close()"></link-room-dialog>
+        Assigned Personnel <v-spacer />
+        <link-personnel-dialog
+          v-if="edit"
+          @close="close()"
+        ></link-personnel-dialog>
       </v-card-title>
-      <linked-rooms-simple-table
+      <linked-personnel-simple-table
         :edit="edit"
         v-if="!loading"
-      ></linked-rooms-simple-table>
-
+      ></linked-personnel-simple-table>
       <div class="text-center pb-7">
         <v-progress-circular
           align-center
@@ -24,13 +26,13 @@
 </template>
 
 <script>
-import LinkRoomDialog from "./linkRoomDialog.vue";
-import linkedRoomsSimpleTable from "./linkedRoomsSimpleTable.vue";
+import LinkPersonnelDialog from "./linkPersonnelDialog.vue";
+import linkedPersonnelSimpleTable from "./linkedPersonnelSimpleTable.vue";
 export default {
   name: "KeyRoomDetailsCard",
   components: {
-    linkedRoomsSimpleTable,
-    LinkRoomDialog,
+    linkedPersonnelSimpleTable,
+    LinkPersonnelDialog,
   },
   props: {
     edit: {

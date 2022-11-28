@@ -1,43 +1,45 @@
 <template>
   <v-container>
-    <div class="text-center" v-if="updating">
+    <div class="text-center" v-if="updatingPersonnel">
       <div class="font-italic text-subtitle-1 pb-10">
         Updating...
       </div>
       <div>
         <v-progress-circular
           align-center
-          v-if="updating"
-          :indeterminate="updating"
+          v-if="updatingPersonnel"
+          :indeterminate="updatingPersonnel"
           color="primary"
           height="5"
         />
       </div>
     </div>
-    <v-simple-table v-if="!updating">
+    <v-simple-table v-if="!updatingPersonnel">
       <tbody>
         <tr
-          v-for="room in assignedRooms"
-          :key="room.index"
-          @click="goToRoom(room.room_id)"
+          v-for="person in assignedPersonnel"
+          :key="person.index"
+          @click="goToRoom(person.ynet_id)"
         >
-          <td class="text-body-2">{{ room.name }}</td>
-          <td class="text-body-2">{{ room.purpose }}</td>
+          <td class="text-body-2">{{ person.display_name }}</td>
+          <td class="text-body-2">{{ person.title }}</td>
         </tr>
       </tbody>
     </v-simple-table>
     <div class="text-center">
-      <assign-room-btn v-if="edit && assignedRooms.length === 0 && !updating" />
+      <assign-personnel-btn
+        v-if="edit && assignedPersonnel.length === 0 && !updatingPersonnel"
+      />
     </div>
   </v-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import AssignRoomBtn from "./assignRoomBtn.vue";
+import AssignPersonnelBtn from "./assignPersonnelBtn.vue";
 export default {
   name: "linkedRoomsSimpleTable",
-  components: { AssignRoomBtn },
+  components: { AssignPersonnelBtn },
   props: {
     edit: {
       type: Boolean,
@@ -56,7 +58,7 @@ export default {
     warn: false,
   }),
   computed: {
-    ...mapState("keys", ["currentKey", "assignedRooms", "updating"]),
+    ...mapState("keys", ["assignedPersonnel", "updatingPersonnel"]),
     headers: function() {
       return [
         { text: "Name", value: "name" },
@@ -68,8 +70,8 @@ export default {
     },
   },
   methods: {
-    goToRoom(roomID) {
-      this.$router.push({ name: "room", params: { roomID: roomID } });
+    goToRoom(ynet_id) {
+      this.$router.push("/personnel/" + ynet_id);
     },
   },
   async mounted() {},

@@ -12,18 +12,10 @@
       hint="The code stamped on the key"
     >
     </v-text-field>
-    <v-autocomplete
-      v-model="key.room"
-      label="Rooms"
-      :items="rooms"
-      item-text="name"
-      item-value="_id"
-    >
-    </v-autocomplete>
+
     <v-select v-model="key.status" label="Status" :items="keyStatuses">
     </v-select>
-    <v-text-field v-model="key.assignedUser" label="Assigned to">
-    </v-text-field>
+
     <v-textarea v-model="key.notes" :rows="3" label="Notes" auto-grow>
     </v-textarea>
   </v-form>
@@ -33,14 +25,15 @@
 import { mapState } from "vuex";
 export default {
   name: "KeyFormDetail",
+  components: {},
   props: {
     edit: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data: () => ({
-    keyStatuses: ["Assigned", "Not assigned", "Obselete", "Lost", "Broken"]
+    keyStatuses: ["Assigned", "Not assigned", "Obselete", "Lost", "Broken"],
   }),
   computed: {
     ...mapState("rooms", ["rooms"]),
@@ -54,9 +47,9 @@ export default {
       },
       set(value) {
         this.$store.commit("assets/SET_ASSET", value);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

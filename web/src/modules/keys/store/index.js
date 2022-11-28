@@ -5,9 +5,11 @@ import randomID from "./utils";
 
 const state = {
   updating: false,
+  updatingPersonnel: false,
   keys: [],
   currentKey: {},
   assignedRooms: [], //hack becuase Vue doesn't catch the update to currentKey.assignedRooms
+  assignedPersonnel: [], //hack becuase Vue doesn't catch the update to currentKey.assignedPersonnel
 };
 const getters = {
   getKeysByRoom: (state) => (roomID) => {
@@ -136,6 +138,44 @@ const actions = {
     commit("SET_UPDATE", false);
     return response;
   },
+  async getAssignedPersonnelKeys({ commit, state }) {
+    let auth = axios;
+    return await auth
+      .get(`${KEYS_URL}/${state.currentKey._id}/personnel`)
+      .then((resp) => {
+        if (resp.status == 200) {
+          commit("SET_PERSONNEL_KEY", resp.data);
+          return resp.data;
+        } else {
+          return { "Unexpected response": resp.status };
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+  },
+  async assignPersonnelToKey({ commit, dispatch }, assignments) {
+    commit("SET_UPDATE_PERSONNEL", true);
+    let auth = axios;
+    let keyID = assignments.key;
+    let response = await auth
+      .post(`${KEYS_URL}/${keyID}/personnel`, assignments)
+      .then(async (response) => {
+        if (response.status === 200) {
+          await dispatch("getAssignedPersonnelKeys", keyID);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    commit("SET_UPDATE_PERSONNEL", false);
+    return response;
+  },
 };
 
 const mutations = {
@@ -151,6 +191,13 @@ const mutations = {
   },
   SET_UPDATE(state, payload) {
     state.updating = payload;
+  },
+  SET_PERSONNEL_KEY(state, payload) {
+    state.assignedPersonnel = payload;
+    // state.currentKey.assginedPersonnel = payload;
+  },
+  SET_UPDATE_PERSONNEL(state, payload) {
+    state.updatingPersonnel = payload;
   },
 };
 

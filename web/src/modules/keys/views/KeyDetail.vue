@@ -40,7 +40,10 @@
                 <v-row>
                   <v-col>
                     <!-- Key to People -->
-                    <!-- <link-personnel-card> </link-personnel-card> -->
+                    <key-personnel-details-card
+                      :edit="edit"
+                      :loading="loading"
+                    ></key-personnel-details-card>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -86,13 +89,13 @@
 import KeyFormDetail from "../components/keyDetailForm.vue";
 import { mapActions, mapGetters } from "vuex";
 import KeyRoomDetailsCard from "../components/linkRoom/KeyRoomDetailsCard.vue";
-// import LinkPersonnelCard from "../components/linkPersonnel/linkPersonnelCard.vue";
+import KeyPersonnelDetailsCard from "../components/linkPersonnel/KeyPersonnelDetailsCard.vue";
 export default {
   name: "",
   components: {
     KeyFormDetail,
     KeyRoomDetailsCard,
-    // LinkPersonnelCard,
+    KeyPersonnelDetailsCard,
   },
   data: () => ({
     edit: false,
@@ -125,7 +128,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions("keys", ["getKey", "saveKey", "getAssignedRoomKeys"]),
+    ...mapActions("keys", [
+      "getKey",
+      "saveKey",
+      "getAssignedRoomKeys",
+      "getAssignedPersonnelKeys",
+    ]),
     doEdit: function() {
       this.getKey(this.keyID);
       this.edit = true;
@@ -144,8 +152,9 @@ export default {
     await this.getKey(this.keyID);
 
     await this.getAssignedRoomKeys();
+    await this.getAssignedPersonnelKeys();
+
     this.loading = false;
-    // await this.getAssignedPersonnelKeys();
   },
 };
 </script>
