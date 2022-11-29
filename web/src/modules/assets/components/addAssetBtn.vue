@@ -33,15 +33,15 @@ import assetDetailForm from "./assetDetailForm.vue";
 export default {
   name: "AddAssetBtn",
   components: {
-    assetDetailForm
+    assetDetailForm,
   },
   data: () => ({
     valid: false,
     dialog: false,
     rules: {
-      required: value => !!value || "Required."
+      required: (value) => !!value || "Required.",
     },
-    appbarColor: "yg_moss"
+    appbarColor: "yg_moss",
   }),
   computed: {
     ...mapState("rooms", ["rooms"]),
@@ -52,7 +52,7 @@ export default {
       } else {
         return { text: "Inactive", color: "red" };
       }
-    }
+    },
   },
   methods: {
     ...mapActions("assets", ["createAsset", "clearAsset"]),
@@ -79,13 +79,13 @@ export default {
     createNewAsset: async function() {
       await this.clearAsset();
       this.dialog = true;
-    }
+    },
   },
   mounted: async function() {
     if (this.rooms.length == 0) {
-      console.log("Initializing Rooms");
-      await this.getAllRooms();
+      // console.log("Initializing Rooms");
+      // await this.getAllRooms();
     }
-  }
+  },
 };
 </script>

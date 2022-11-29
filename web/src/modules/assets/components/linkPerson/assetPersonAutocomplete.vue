@@ -6,6 +6,8 @@
       item-text="display_name"
       item-value="ynet_id"
       @change="$emit('change')"
+      clearable
+      label="Person"
     >
     </v-autocomplete>
   </div>
@@ -15,7 +17,9 @@
 import { mapState } from "vuex";
 export default {
   name: "assetPersonAutocomplete",
-  data: () => ({}),
+  data: () => ({
+    hint: "Choose a person",
+  }),
 
   computed: {
     ...mapState("assets", ["currentAsset"]),

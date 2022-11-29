@@ -1,11 +1,19 @@
 <template>
   <v-container>
-    <div
-      v-if="!currentAsset.person"
-      class="text-subtitle-1 font-italic my-10 ml-15 font-weight-light"
-    >
-      No people are assigned to this asset.
-      {{ person }}
+    <div v-if="!currentAsset.person && !editPerson">
+      <div class="text-subtitle-1 font-italic my-10 ml-15 font-weight-light">
+        No one is assigned to this asset.
+      </div>
+      <div class="text-center">
+        <v-btn
+          v-if="edit"
+          color="primary"
+          outlined
+          @click="editPerson = !editPerson"
+        >
+          Assign a Person
+        </v-btn>
+      </div>
     </div>
 
     <v-card-text v-else-if="!editPerson">
