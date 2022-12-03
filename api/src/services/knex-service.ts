@@ -1,12 +1,5 @@
 import { DATABASE_CONFIG } from "../config";
 
-// const knexOptions = {
-//   client: 'sqlite3', // or 'better-sqlite3'
-//   connection: {
-//     // filename: ":memory:"
-//     filename: "./db/mydb.sqlite"
-//   }
-// }
 const knexOptions = DATABASE_CONFIG;
 
 export class KnexService {
@@ -19,13 +12,26 @@ export class KnexService {
   async ensureDatabaseConnected() {
     return await this.db
       .raw("SELECT name, database_id, create_date  FROM sys.databases;  ")
+      // .raw("SELECT name FROM master.dbo.sysdatabases ")
+      // .raw(
+      //   "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE = 'BASE TABLE'; "
+      // )
       .then((result: any) => {
         console.log("DB connection established");
-        return result;
+        return {
+          status: "up",
+          host: DATABASE_CONFIG.connection.host,
+          client: DATABASE_CONFIG.client,
+        };
       })
       .catch((err: any) => {
         console.log(err);
-        return err;
+        return {
+          status: "error",
+          host: DATABASE_CONFIG.connection.host,
+          client: DATABASE_CONFIG.client,
+          message: err,
+        };
       });
   }
   async create(item: any): Promise<any> {
@@ -48,7 +54,14 @@ export class KnexService {
     if (query === undefined) {
       query = {};
     }
-    return await this.db.select(fields).from(this.tableName).where(query);
+    let result = null;
+    try {
+      result = await this.db.select(fields).from(this.tableName).where(query);
+    } catch (err) {
+      console.log(err);
+      result = err;
+    }
+    return result;
   }
   async deleteWhere(query: any): Promise<any> {
     return await this.db(this.tableName).where(query).del();
