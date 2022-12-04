@@ -1,4 +1,4 @@
-name: Docker
+name: Docker UAT Image Build
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -7,11 +7,11 @@ name: Docker
 
 on:
   push:
-    branches: [ uat, prod ]
+    branches: [uat, prod]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ["v*.*.*"]
   pull_request:
-    branches: [ uat, prod ]
+    branches: [uat, prod]
   workflow_dispatch:
 
 env:
@@ -19,7 +19,6 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
   build:
@@ -32,6 +31,10 @@ jobs:
       id-token: write
 
     steps:
+      - name: Get current date
+        id: date
+        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -54,5 +57,4 @@ jobs:
           context: .
           #platforms: linux/amd64,linux/arm64, darwin/amd64
           push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository }}:uat-${{ env.today }}
