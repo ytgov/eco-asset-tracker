@@ -1,4 +1,4 @@
-name: Docker
+name: Docker UAT Image Build
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -55,4 +55,4 @@ jobs:
           #platforms: linux/amd64,linux/arm64, darwin/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags:
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:uat-$(date +%s)
