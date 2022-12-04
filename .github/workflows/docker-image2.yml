@@ -55,4 +55,4 @@ jobs:
           #platforms: linux/amd64,linux/arm64, darwin/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags:
-            ghcr.io/${{ github.repository }}:uat-$(date +%s)
+            ghcr.io/${{ github.repository }}:uat-${{date +%s}}
