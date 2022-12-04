@@ -1,4 +1,6 @@
+import axios from "axios";
 import express, { Request, Response } from "express";
+import { keyStatus } from "src/data/models";
 import { Room, roomPurposes, roomStatuses } from "../data/models/eco-room";
 import { roomSeed } from "../data/seed-data/eco-room";
 import { KnexService } from "../services/knex-service";
@@ -9,69 +11,10 @@ const db = new KnexService("rooms");
 
 const tableName = "rooms";
 
-/// SETUP STUFF ///
-// roomsRouter.get('/seed', async (req: Request, res: Response) => {
-//   console.log("Building tables...");
-//   await knex.schema.createTable(tableName, (table: any ) => {
-//     // table.increments();
-//     table.integer('_id');
-//     table.string('name');
-//     table.integer('size');
-//     table.string('number');
-//     table.string('buildingID');
-//     table.string('branchID');
-//     table.string('purpose');
-//     table.string('status');
-//     table.string('sizes');
-//     table.string('notes');
-
-//     //audit
-//     table.timestamps('modified')
-//     table.string('modified_by');
-//   })
-
-//   // await knex.schema.createTable('keys', (table: any) => {
-//   //   table.integer('_id')
-//   //   table.uuid('keyUID').primary()
-//   //   table.boolean('active')
-//   //   table.string('status') //should actually be an enum
-
-//   //   //assignment information
-//   //   table.string('assigned_to')
-//   //   table.string('assigned_by')
-//   //   table.timestamps('assigned_date')
-
-//   //   //audit information
-//   //   table.timestamps('modified')
-//   //   table.string('modified_by')
-
-//   // })
-
-//   // await knex.schema.createTable('keys', (table: any) => {
-//   //   table.integer('_id');
-//   //   table.string('assetNumber');
-//   //   table.string('type');
-//   //   table.string('make');
-//   //   table.string('model');
-//   //   table.string('description');
-//   //   table.date('puchaseDate');
-//   //   table.date('installDate');
-//   //   table.string('installStatus');
-//   //   table.string('status');
-//   //   table.string('statusReason');
-//   //   table.boolean('active');
-//   //   table.string('room');
-//   //   table.person('person');
-//   //   table.string('note');
-
-//   // })
-
-//   await knex('rooms').insert (
-//     roomSeed
-//   )
-//   return res.json({done: 'built'});
+// roomsRouter.get("/system", async (req: Request, res: Response) => {
+//   let result = await db.ensureDatabaseConnected();
+//   return res.json(result);
 // });
-
 roomsRouter.get("/purposes", async (req: Request, res: Response) => {
   return res.json(roomPurposes);
 });
@@ -125,6 +68,44 @@ roomsRouter.get("/:roomID/personnel", async (req: Request, res: Response) => {
   console.log(result);
   return res.json(result);
 });
+roomsRouter.get("/:roomID/keys", async (req: Request, res: Response) => {
+  //get the keys for a given room
+  const q = new KnexService("room_keys");
+  // let result = await q.getAll({});
+
+  const config: any = {
+    fields: [
+      "keys._id as _id",
+      "keys.code as code",
+      "keys.number as number",
+      "keys.assignedUser as assignedUser",
+    ],
+    // fields: "*",
+    tableName: "keys",
+    joinTable: "room_key",
+    joinField: "keys._id",
+    joinTableField: "key_id",
+    query: { room_id: req.params.roomID },
+  };
+  let result = await db.innerJoin(config).then(async (keys) => {
+    for (let x in keys) {
+      let key = keys[x];
+      key.assignedUsers = await axios
+        .get(`http://localhost:3000/api/keys/${key._id}/personnel`)
+        .then((resp) => {
+          return resp.data.map((x: any) => x.display_name);
+        });
+
+      return keys;
+    }
+  });
+
+  // To get the person who are assigned to the keys multiple calls are needed
+  // to the keys endpoint - one call for each key assigned to the room.
+  // This could take a long time.
+
+  return res.json(result);
+});
 
 roomsRouter.get("/:roomID", async (req: Request, res: Response) => {
   const roomID = req.params.roomID;
@@ -162,9 +143,9 @@ roomsRouter.post("/", async (req: Request, res: Response) => {
   return res.json(result);
 });
 
-roomsRouter.post("/killit", async (req: Request, res: Response) => {
-  //create a new room
+// roomsRouter.post("/killit", async (req: Request, res: Response) => {
+//   //create a new room
 
-  let result = await db.db.schema.dropTable("rooms");
-  return res.json(result);
-});
+//   let result = await db.db.schema.dropTable("rooms");
+//   return res.json(result);
+// });

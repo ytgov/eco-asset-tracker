@@ -12,7 +12,7 @@
 
     <v-card-text>
       <p>A list of assets assigned to the room {{ roomID }}</p>
-      <assets-grid :items="items"> </assets-grid>
+      <assets-grid :items="items" :loading="loading"> </assets-grid>
     </v-card-text>
   </v-card>
 </template>
@@ -25,23 +25,23 @@ export default {
   name: "assetsCard",
   components: {
     AssetsGrid,
-    linkAssetDialog
+    linkAssetDialog,
   },
   props: {
     search: {
       type: String,
-      default: ""
+      default: "",
     },
     roomID: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
 
   data: () => ({
     // formAItems: [],
     loading: true,
-    dialog: false
+    dialog: false,
   }),
 
   computed: {
@@ -49,11 +49,11 @@ export default {
       return this.getAssetsByRoom(this.roomID);
     },
     ...mapGetters("administration/users", ["isAdmin"]),
-    ...mapGetters("assets", ["getAssetsByRoom"])
+    ...mapGetters("assets", ["getAssetsByRoom"]),
   },
   mounted: async function() {
     this.loading = false;
   },
-  methods: {}
+  methods: {},
 };
 </script>

@@ -8,7 +8,8 @@
     </v-toolbar>
 
     <v-card-text>
-      <assets-grid :headers="headers" :items="items"> </assets-grid>
+      <assets-grid :headers="headers" :items="items" :loading="loading">
+      </assets-grid>
     </v-card-text>
   </v-card>
 </template>

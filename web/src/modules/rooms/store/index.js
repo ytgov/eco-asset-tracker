@@ -7,6 +7,7 @@ const state = {
   rooms: [],
   currentRoom: {},
   assignedPeopletoRooms: [],
+  assignedKeys: [],
 };
 
 const getters = {
@@ -61,6 +62,24 @@ const actions = {
       .then((response) => {
         if (response.status === 200) {
           commit("SET_ASSIGNED_PERSONNEL", response.data);
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
+      });
+    return response;
+  },
+  async getAssignedKeys({ commit }, roomID) {
+    const auth = axios;
+    let response = await auth
+      .get(`${ROOMS_URL}/${roomID}/keys`)
+      .then((response) => {
+        if (response.status === 200) {
+          commit("SET_ASSIGNED_KEYS", response.data);
           return response.data;
         } else {
           return null;
@@ -151,6 +170,10 @@ const mutations = {
   SET_ASSIGNED_PERSONNEL(state, payload) {
     state.currentRoom.assignedPersonnel = payload;
     state.assignedPeopletoRooms = payload;
+  },
+  SET_ASSIGNED_KEYS(state, payload) {
+    state.currentRoom.assignedKeys = payload;
+    state.assignedRoomKeys = payload;
   },
 };
 

@@ -9,7 +9,6 @@
         mdi-plus
       </v-icon> -->
     </v-toolbar>
-
     <!-- <v-card-text> -->
     <keys-table :items="items" :headers="headers"></keys-table>
 
@@ -17,48 +16,53 @@
   </v-card>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import KeysTable from "./keysTable.vue";
 export default {
   name: "keysCard",
   components: {
-    KeysTable
+    KeysTable,
   },
   props: {
     search: {
       type: String,
-      default: ""
+      default: "",
     },
     roomID: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
 
   data: () => ({
     // formAItems: [],
     // loadingFormA: false,
     loading: true,
-    dialog: false
+    dialog: false,
+    items: [],
   }),
+
   computed: {
     ...mapGetters("administration/users", ["isAdmin"]),
     ...mapGetters("keys", ["getKeysByRoom"]),
-    items: function() {
-      return this.getKeysByRoom(this.roomID);
-    },
+    // items: function() {
+    //   return this.getKeysByRoom(this.roomID);
+    // },
     headers: function() {
       return [
         { text: "Key Code", value: "code" },
         { text: "Key Number", value: "number" }, // <- not required if shown in the context of a room
-        { text: "Status", value: "status" },
-        { text: "Assigned to", value: "assignedTo" }
+        // { text: "Status", value: "status" },
+        { text: "Assigned People", value: "assignedUsers" },
       ];
-    }
+    },
   },
   mounted: async function() {
+    this.items = await this.getAssignedKeys(this.roomID);
     this.loading = false;
   },
-  methods: {}
+  methods: {
+    ...mapActions("rooms", ["getAssignedKeys"]),
+  },
 };
 </script>

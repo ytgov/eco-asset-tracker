@@ -100,10 +100,13 @@ const actions = {
         console.log(err);
       });
   },
-  async getAssignedRoomKeys({ commit, state }) {
+  async getAssignedRoomKeys({ commit, state }, keyID) {
     let auth = axios;
+    if (!keyID) {
+      keyID = state.currentKey._id;
+    }
     let response = await auth
-      .get(`${KEYS_URL}/${state.currentKey._id}/rooms`)
+      .get(`${KEYS_URL}/${keyID}/rooms`)
       .then((resp) => {
         if (resp.status == 200) {
           commit("SET_ASSIGNED_ROOMS", resp.data);
@@ -138,10 +141,13 @@ const actions = {
     commit("SET_UPDATE", false);
     return response;
   },
-  async getAssignedPersonnelKeys({ commit, state }) {
+  async getAssignedPersonnelKeys({ commit, state }, keyID) {
     let auth = axios;
+    if (!keyID) {
+      keyID = state.currentKey._id;
+    }
     return await auth
-      .get(`${KEYS_URL}/${state.currentKey._id}/personnel`)
+      .get(`${KEYS_URL}/${keyID}/personnel`)
       .then((resp) => {
         if (resp.status == 200) {
           commit("SET_PERSONNEL_KEY", resp.data);
