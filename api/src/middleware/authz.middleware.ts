@@ -61,3 +61,33 @@ export async function loadUser(
     })
     .catch();
 }
+
+export async function isSystemAdministrator(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  return next();
+  // const db = new KnexUserService("users");
+  // let sub = req.user.sub;
+  // let u = await db.getAll(sub);
+  // if (u && u.role === "System Administrator") {
+  //   return next();
+  // }
+  // return res.status(401).send();
+}
+
+export async function isEditor(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  return next();
+  // const db = new KnexUserService("users");
+  // let sub = req.user.sub;
+  // let u = await db.getAll(sub);
+  // if (u && u.role === "System Administrator") {
+  //   return next();
+  // }
+  // return res.status(401).send();
+}

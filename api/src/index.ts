@@ -2,7 +2,7 @@ import express, { application, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
-// import fileUpload from "express-fileupload";
+
 import { API_PORT, FRONTEND_URL, APPLICATION_NAME, VUE_APP_ } from "./config";
 // import { doHealthCheck } from "./utils/healthCheck";
 // import { userRouter, authoritiesRouter, employeeRouter, departmentRouter, formARouter } from "./routes";
@@ -16,8 +16,10 @@ import {
   employeeRouter,
   keysRouter,
   userRouter,
+  systemRouter,
 } from "./routes";
-import { migrateLatest, migrateDown, migrateUp } from "./data/migrator";
+import { isSystemAdministrator } from "./middleware/authz.middleware";
+// import { migrateLatest, migrateDown, migrateUp } from "./data/migrator";
 
 //runMigrations();
 
@@ -67,22 +69,8 @@ app.use("/api/assets", assetsRouter);
 app.use("/api/employees", employeeRouter);
 app.use("/api/keys", keysRouter);
 app.use("/api/users", userRouter);
+app.use("/api/system", isSystemAdministrator, systemRouter);
 
-app.use("/migrate/latest", async (req: Request, res: Response) => {
-  await migrateLatest();
-  console.log("Done!");
-  res.send("Complete");
-});
-app.use("/migrate/down", async (req: Request, res: Response) => {
-  await migrateDown();
-  console.log("Done!");
-  res.send("Complete");
-});
-app.use("/migrate/up", async (req: Request, res: Response) => {
-  await migrateUp();
-  console.log("Done!");
-  res.send("Complete");
-});
 app.get("/api/config", async (req: Request, res: Response) => {
   return res.json(VUE_APP_);
 });
