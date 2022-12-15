@@ -95,8 +95,7 @@ export const useAuth0 = ({
       */
 
       this.options = await getAuthConfig(apiConfigUrl);
-      console.log(apiConfigUrl);
-      console.log(this.options);
+
       this.auth0Client = await createAuth0Client({
         ...this.options,
         redirect_uri: redirectUri,
