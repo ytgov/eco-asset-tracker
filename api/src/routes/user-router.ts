@@ -10,19 +10,16 @@ import { checkJwt, loadUser } from "../middleware/authz.middleware";
 const db = new KnexUserService("users");
 
 export const userRouter = express.Router();
-//userRouter.use(checkJwt, loadUser);
+// userRouter.use(checkJwt, loadUser);
 
-userRouter.get("/me", async (req: Request, res: Response) => {
-  return res.json({
-    name: "John Doe",
-    email: "john.doe@yukon.ca",
-    roles: ["Sytem Administrator"],
-  });
-
-  // let person = req.user;
-  // let me = await db.getByEmail(person.email);
-  // return res.json({ data: Object.assign(req.user, me) });
-});
+userRouter.get(
+  "/me",
+  checkJwt,
+  loadUser,
+  async (req: Request, res: Response) => {
+    return res.json(req.user);
+  }
+);
 
 userRouter.get("/", async (req: Request, res: Response) => {
   const query = {};
@@ -32,7 +29,7 @@ userRouter.get("/", async (req: Request, res: Response) => {
 });
 
 userRouter.get(
-  "/:user",
+  "/:email",
   [param("email").notEmpty().isString()],
   ReturnValidationErrors,
   async (req: Request, res: Response) => {

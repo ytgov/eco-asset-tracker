@@ -19,12 +19,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   getters: {},
   state: {
-    user: {}
+    user: {},
   },
   mutations: {
     SET_USER(state, payload) {
       state.user = payload;
-    }
+    },
   },
   actions: {
     async initialize() {
@@ -41,9 +41,10 @@ export default new Vuex.Store({
     },
     async getCurrentUser(state) {
       let userResp = await secureGet(`${USER_URL}/me`);
-      state.commit("SET_USER", userResp.data.data);
-      return userResp.data.data;
-    }
+
+      state.commit("SET_USER", userResp.data);
+      return userResp.data;
+    },
   },
   modules: {
     home,
@@ -54,7 +55,7 @@ export default new Vuex.Store({
     personnel,
     // authority,
     // department,
-    administration
+    administration,
     // forms
-  }
+  },
 });

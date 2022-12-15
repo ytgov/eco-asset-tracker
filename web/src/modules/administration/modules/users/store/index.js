@@ -1,11 +1,12 @@
-import { USER_URL } from "@/urls";
+import { USER_URL, PROFILE_URL } from "@/urls";
 import axios from "axios";
+import { getInstance } from "@/auth/auth0-plugin";
 // import store from  "@/store";
 
 const state = {
   currentUser: {
-    name: "Test User",
-    email: "john.doe@yukon.ca",
+    // name: "Test User",
+    // email: "john.doe@yukon.ca",
     roles: "User",
   },
   user: {
@@ -17,7 +18,9 @@ const state = {
 };
 const getters = {
   isAdmin: (state) => {
-    return state.user.admin;
+    if (state.currentUser.roles.includes("System Admin")) {
+      return true;
+    } else return false;
   },
   isEditor: (state, getters) => {
     if (state.currentUser.roles.includes("Editor") || getters.isAdmin == true) {
@@ -99,6 +102,13 @@ const actions = {
   async toggleAdmin({ commit, state }) {
     commit("SET_ADMIN", !state.user.admin);
   },
+  async getCurrentUser(state) {
+    const auth = await getInstance();
+    let userResp = await auth.get(`${PROFILE_URL}`);
+
+    state.commit("SET_USER", userResp.data);
+    return userResp.data;
+  },
 };
 
 const mutations = {
@@ -106,7 +116,7 @@ const mutations = {
     state.userList = payload;
   },
   SET_USER(state, payload) {
-    state.user = payload;
+    state.currentUser = payload;
   },
   SET_ADMIN(state, payload) {
     state.user.admin = payload;

@@ -33,11 +33,12 @@ export const useAuth0 = ({
         isLoading: true,
         isAuthenticated: false,
         user: {},
-        error: null
+        error: null,
       };
     },
     methods: {
       async handleRedirectCallback() {
+        console.log("In handle redirect");
         this.isLoading = true;
         try {
           await this.auth0Client.handleRedirectCallback();
@@ -59,6 +60,18 @@ export const useAuth0 = ({
       },
 
       getTokenSilently(o) {
+        // console.log("In get token silently");
+        // console.log(o);
+        // let result;
+        // try {
+        //   result = this.auth0Client.getTokenSilently(o);
+        // } catch (error) {
+        //   if (error.error !== "login_required") {
+        //     console.log("Boom! Something bad happend in auth");
+        //     throw error;
+        //   }
+        // }
+        // return result;
         return this.auth0Client.getTokenSilently(o);
       },
 
@@ -70,13 +83,13 @@ export const useAuth0 = ({
       },
       post(url, body) {
         return securePost(url, body);
-      }
+      },
     },
 
     async created() {
       this.auth0Client = await createAuth0Client({
         ...pluginOptions,
-        redirect_uri: redirectUri
+        redirect_uri: redirectUri,
       });
 
       try {
@@ -94,11 +107,11 @@ export const useAuth0 = ({
         this.isAuthenticated = await this.auth0Client.isAuthenticated();
         this.user = await this.auth0Client.getUser();
         //set the access token in the auth store
-        //await this.getTokenSilently();
+        // await this.getTokenSilently(); //enabled for testing
         //store.commit("auth/setToken", token);
         this.isLoading = false;
       }
-    }
+    },
   });
 
   return instance;
@@ -111,5 +124,5 @@ export const useAuth0 = ({
 export const Auth0Plugin = {
   install(Vue, options) {
     Vue.prototype.$auth = useAuth0(options);
-  }
+  },
 };

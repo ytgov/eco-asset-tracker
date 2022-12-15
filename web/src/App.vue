@@ -5,20 +5,33 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
+
 export default {
   name: "App",
   components: {},
   methods: {
-    ...mapActions(["initialize"])
+    ...mapActions(["initialize"]),
+    ...mapActions("administration/users", ["getCurrentUser"]),
+  },
+  watch: {
+    isLoading: async function() {
+      if (!this.isLoading) {
+        await this.initialize();
+      }
+      if (this.$auth.isAuthenticated) {
+        this.getCurrentUser();
+      }
+    },
   },
   computed: {
-    ...mapState("rooms", ["rooms"]),
-    ...mapState("assets", ["assets"])
+    isLoading() {
+      return this.$auth.isLoading;
+    },
   },
-  async created() {
-    console.log("Initializing...");
-    await this.initialize();
-  }
+  async created() {},
+  async mounted() {
+    // await this.initialize();
+  },
 };
 </script>
