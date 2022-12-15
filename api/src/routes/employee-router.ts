@@ -76,7 +76,6 @@ employeeRouter.get("/:employeeID/keys", async (req: Request, res: Response) => {
     query: { personnel_id: employeeID },
   };
   let result = await db.innerJoin(config);
-  console.log(result.length);
   return res.json(result);
 });
 employeeRouter.post(
