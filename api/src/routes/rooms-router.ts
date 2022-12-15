@@ -65,7 +65,6 @@ roomsRouter.get("/:roomID/personnel", async (req: Request, res: Response) => {
     query: { room_id: req.params.roomID },
   };
   let result = await db.innerJoin(config);
-  console.log(result);
   return res.json(result);
 });
 roomsRouter.get("/:roomID/keys", async (req: Request, res: Response) => {
