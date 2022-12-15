@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { KnexService } from "../services/knex-service";
 import { migrateLatest, migrateDown, migrateUp } from "../data/migrator";
-import { VUE_APP_ } from "../config";
 
 //todo change migrations to post
 
@@ -25,7 +24,4 @@ systemRouter.use("/migrate/up", async (req: Request, res: Response) => {
   await migrateUp();
   console.log("Done!");
   res.send("Complete");
-});
-systemRouter.get("/config", async (req: Request, res: Response) => {
-  return res.json(VUE_APP_);
 });

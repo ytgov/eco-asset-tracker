@@ -3,7 +3,7 @@ import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 
-import { API_PORT, FRONTEND_URL, APPLICATION_NAME, VUE_APP_ } from "./config";
+import { API_PORT, FRONTEND_URL, APPLICATION_NAME, VUE_APP } from "./config";
 // import { doHealthCheck } from "./utils/healthCheck";
 // import { userRouter, authoritiesRouter, employeeRouter, departmentRouter, formARouter } from "./routes";
 
@@ -17,6 +17,7 @@ import {
   keysRouter,
   userRouter,
   systemRouter,
+  configRouter,
 } from "./routes";
 import { isSystemAdministrator } from "./middleware/authz.middleware";
 // import { migrateLatest, migrateDown, migrateUp } from "./data/migrator";
@@ -70,10 +71,8 @@ app.use("/api/employees", employeeRouter);
 app.use("/api/keys", keysRouter);
 app.use("/api/users", userRouter);
 app.use("/api/system", isSystemAdministrator, systemRouter);
+app.use("/api/config", configRouter);
 
-app.get("/api/config", async (req: Request, res: Response) => {
-  return res.json(VUE_APP_);
-});
 // app.use("/api/user", userRouter);
 
 // app.use("/api/departments", departmentRouter);

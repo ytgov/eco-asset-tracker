@@ -40,7 +40,7 @@ keysRouter.get("/:keyID", async (req: Request, res: Response) => {
 keysRouter.get("/:keyID/rooms", async (req: Request, res: Response) => {
   const q = new KnexService("room_key");
   const { keyID } = req.params;
-  console.log(await q.getAll({}));
+  // console.log(await q.getAll({}));
   const config: any = {
     fields: "*",
     tableName: "rooms",
@@ -50,7 +50,6 @@ keysRouter.get("/:keyID/rooms", async (req: Request, res: Response) => {
     query: { key_id: keyID },
   };
   let result = await db.innerJoin(config);
-  console.log(result.length);
   return res.json(result);
 });
 

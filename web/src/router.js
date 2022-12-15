@@ -59,7 +59,6 @@ router.beforeEach(async (to, from, next) => {
 
   if (!authService) {
     authService = await getInstance();
-    console.log("Creating auth Service");
   }
   /* eslint-disable */
   const guardAction = () => {

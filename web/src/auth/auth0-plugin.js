@@ -5,6 +5,8 @@
 import Vue from "vue";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import { secureGet, securePut, securePost } from "@/store/jwt";
+import { getAuthConfig } from "./getAuthConfig";
+import { apiConfigUrl } from "@/config";
 
 /**
  *  Vue.js Instance Definition
@@ -22,7 +24,7 @@ export const useAuth0 = ({
   onRedirectCallback = () =>
     window.history.replaceState({}, document.title, window.location.pathname),
   redirectUri = window.location.origin,
-  ...pluginOptions
+  ...pluginOptions //eslint-disable-line no-unused-vars
 }) => {
   if (instance) return instance;
 
@@ -87,8 +89,15 @@ export const useAuth0 = ({
     },
 
     async created() {
+      /*
+      Pull auth configuation from the server to get around a Vue production build issue
+      where VUE_APP build variables are not available at build runtime.
+      */
+
+      this.options = await getAuthConfig(apiConfigUrl);
+
       this.auth0Client = await createAuth0Client({
-        ...pluginOptions,
+        ...this.options,
         redirect_uri: redirectUri,
       });
 
