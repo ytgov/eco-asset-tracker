@@ -55,16 +55,19 @@
         >
         <v-divider class="mr-5" vertical inset></v-divider>
 
-        <span>{{ username }}</span>
+        <v-btn v-if="!$auth.isAuthenticated" @click="login" color="primary">
+          Sign In
+        </v-btn>
+        <span v-else>{{ username }}</span>
         <!-- TODO Remove this before production -->
-        <span class="pl-3" @click="toggleAdmin()">
+        <!-- <span class="pl-3" @click="toggleAdmin()">
           <v-chip v-if="user.admin" color="yg_moss" dark>
             Admin
           </v-chip>
           <v-chip v-else color="yg_twilight" dark>
             User
           </v-chip>
-        </span>
+        </span> -->
         <!-- End TODO Remove this before production -->
         <v-menu offset-y class="ml-0">
           <template v-slot:activator="{ on, attrs }">
@@ -99,33 +102,33 @@
               <v-list-item-title>Keys</v-list-item-title>
             </v-list-item>
             <v-divider />
-            <v-list-item to="/profile">
+            <div v-if="$auth.isAuthenticated">
+              <v-list-item to="/profile">
+                <v-list-item-icon>
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>My profile</v-list-item-title>
+              </v-list-item>
+              <v-list-item to="/administration" v-if="isAdmin">
+                <v-list-item-icon>
+                  <v-icon>mdi-cogs</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Administration</v-list-item-title>
+              </v-list-item>
+              <v-divider />
+
+              <v-list-item @click="$auth.logout({ returnTo })">
+                <v-list-item-icon>
+                  <v-icon>mdi-exit-run</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Sign out</v-list-item-title>
+              </v-list-item>
+            </div>
+            <v-list-item v-else @click="login()">
               <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
+                <v-icon>mdi-login</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>My profile</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/administration" v-if="showAdmin">
-              <v-list-item-icon>
-                <v-icon>mdi-cogs</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Administration</v-list-item-title>
-            </v-list-item>
-            <v-divider />
-            <!-- TODO: Remove before production -->
-            <v-list-item v-if="showAdmin" @click="toggleAdmin()">
-              <v-list-item-icon>
-                <v-icon>mdi-cogs</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Toggle Admin</v-list-item-title>
-            </v-list-item>
-            <v-divider />
-            <!-- TODO: End remove before production -->
-            <v-list-item @click="$auth.logout({ returnTo })">
-              <v-list-item-icon>
-                <v-icon>mdi-exit-run</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Sign out</v-list-item-title>
+              <v-list-item-title>Sign in</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -156,7 +159,7 @@
 import router from "@/router";
 // import store from "./store";
 
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import * as config from "@/config";
 import { LOGOUT_URL } from "@/urls";
 //import { getInstance } from "@/auth/auth0-plugin";
@@ -177,24 +180,31 @@ export default {
     hasSidebarClosable: config.hasSidebarClosable,
     search: "",
     showAdmin: true,
-    showOverlay: true,
   }),
   computed: {
     ...mapState("administration/users", ["user"]),
+    ...mapGetters("administration/users", ["isAdmin"]),
+    showOverlay: function() {
+      return this.$auth.isLoading;
+    },
     username() {
-      return this.user.username;
-      // return this.$auth.user.name;
+      // return this.user.username;
+      if (this.$auth.isAuthenticated) {
+        return this.$auth.user.name;
+      }
+      return "Not Authenticated";
     },
 
     returnTo: function() {
       return config.applicationUrl;
     },
   },
+
   async mounted() {
     //let auth = await getInstance();
     //await auth.getTokenSilently();
     // await this.initialize();
-    this.showOverlay = false;
+    // this.showOverlay = false;
   },
   watch: {
     $route(to) {
@@ -214,8 +224,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions("administration/users", ["toggleAdmin"]),
     ...mapActions(["initialize"]),
+    login() {
+      this.$auth.loginWithRedirect();
+    },
     nav: function(location) {
       router.push(location);
       console.log(location);

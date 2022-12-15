@@ -61,16 +61,16 @@ import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "",
   components: {
-    AssetDetailForm
+    AssetDetailForm,
   },
   data: () => ({
     readonly: true,
     headingStyle: "text-overline",
     page: {
-      title: "Aseset Detail"
+      title: "Aseset Detail",
     },
     dialog: false,
-    snackbarOpen: false
+    snackbarOpen: false,
   }),
   computed: {
     appbarColor() {
@@ -93,9 +93,9 @@ export default {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Assets", to: "/assets", exact: true },
-        { text: `${this.$route.params.assetID} ` }
+        { text: `${this.$route.params.assetID} ` },
       ];
-    }
+    },
   },
   methods: {
     ...mapActions("rooms", ["getAllRooms"]),
@@ -113,13 +113,13 @@ export default {
     },
     close: function() {
       this.$router.push(`/assets`);
-    }
+    },
   },
   mounted() {
     // this.getRoom(this.room);
     this.getAsset(this.$route.params.assetID);
 
     //load room to store
-  }
+  },
 };
 </script>

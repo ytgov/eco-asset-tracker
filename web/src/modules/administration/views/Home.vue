@@ -10,7 +10,7 @@
       </template>
     </BaseBreadcrumb>
 
-    <v-tabs v-model="currentTab">
+    <v-tabs optional v-model="currentTab">
       <v-tab to="/administration/users">Users</v-tab>
 
       <v-tab to="/administration/asset-types">Lookup Tables </v-tab>
@@ -65,5 +65,6 @@ export default {
     },
   },
   methods: {},
+  mounted() {},
 };
 </script>

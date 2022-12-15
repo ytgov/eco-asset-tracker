@@ -8,24 +8,22 @@ const routes = [
     component: () => import("@/layouts/Layout.vue"),
     // component: () => import("../views/Home.vue"),
 
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
     children: [
       {
         path: "asset-types",
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: true },
         component: () => import("../views/Home.vue"),
         children: [...assetTypesRoutes],
       },
       {
         path: "users",
-        name: "UserAdmin",
         component: () => import("../views/Home.vue"),
         meta: { requiresAuth: true },
         children: [...usersRoutes],
       },
       {
         path: "system",
-        name: "system",
         component: () => import("../views/Home.vue"),
         meta: { requiresAuth: true },
         children: [...systemRoutes],

@@ -2,9 +2,8 @@
   <div>
     <h1>My Profile</h1>
     <p>
-      ** This information is all read-only with the exception of your Mail code
+      ** This information is all read-only
     </p>
-
     <div class="row">
       <div class="col-md-6">
         <v-text-field
@@ -19,7 +18,7 @@
       </div>
       <div class="col-md-6">
         <v-text-field
-          v-model="profile.lastName"
+          v-model="profile.last_name"
           dense
           outlined
           label="Last name"
@@ -63,14 +62,17 @@ import { mapState } from "vuex";
 export default {
   name: "Profile",
   computed: {
-    ...mapState("home", ["profile"]),
+    ...mapState("administration/users", ["currentUser"]),
+    profile: function() {
+      return this.currentUser;
+    },
     myRoles: function() {
-      if (this.roles && this.roles.length > 0) return this.roles.join(", ");
+      // if (this.roles && this.roles.length > 0) return this.roles.join(", ");
 
-      return "";
-    }
+      return this.currentUser.roles;
+    },
   },
   data: () => ({}),
-  methods: {}
+  methods: {},
 };
 </script>

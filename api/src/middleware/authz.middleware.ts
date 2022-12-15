@@ -27,17 +27,16 @@ export async function loadUser(
 ) {
   // const db = req.store.Users as KnexUserService;
   const db = new KnexUserService("users");
+
   let sub = req.user.sub;
-  console.log("TODO- deal with auth.  Start by inspecting sub");
-  console.log(sub);
   const token = req.headers.authorization || "";
 
-  let u = await db.getAll(sub);
+  // let u = await db.getAll(sub);
 
-  if (u) {
-    req.user = { ...req.user, ...u };
-    return next();
-  }
+  // if (u) {
+  //   req.user = { ...req.user, ...u };
+  //   return next();
+  // }
 
   await axios
     .get(`${AUTH0_DOMAIN}userinfo`, { headers: { authorization: token } })
@@ -46,14 +45,15 @@ export async function loadUser(
         let email = resp.data.email;
         sub = resp.data.sub;
 
-        let u = await db.getAll(resp.data.sub);
-        //console.log(email, sub);
-
-        if (u) {
-          req.user = { ...req.user, ...u };
+        let u = await db.getAll({ email: email });
+        if (u.length > 0) {
+          req.user = u[0];
           next();
         } else {
-          await db.create({ email, sub, status: "Inactive" });
+          req.user = resp.data;
+          req.user.roles = "User";
+          //Optionally, you could craete the user in the database and leave them as inactive
+          // await db.create({ email, sub, status: "Inactive" });
           //return res.status(406).send();
           next();
         }
