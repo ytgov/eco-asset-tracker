@@ -95,7 +95,6 @@ const actions = {
   async saveRoom({ commit, state, dispatch }) {
     console.log(`Saving room with id: ${state.currentRoom._id}`);
     let room = new Room(state.currentRoom);
-    console.log(room);
     axios
       .put(`${ROOMS_URL}/${state.currentRoom._id}`, room)
       .then((response) => {
