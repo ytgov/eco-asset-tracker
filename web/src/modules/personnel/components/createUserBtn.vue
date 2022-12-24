@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="show" persistent width="800">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" small v-bind="attrs" v-on="on" @click="doShow"
+        <v-btn color="primary" v-bind="attrs" v-on="on" @click="doShow"
           >Add</v-btn
         >
       </template>

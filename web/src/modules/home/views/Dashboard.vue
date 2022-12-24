@@ -45,6 +45,9 @@
             <add-key-btn
               v-if="activeTab == tabs['keys'] && isAdmin"
             ></add-key-btn>
+            <create-user-btn
+              v-if="activeTab == tabs['personnel'] && isAdmin"
+            ></create-user-btn>
           </v-col>
         </v-row>
 
@@ -62,6 +65,7 @@ import AddAssetBtn from "@/modules/assets/components/addAssetBtn.vue";
 import AddKeyBtn from "@/modules/keys/components/addKeyBtn.vue";
 import KeysTable from "@/modules/keys/components/keysTable.vue";
 import PersonnelTable from "@/modules/personnel/components/personnelTable.vue";
+import createUserBtn from "@/modules/personnel/components/createUserBtn.vue";
 import { mapGetters } from "vuex";
 // import FloorplanEco from "@/modules/rooms/components/floorplan/floorplanECO.vue";
 
@@ -75,6 +79,7 @@ export default {
     AddRoomBtn,
     AddAssetBtn,
     AddKeyBtn,
+    createUserBtn,
     //FloorplanEco
   },
   data: () => ({
