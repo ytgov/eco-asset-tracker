@@ -1,4 +1,5 @@
 import { ROOMS_URL } from "@/urls";
+import { Room } from "./models/room";
 import axios from "axios";
 import randomID from "./utils";
 // import store from  "@/store";
@@ -79,10 +80,16 @@ const actions = {
       .get(`${ROOMS_URL}/${roomID}/keys`)
       .then((response) => {
         if (response.status === 200) {
-          commit("SET_ASSIGNED_KEYS", response.data);
-          return response.data;
+          let result;
+          if (response.data.length > 0) {
+            result = response.data;
+          } else {
+            result = [];
+          }
+          commit("SET_ASSIGNED_KEYS", result);
+          return result;
         } else {
-          return null;
+          return [];
         }
       })
       .catch((err) => {
@@ -93,12 +100,12 @@ const actions = {
   },
   async saveRoom({ commit, state, dispatch }) {
     console.log(`Saving room with id: ${state.currentRoom._id}`);
-
+    let room = new Room(state.currentRoom);
     axios
-      .put(`${ROOMS_URL}/${state.currentRoom._id}`, state.currentRoom)
+      .put(`${ROOMS_URL}/${state.currentRoom._id}`, room)
       .then((response) => {
         if (response.status === 200) {
-          commit("SET_ROOM", state.currentRoom);
+          commit("SET_ROOM", room);
           dispatch("getAllRooms");
         } else {
           console.log("Error saving room: " + response.status);
