@@ -80,10 +80,16 @@ const actions = {
       .get(`${ROOMS_URL}/${roomID}/keys`)
       .then((response) => {
         if (response.status === 200) {
-          commit("SET_ASSIGNED_KEYS", response.data);
-          return response.data;
+          let result;
+          if (response.data.length > 0) {
+            result = response.data;
+          } else {
+            result = [];
+          }
+          commit("SET_ASSIGNED_KEYS", result);
+          return result;
         } else {
-          return null;
+          return [];
         }
       })
       .catch((err) => {
