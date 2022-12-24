@@ -37,16 +37,16 @@
           </v-col>
           <v-col>
             <add-room-btn
-              v-if="activeTab == tabs['rooms'] && isAdmin"
+              v-if="activeTab == tabs['rooms'] && isEditor"
             ></add-room-btn>
             <add-asset-btn
-              v-if="activeTab == tabs['assets'] && isAdmin"
+              v-if="activeTab == tabs['assets'] && isEditor"
             ></add-asset-btn>
             <add-key-btn
-              v-if="activeTab == tabs['keys'] && isAdmin"
+              v-if="activeTab == tabs['keys'] && isEditor"
             ></add-key-btn>
             <create-user-btn
-              v-if="activeTab == tabs['personnel'] && isAdmin"
+              v-if="activeTab == tabs['personnel'] && isEditor"
             ></create-user-btn>
           </v-col>
         </v-row>
@@ -97,7 +97,7 @@ export default {
     },
   }),
   computed: {
-    ...mapGetters("administration/users", ["isAdmin"]),
+    ...mapGetters("administration/users", ["isEditor"]),
   },
   methods: {
     searchKeyUp(event) {
