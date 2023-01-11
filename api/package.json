@@ -23,7 +23,7 @@
     "express-validator": "^6.11.1",
     "helmet": "^4.6.0",
     "jwks-rsa": "^2.1.4",
-    "knex": "^0.95.6",
+    "knex": "^2.4.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mongodb": "^4.3.1",
