@@ -9,7 +9,7 @@ switch (process.env.NODE_ENV) {
     path = `../../.env.test`;
     break;
   case "production":
-    path = `../.env.production`;
+    path = `.env.production`;
     break;
   default:
     path = `../.env.development`;
@@ -18,16 +18,19 @@ switch (process.env.NODE_ENV) {
 dotenv.config({ path: path });
 
 let obj = process.env;
+
+console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
+console.log(obj);
+
 let pattern = "VUE_APP_";
 
 export const VUE_APP: any = Object.keys(obj)
-  .filter((k) => k.includes(pattern))
+  .filter(k => k.includes(pattern))
   .reduce((cur, key) => {
     return Object.assign(cur, { [key]: obj[key] });
   }, {});
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
-export const apiBaseUrl =
-  process.env.NODE_ENV == "production" ? "" : "http://localhost:3000";
+export const apiBaseUrl = process.env.NODE_ENV == "production" ? "" : "http://localhost:3000";
 export const API_PORT = process.env.API_PORT || "3000";
 export const FRONTEND_URL = process.env.FRONTEND_URL || "";
 export const AUTH_REDIRECT = process.env.AUTH_REDIRECT || "";
@@ -43,9 +46,10 @@ export const DATABASE_CONFIG = {
     host: process.env.DATABASE_HOST,
     port: Number(process.env.DATABASE_PORT),
     user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-  },
+    password: process.env.DATABASE_PASSWORD
+  }
 };
+
 //Azure AD configuration
 export const AD_CLIENT_ID = process.env.AD_CLIENT_ID || "";
 export const AD_CLIENT_SECRET = process.env.AD_CLIENT_SECRET || "";
@@ -56,8 +60,7 @@ export const MONGO_HOST = process.env.MONGO_HOST || "";
 export const MONGO_URL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}`;
 
 export const API_GATEWAY_KEY = process.env.API_GATEWAY_KEY || "";
-export const DEPARTMENT_API_URL =
-  "https://api.gov.yk.ca/finance/api/v2/accounts/departments";
+export const DEPARTMENT_API_URL = "https://api.gov.yk.ca/finance/api/v2/accounts/departments";
 
 export const MAIL_FROM = process.env.MAIL_FROM || "signing-authority@yukon.ca";
 export const MAIL_HOST = process.env.MAIL_HOST || "smtp.gov.yk.ca";
@@ -71,12 +74,12 @@ export const MAIL_CONFIG_DEV = {
   secure: false, // true for 465, false for other ports
   auth: {
     user: MAIL_USER,
-    pass: MAIL_PASS,
-  },
+    pass: MAIL_PASS
+  }
 };
 
 export const MAIL_CONFIG = {
   host: MAIL_HOST,
   port: MAIL_PORT,
-  secure: false, // true for 465, false for other ports
+  secure: false // true for 465, false for other ports
 };

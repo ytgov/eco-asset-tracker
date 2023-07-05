@@ -21,7 +21,7 @@ export class KnexService {
         return {
           status: "up",
           host: DATABASE_CONFIG.connection.host,
-          client: DATABASE_CONFIG.client,
+          client: DATABASE_CONFIG.client
         };
       })
       .catch((err: any) => {
@@ -30,7 +30,7 @@ export class KnexService {
           status: "error",
           host: DATABASE_CONFIG.connection.host,
           client: DATABASE_CONFIG.client,
-          message: err,
+          message: err
         };
       });
   }
