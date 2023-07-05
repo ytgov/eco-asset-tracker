@@ -19,9 +19,6 @@ dotenv.config({ path: path });
 
 let obj = process.env;
 
-console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
-console.log(obj);
-
 let pattern = "VUE_APP_";
 
 export const VUE_APP: any = Object.keys(obj)

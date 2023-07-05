@@ -3,13 +3,7 @@ import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 
-import {
-  API_PORT,
-  FRONTEND_URL,
-  APPLICATION_NAME,
-  AUTH0_DOMAIN,
-  VUE_APP,
-} from "./config";
+import { API_PORT, FRONTEND_URL, APPLICATION_NAME, AUTH0_DOMAIN, VUE_APP } from "./config";
 // import { doHealthCheck } from "./utils/healthCheck";
 // import { userRouter, authoritiesRouter, employeeRouter, departmentRouter, formARouter } from "./routes";
 
@@ -23,12 +17,14 @@ import {
   keysRouter,
   userRouter,
   systemRouter,
-  configRouter,
+  configRouter
 } from "./routes";
 import { isSystemAdministrator } from "./middleware/authz.middleware";
+
+import { CreateMigrationRoutes } from "./data";
 // import { migrateLatest, migrateDown, migrateUp } from "./data/migrator";
 
-//runMigrations();
+// runMigrations();
 
 const app = express();
 
@@ -47,8 +43,8 @@ app.use(
       "object-src": ["'none'"],
       "script-src": ["'self'", "'unsafe-eval'"],
       "script-src-attr": ["'none'"],
-      "style-src": ["'self'", "https:", "'unsafe-inline'"],
-    },
+      "style-src": ["'self'", "https:", "'unsafe-inline'"]
+    }
   })
 );
 
@@ -57,9 +53,11 @@ app.use(
   cors({
     origin: FRONTEND_URL,
     optionsSuccessStatus: 200,
-    credentials: true,
+    credentials: true
   })
 );
+
+CreateMigrationRoutes(app);
 
 // app.get("/seed", RequiresData, async (req: Request, res: Response) => {
 //   await Seed(req.store);
