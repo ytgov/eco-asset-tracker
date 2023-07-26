@@ -6,13 +6,14 @@ exports.up = function (knex: knex.Knex, Promise: any) {
     //table.increments("_id")
     table.string("first_name");
     table.string("last_name");
-    table.string("ynet_id").unique().notNullable();
+    table.string("ynet_id").unique();
     table.string("email").unique().notNullable();
     table.string("display_name");
     table.string("title");
     table.string("department");
     table.string("roles");
     table.string("status");
+    table.string("sub");
 
     //audit
     table.date("modified");

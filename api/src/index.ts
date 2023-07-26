@@ -51,7 +51,7 @@ app.use(
 // very basic CORS setup
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: [FRONTEND_URL],
     optionsSuccessStatus: 200,
     credentials: true
   })

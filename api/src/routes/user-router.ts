@@ -12,14 +12,9 @@ const db = new KnexUserService("users");
 export const userRouter = express.Router();
 // userRouter.use(checkJwt, loadUser);
 
-userRouter.get(
-  "/me",
-  checkJwt,
-  loadUser,
-  async (req: Request, res: Response) => {
-    return res.json(req.user);
-  }
-);
+userRouter.get("/me", checkJwt, loadUser, async (req: Request, res: Response) => {
+  return res.json(req.user);
+});
 
 userRouter.get("/", async (req: Request, res: Response) => {
   const query = {};

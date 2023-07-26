@@ -27,13 +27,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      color="#fff"
-      flat
-      height="70"
-      style="left: 0; border-bottom: 3px #f3b228 solid"
-    >
+    <v-app-bar app color="#fff" flat height="70" style="left: 0; border-bottom: 3px #f3b228 solid">
       <img src="/yukon.svg" style="margin: -8px 85px 0 0" height="44" />
       <v-toolbar-title>
         <span style="font-weight: 700">{{ applicationName }}</span>
@@ -50,9 +44,7 @@
       <v-spacer></v-spacer>
 
       <div>
-        <v-btn color="primary" text class="mr-1" to="/dashboard"
-          ><v-icon>mdi-home</v-icon></v-btn
-        >
+        <v-btn color="primary" text class="mr-1" to="/dashboard"><v-icon>mdi-home</v-icon></v-btn>
         <v-divider class="mr-5" vertical inset></v-divider>
 
         <v-btn v-if="!$auth.isAuthenticated" @click="login" color="primary">
@@ -144,11 +136,7 @@
 
     <v-overlay v-model="showOverlay">
       <div class="text-center">
-        <v-progress-circular
-          indeterminate
-          size="64"
-          class="mb-5"
-        ></v-progress-circular>
+        <v-progress-circular indeterminate size="64" class="mb-5"></v-progress-circular>
         <h1 class="title">Loading ECO Assets Applicaiton</h1>
       </div>
     </v-overlay>
@@ -179,7 +167,7 @@ export default {
     hasSidebar: false, //config.hasSidebar,
     hasSidebarClosable: config.hasSidebarClosable,
     search: "",
-    showAdmin: true,
+    showAdmin: true
   }),
   computed: {
     ...mapState("administration/users", ["user"]),
@@ -197,7 +185,7 @@ export default {
 
     returnTo: function() {
       return config.applicationUrl;
-    },
+    }
   },
 
   async mounted() {
@@ -221,7 +209,7 @@ export default {
     roles: function(val) {
       this.showAdmin = false;
       if (val.indexOf("Admin") >= 0) this.showAdmin = true;
-    },
+    }
   },
   methods: {
     ...mapActions(["initialize"]),
@@ -240,7 +228,7 @@ export default {
     },
     signOut: function() {
       window.location = LOGOUT_URL;
-    },
-  },
+    }
+  }
 };
 </script>
