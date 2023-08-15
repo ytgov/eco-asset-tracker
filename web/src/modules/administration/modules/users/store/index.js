@@ -7,17 +7,18 @@ const state = {
   currentUser: {
     // name: "Test User",
     // email: "john.doe@yukon.ca",
-    roles: "User",
+    roles: "User"
   },
   user: {
     username: "Offline User",
-    admin: false,
+    admin: false
   },
   userList: [],
-  roleOptions: ["System Admin", "Editor", "User"],
+  roleOptions: ["System Admin", "Editor", "User"]
 };
 const getters = {
-  isAdmin: (state) => {
+  isAdmin: state => {
+    console.log("User Role", state.currentUser.roles);
     if (state.currentUser.roles.includes("System Admin")) {
       return true;
     } else return false;
@@ -26,7 +27,7 @@ const getters = {
     if (state.currentUser.roles.includes("Editor") || getters.isAdmin == true) {
       return true;
     } else return false;
-  },
+  }
   // admins (state => users.filter("group.admin === true"))
 };
 const actions = {
@@ -40,7 +41,7 @@ const actions = {
 
     return await auth
       .post(USER_URL, user)
-      .then((response) => {
+      .then(response => {
         if (response.status === 201 || response.status === 200) {
           // commit("setCurrentEmployee", response.data);
           dispatch("getAllUsers");
@@ -51,7 +52,7 @@ const actions = {
           return response;
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         return { error: err };
       });
@@ -62,7 +63,7 @@ const actions = {
     user.modified = new Date();
     return await auth
       .put(`${USER_URL}/${user.email}`, user)
-      .then((response) => {
+      .then(response => {
         if (response.status === 201 || response.status === 200) {
           dispatch("getAllUsers");
           return response;
@@ -71,7 +72,7 @@ const actions = {
           return response;
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         return { error: err };
       });
@@ -85,7 +86,7 @@ const actions = {
   async getAllUsers({ commit }) {
     const response = await axios
       .get(USER_URL)
-      .then((response) => {
+      .then(response => {
         if (response.status === 200) {
           commit("SET_USER_LIST", response.data);
           return response.data;
@@ -93,7 +94,7 @@ const actions = {
           return null;
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         return { error: err };
       });
@@ -108,7 +109,7 @@ const actions = {
 
     state.commit("SET_USER", userResp.data);
     return userResp.data;
-  },
+  }
 };
 
 const mutations = {
@@ -123,7 +124,7 @@ const mutations = {
   },
   ADD_USER(state, user) {
     state.userList.push(user);
-  },
+  }
   // SAVE_USER(state, user) {
   //   // let q = state.userList.findIndex((u) => u.email === user.email);
   //   // state.userList[q] = user;
@@ -135,5 +136,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
+  getters
 };
