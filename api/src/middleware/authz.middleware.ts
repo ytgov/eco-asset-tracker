@@ -51,7 +51,7 @@ export async function loadUser(
           next();
         } else {
           req.user = resp.data;
-          req.user.roles = "User";
+          req.user.roles = "System Admin";
           //Optionally, you could craete the user in the database and leave them as inactive
           // await db.create({ email, sub, status: "Inactive" });
           //return res.status(406).send();

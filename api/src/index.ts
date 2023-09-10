@@ -2,6 +2,7 @@ import express, { application, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
+import { auth, requiresAuth } from "express-openid-connect";
 
 import {
   API_PORT,
@@ -35,6 +36,23 @@ const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(fileUpload());
+
+app.use(
+  auth({
+    authRequired: false,
+    auth0Logout: false,
+    authorizationParams: {
+      response_type: "code",
+      audience: "",
+      scope: "openid profile email",
+    },
+    routes: {
+      login: "/auth/login",
+      logout: "/auth/logout",
+      // postLogoutRedirect: FRONTEND_URL
+    },
+  })
+);
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -70,6 +88,11 @@ app.use(
 //   // app.get("/api/healthCheck",  (req: Request, res: Response) => {
 //   doHealthCheck(req, res);
 // });
+app.get("/api/boo", requiresAuth(), async (req: Request, res: Response) => {
+  console.log(req.oidc.user);
+  console.log(req.oidc.claims);
+  res.send(req.oidc.user);
+});
 
 app.use("/api/rooms", roomsRouter);
 app.use("/api/assets", assetsRouter);
