@@ -1,4 +1,4 @@
-const components = import.meta.globEager("@/components/base/*.vue");
+const components = import.meta.glob("@/components/base/*.vue", { eager: true });
 
 const register = (app) => {
   Object.entries(components).forEach(([path, definition]) => {
