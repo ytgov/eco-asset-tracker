@@ -3,23 +3,11 @@
     <v-card>
       <v-card-title>
         Assigned Personnel <v-spacer />
-        <link-personnel-dialog
-          v-if="edit"
-          @close="close()"
-        ></link-personnel-dialog>
+        <link-personnel-dialog v-if="edit" @close="close()"></link-personnel-dialog>
       </v-card-title>
-      <linked-personnel-simple-table
-        :edit="edit"
-        v-if="!loading"
-      ></linked-personnel-simple-table>
+      <linked-personnel-simple-table :edit="edit" v-if="!loading"></linked-personnel-simple-table>
       <div class="text-center pb-7">
-        <v-progress-circular
-          align-center
-          v-if="loading"
-          :indeterminate="loading"
-          color="primary"
-          height="5"
-        />
+        <v-progress-circular align-center v-if="loading" :indeterminate="loading" color="primary" height="5" />
       </div>
     </v-card>
   </div>
@@ -46,16 +34,16 @@ export default {
   },
   data: () => ({}),
   computed: {
-    appbarColor: function() {
+    appbarColor: function () {
       // return "yg_moss";
       return "";
     },
   },
   methods: {
-    close: function() {
+    close: function () {
       this.$emit("close");
     },
-    save: function() {
+    save: function () {
       this.close(); //replace with link asset methed (then close)
     },
   },

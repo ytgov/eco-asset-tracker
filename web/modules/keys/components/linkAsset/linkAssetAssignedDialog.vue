@@ -7,7 +7,7 @@
           mdi-close
         </v-icon> -->
     </v-toolbar>
-    <v-card tile>
+    <v-card rounded="0">
       <v-card-actions>
         <!-- <span class="text-h4">{{ room.name }}</span> -->
         <v-spacer></v-spacer>
@@ -23,11 +23,11 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn dark color="yg_moss" @click="accept()">
+        <v-btn variant="tonal" color="yg_moss" @click="accept()">
           Reassign
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="yg_lichen" class="mr-3" dark @click="cancel()">
+        <v-btn color="yg_lichen" class="mr-3" variant="tonal" @click="cancel()">
           Cancel
         </v-btn>
       </v-card-actions>
@@ -54,19 +54,19 @@ export default {
   },
   data: () => ({}),
   computed: {
-    appbarColor: function() {
+    appbarColor: function () {
       return "yg_sun";
     },
     ...mapState("rooms", ["rooms"])
   },
   methods: {
-    accept: function() {
+    accept: function () {
       this.$emit("accept");
     },
-    cancel: function() {
+    cancel: function () {
       this.$emit("cancel");
     },
-    roomName: function(roomID) {
+    roomName: function (roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
         return this.rooms.find(room => room._id == roomID).name;

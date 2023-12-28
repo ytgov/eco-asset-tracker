@@ -5,31 +5,20 @@
         Updating...
       </div>
       <div>
-        <v-progress-circular
-          align-center
-          v-if="updatingPersonnel"
-          :indeterminate="updatingPersonnel"
-          color="primary"
-          height="5"
-        />
+        <v-progress-circular align-center v-if="updatingPersonnel" :indeterminate="updatingPersonnel" color="primary"
+          height="5" />
       </div>
     </div>
-    <v-simple-table v-if="!updatingPersonnel">
+    <v-table v-if="!updatingPersonnel">
       <tbody>
-        <tr
-          v-for="person in assignedPersonnel"
-          :key="person.index"
-          @click="goToRoom(person.ynet_id)"
-        >
+        <tr v-for="person in assignedPersonnel" :key="person.index" @click="goToRoom(person.ynet_id)">
           <td class="text-body-2">{{ person.display_name }}</td>
           <td class="text-body-2">{{ person.title }}</td>
         </tr>
       </tbody>
-    </v-simple-table>
+    </v-table>
     <div class="text-center">
-      <assign-personnel-btn
-        v-if="edit && assignedPersonnel.length === 0 && !updatingPersonnel"
-      />
+      <assign-personnel-btn v-if="edit && assignedPersonnel.length === 0 && !updatingPersonnel" />
     </div>
   </v-container>
 </template>
@@ -59,13 +48,13 @@ export default {
   }),
   computed: {
     ...mapState("keys", ["assignedPersonnel", "updatingPersonnel"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "Name", value: "name" },
         { text: "Type", value: "Purpose" },
       ];
     },
-    keyID: function() {
+    keyID: function () {
       return this.$route.params.keyID;
     },
   },
@@ -74,7 +63,7 @@ export default {
       this.$router.push("/personnel/" + ynet_id);
     },
   },
-  async mounted() {},
+  async mounted() { },
 };
 </script>
 

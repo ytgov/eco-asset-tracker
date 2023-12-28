@@ -5,27 +5,17 @@
         Updating...
       </div>
       <div>
-        <v-progress-circular
-          align-center
-          v-if="updating"
-          :indeterminate="updating"
-          color="primary"
-          height="5"
-        />
+        <v-progress-circular align-center v-if="updating" :indeterminate="updating" color="primary" height="5" />
       </div>
     </div>
-    <v-simple-table v-if="!updating">
+    <v-table v-if="!updating">
       <tbody>
-        <tr
-          v-for="room in assignedRooms"
-          :key="room.index"
-          @click="goToRoom(room.room_id)"
-        >
+        <tr v-for="room in assignedRooms" :key="room.index" @click="goToRoom(room.room_id)">
           <td class="text-body-2">{{ room.name }}</td>
           <td class="text-body-2">{{ room.purpose }}</td>
         </tr>
       </tbody>
-    </v-simple-table>
+    </v-table>
     <div class="text-center">
       <assign-room-btn v-if="edit && assignedRooms.length === 0 && !updating" />
     </div>
@@ -57,13 +47,13 @@ export default {
   }),
   computed: {
     ...mapState("keys", ["currentKey", "assignedRooms", "updating"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "Name", value: "name" },
         { text: "Type", value: "Purpose" },
       ];
     },
-    keyID: function() {
+    keyID: function () {
       return this.$route.params.keyID;
     },
   },
@@ -72,7 +62,7 @@ export default {
       this.$router.push({ name: "room", params: { roomID: roomID } });
     },
   },
-  async mounted() {},
+  async mounted() { },
 };
 </script>
 

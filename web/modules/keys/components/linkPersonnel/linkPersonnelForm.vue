@@ -1,28 +1,12 @@
 <template>
   <v-container>
-    <v-text-field
-      v-show="edit"
-      class="pb-10 "
-      v-model="search"
-      prepend-icon="mdi-magnify"
-      label="Search"
-      single-line
-      hide-details
-      clearable
-    ></v-text-field>
+    <v-text-field v-show="edit" class="pb-10 " v-model="search" prepend-icon="mdi-magnify" label="Search" single-line
+      hide-details clearable></v-text-field>
 
-    <v-data-table
-      :headers="headers"
-      :items="employees"
-      :search="search"
-      :loading="loading"
-    >
+    <v-data-table :headers="headers" :items="employees" :search="search" :loading="loading">
       <template v-slot:item.assigned="{ item }">
-        <v-simple-checkbox
-          @click="doAssignPersonnel(item)"
-          :value="isAssigned(item.ynet_id)"
-        >
-        </v-simple-checkbox>
+        <v-checkbox-btn @click="doAssignPersonnel(item)" :value="isAssigned(item.ynet_id)">
+        </v-checkbox-btn>
       </template>
     </v-data-table>
   </v-container>
@@ -54,7 +38,7 @@ export default {
   computed: {
     ...mapState("keys", ["assignedPersonnel"]),
     ...mapState("personnel", ["employees"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "", value: "assigned" },
         { text: "Name", value: "display_name" },
@@ -62,7 +46,7 @@ export default {
         { text: "Email", value: "email" },
       ];
     },
-    keyID: function() {
+    keyID: function () {
       return this.$route.params.keyID;
     },
   },
@@ -78,13 +62,13 @@ export default {
       return y;
     },
     // ...mapActions("keys", ["getAssignedRoomKeys"]),
-    isAssigned: function(person) {
+    isAssigned: function (person) {
       if (this.assignments.personnel.findIndex((p) => p === person) > -1) {
         return true;
       }
       return false;
     },
-    doAssignPersonnel: async function(item) {
+    doAssignPersonnel: async function (item) {
       if (this.isAssigned(item.ynet_id)) {
         let newList = this.assignments.personnel.filter(
           (p) => p != item.ynet_id

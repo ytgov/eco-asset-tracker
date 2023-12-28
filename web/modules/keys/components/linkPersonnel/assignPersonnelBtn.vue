@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="800">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" outlined v-bind="attrs" v-on="on">
+    <template v-slot:activator="{ props }">
+      <v-btn color="primary" variant="outlined" v-bind="props">
         Assign Personnel
       </v-btn>
     </template>
@@ -21,7 +21,7 @@ export default {
     dialog: false,
   }),
   methods: {
-    close: function() {
+    close: function () {
       this.$emit("close");
     },
   },

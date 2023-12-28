@@ -2,14 +2,8 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table
-          :headers="localHeaders"
-          :items="dataset"
-          :search="search"
-          :loading="loading"
-          @click:row="openKeyDetails"
-          @current-items="currentItems"
-        >
+        <v-data-table :headers="localHeaders" :items="dataset" :search="search" :loading="loading"
+          @click:row="openKeyDetails" @current-items="currentItems">
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
               {{ roomName(item.room) }}
@@ -17,14 +11,10 @@
           </template>
 
           <template v-slot:footer.prepend>
-            <v-tooltip top>
-              <template v-slot:activator="{ on, attrs }">
-                <download-csv
-                  :data="filteredKeys"
-                  :labels="headers"
-                  name="keys.csv"
-                >
-                  <v-chip label outlined v-on="on" v-bind="attrs">
+            <v-tooltip location="top">
+              <template v-slot:activator="{ props }">
+                <download-csv :data="filteredKeys" :labels="headers" name="keys.csv">
+                  <v-chip label variant="outlined" v-bind="props">
                     <v-icon>
                       mdi-download
                     </v-icon>
@@ -71,7 +61,7 @@ export default {
     ...mapState("administration/users", ["user"]),
     ...mapState("rooms", ["rooms"]),
     ...mapState("keys", ["keys"]),
-    dataset: function() {
+    dataset: function () {
       if (this.all) {
         return this.keys;
       } else {
@@ -79,11 +69,11 @@ export default {
       }
     },
 
-    isAdmin: function() {
+    isAdmin: function () {
       return this.user.admin;
     },
 
-    localHeaders: function() {
+    localHeaders: function () {
       if (this.headers) {
         return this.headers;
       } else {
@@ -99,14 +89,14 @@ export default {
     },
   },
   methods: {
-    currentItems: function(value) {
+    currentItems: function (value) {
       this.filteredKeys = value;
     },
-    openKeyDetails: function(item) {
+    openKeyDetails: function (item) {
       // alert("Asset detail goes here!");
       this.$router.push("/keys/" + item._id);
     },
-    roomName: function(roomID) {
+    roomName: function (roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
         return this.rooms.find((room) => room._id == roomID).name;

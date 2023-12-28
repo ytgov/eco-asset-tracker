@@ -1,5 +1,5 @@
 <template>
-  <v-card tile>
+  <v-card rounded="0">
     <v-toolbar>
       <v-toolbar-title>
         Keys
@@ -17,11 +17,10 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import KeysTable from "./keysTable.vue";
 export default {
   name: "keysCard",
   components: {
-    KeysTable,
+    // KeysTable,
   },
   props: {
     search: {
@@ -48,7 +47,7 @@ export default {
     // items: function() {
     //   return this.getKeysByRoom(this.roomID);
     // },
-    headers: function() {
+    headers: function () {
       return [
         { text: "Key Code", value: "code" },
         { text: "Key Number", value: "number" }, // <- not required if shown in the context of a room
@@ -57,7 +56,7 @@ export default {
       ];
     },
   },
-  mounted: async function() {
+  mounted: async function () {
     this.items = await this.getAssignedKeys(this.roomID);
     this.loading = false;
   },

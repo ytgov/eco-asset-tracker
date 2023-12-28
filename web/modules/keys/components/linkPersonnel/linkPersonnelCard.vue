@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card tile>
+    <v-card rounded="0">
       <v-card-title> Employees with Key: {{ currentKey.code }} </v-card-title>
 
       <v-card-text>
@@ -27,15 +27,15 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState("keys", ["currentKey"]),
-    appbarColor: function() {
+    appbarColor: function () {
       return "yg_moss";
     },
   },
   methods: {
-    close: function() {
+    close: function () {
       this.$emit("close");
     },
-    save: function() {
+    save: function () {
       this.close(); //replace with link asset methed (then close)
     },
   },

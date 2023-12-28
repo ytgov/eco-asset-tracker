@@ -1,29 +1,13 @@
 <template>
   <v-container>
-    <v-text-field
-      v-show="edit"
-      class="pb-10 "
-      v-model="search"
-      prepend-icon="mdi-magnify"
-      label="Search"
-      single-line
-      hide-details
-      clearable
-    ></v-text-field>
+    <v-text-field v-show="edit" class="pb-10 " v-model="search" prepend-icon="mdi-magnify" label="Search" single-line
+      hide-details clearable></v-text-field>
 
-    <v-data-table
-      :headers="headers"
-      :items="rooms"
-      :search="search"
-      :loading="loading"
-    >
+    <v-data-table :headers="headers" :items="rooms" :search="search" :loading="loading">
       <template v-slot:item.assigned="{ item }">
         <!-- {{ item.room_id }} -->
-        <v-simple-checkbox
-          @click="doAssignRoom(item)"
-          :value="isAssigned(item._id)"
-        >
-        </v-simple-checkbox>
+        <v-checkbox-btn @click="doAssignRoom(item)" :value="isAssigned(item._id)">
+        </v-checkbox-btn>
       </template>
     </v-data-table>
   </v-container>
@@ -55,14 +39,14 @@ export default {
   computed: {
     ...mapState("keys", ["currentKey", "assignedRooms"]),
     ...mapState("rooms", ["rooms"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "", value: "assigned" },
         { text: "Room", value: "name" },
         { text: "Type", value: "purpose" },
       ];
     },
-    keyID: function() {
+    keyID: function () {
       return this.$route.params.keyID;
     },
   },
@@ -81,13 +65,13 @@ export default {
       return y;
     },
     // ...mapActions("keys", ["getAssignedRoomKeys"]),
-    isAssigned: function(room) {
+    isAssigned: function (room) {
       if (this.assignments.rooms.findIndex((p) => p === room) > -1) {
         return true;
       }
       return false;
     },
-    doAssignRoom: async function(item) {
+    doAssignRoom: async function (item) {
       if (this.isAssigned(item._id)) {
         let newList = this.assignments.rooms.filter((p) => p != item._id);
 

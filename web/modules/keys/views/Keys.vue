@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb
-      :title="page.title"
-      :icon="page.icon"
-      :breadcrumbs="breadcrumbs">
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
       <template #right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -18,9 +15,7 @@
       </template>
 
       <v-card>
-        <keys-table
-          :all="true"
-          :search="search" />
+        <keys-table :all="true" :search="search" />
       </v-card>
     </BaseCard>
   </v-container>
@@ -56,7 +51,7 @@ export default {
       ];
     },
   },
-  created() {},
+  created() { },
   methods: {
     closeRoomDetails() {
       this.dialog = false;

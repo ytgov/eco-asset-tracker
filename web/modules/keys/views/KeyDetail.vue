@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb
-      :title="page.title"
-      :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -12,9 +8,9 @@
     <v-row>
       <v-col cols="8">
         <v-toolbar dark :color="appbarColor">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-toolbar-title v-bind="attrs" v-on="on">
+          <v-tooltip location="right">
+            <template v-slot:activator="{ props }">
+              <v-toolbar-title v-bind="props">
                 Details for Key {{ keyID }}
               </v-toolbar-title>
             </template>
@@ -30,20 +26,17 @@
             </v-icon>
           </slot>
         </v-toolbar>
-        <v-card tile class="">
+        <v-card rounded="0" class="">
           <v-card-text>
             <v-row>
               <v-col cols="4">
-                <key-form-detail :edit.sync="edit"></key-form-detail>
+                <key-form-detail v-model:edit="edit"></key-form-detail>
               </v-col>
               <v-col cols="8">
                 <v-row>
                   <v-col>
                     <!-- Key to People -->
-                    <key-personnel-details-card
-                      :edit="edit"
-                      :loading="loading"
-                    ></key-personnel-details-card>
+                    <key-personnel-details-card :edit="edit" :loading="loading"></key-personnel-details-card>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -59,15 +52,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              v-if="edit && isEditor"
-              dark
-              color="yg_moss"
-              @click="doSave()"
-            >
+            <v-btn v-if="edit && isEditor" variant="tonal" color="yg_moss" @click="doSave()">
               Save
             </v-btn>
-            <v-btn v-else dark color="primary" @click="close()">
+            <v-btn v-else variant="tonal" color="primary" @click="close()">
               Close
             </v-btn>
           </v-card-actions>
@@ -91,7 +79,7 @@ import { mapActions, mapGetters } from "vuex";
 import KeyRoomDetailsCard from "../components/linkRoom/KeyRoomDetailsCard.vue";
 import KeyPersonnelDetailsCard from "../components/linkPersonnel/KeyPersonnelDetailsCard.vue";
 export default {
-  name: "",
+  name: "KeyDetailPage",
   components: {
     KeyFormDetail,
     KeyRoomDetailsCard,
@@ -107,12 +95,12 @@ export default {
     things: [],
     loading: true,
   }),
-  created() {},
+  created() { },
   computed: {
-    keyID: function() {
+    keyID: function () {
       return this.$route.params.keyID;
     },
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Keys", to: "/keys", exact: true },
@@ -134,15 +122,15 @@ export default {
       "getAssignedRoomKeys",
       "getAssignedPersonnelKeys",
     ]),
-    doEdit: function() {
+    doEdit: function () {
       this.getKey(this.keyID);
       this.edit = true;
     },
-    doSave: function() {
+    doSave: function () {
       this.saveKey(this.asset);
       this.edit = false;
     },
-    close: function() {
+    close: function () {
       this.$router.push(`/keys`);
     },
   },

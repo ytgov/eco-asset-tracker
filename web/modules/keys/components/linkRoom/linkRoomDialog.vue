@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="600">
-    <template v-slot:activator="{ on, attrs }">
-      <v-icon v-bind="attrs" v-on="on">
+    <template v-slot:activator="{ props }">
+      <v-icon v-bind="props">
         mdi-pencil
       </v-icon>
     </template>
@@ -21,7 +21,7 @@ export default {
     dialog: false,
   }),
   methods: {
-    close: function() {
+    close: function () {
       this.$emit("close");
     },
   },

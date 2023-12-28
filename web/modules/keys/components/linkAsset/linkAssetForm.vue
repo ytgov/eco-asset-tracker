@@ -1,35 +1,15 @@
 <template>
   <v-container>
-    <link-asset-assigned-dialog
-      :warn="warn"
-      :asset="currentAsset"
-      :room="currentRoom"
-      @accept="doOverwrite()"
-      @cancel="warn = false"
-    >
+    <link-asset-assigned-dialog :warn="warn" :asset="currentAsset" :room="currentRoom" @accept="doOverwrite()"
+      @cancel="warn = false">
     </link-asset-assigned-dialog>
-    <v-text-field
-      class="pb-10 "
-      v-model="search"
-      prepend-icon="mdi-magnify"
-      label="Search"
-      single-line
-      hide-details
-      clearable
-    ></v-text-field>
+    <v-text-field class="pb-10 " v-model="search" prepend-icon="mdi-magnify" label="Search" single-line hide-details
+      clearable></v-text-field>
 
-    <v-data-table
-      :headers="headers"
-      :items="assets"
-      :search="search"
-      :loading="loading"
-    >
+    <v-data-table :headers="headers" :items="assets" :search="search" :loading="loading">
       <template v-slot:item.room="{ item }">
-        <v-simple-checkbox
-          :value="isAssigned(item.room)"
-          @click="doAssignRoom(item)"
-        >
-        </v-simple-checkbox>
+        <v-checkbox-btn :value="isAssigned(item.room)" @click="doAssignRoom(item)">
+        </v-checkbox-btn>
       </template>
     </v-data-table>
   </v-container>
@@ -55,7 +35,7 @@ export default {
     ...mapGetters("assets", ["getAssetsByRoom"]),
     ...mapState("assets", ["assets", "currentAsset"]),
     ...mapState("rooms", ["currentRoom"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: ``, value: "room" },
         { text: "Asset", value: "assetNum" },
@@ -67,20 +47,20 @@ export default {
   },
   methods: {
     ...mapActions("assets", ["assignRoom", "getAsset"]),
-    isAssigned: function(room) {
+    isAssigned: function (room) {
       if (room == this.currentRoom._id) {
         return true;
       }
       return false;
     },
-    openAssetDetails: function(item) {
+    openAssetDetails: function (item) {
       this.$router.push("/assets/" + item._id);
     },
-    doOverwrite: async function() {
+    doOverwrite: async function () {
       await this.assignRoom(this.currentRoom._id);
       this.warn = false;
     },
-    doAssignRoom: async function(item) {
+    doAssignRoom: async function (item) {
       // get the asset from the database and load it into the store
       await this.getAsset(item._id);
       //if the the room for the asset is empty then assign it to the current room
