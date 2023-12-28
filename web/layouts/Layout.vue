@@ -17,7 +17,7 @@ import { LOGOUT_URL } from "@/urls";
 import navAppBar from "./components/nav/navAppBar.vue";
 
 export default {
-  name: "Layout",
+  name: "LayoutView",
   components: {
     navAppBar,
   },

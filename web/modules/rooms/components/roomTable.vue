@@ -2,15 +2,8 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table
-          :headers="headers"
-          dense
-          :search="search"
-          :items="rooms"
-          :loading="loadingRooms"
-          @click:row="openRoomDetails"
-          @current-items="currentItems"
-        >
+        <v-data-table dense :headers="headers" :search="search" :items="rooms" :loading="loadingRooms"
+          @click:row="openRoomDetails" @current-items="currentItems">
           <template v-slot:item.name="{ item }">
             <!-- <v-icon>
               mdi-delete
@@ -21,19 +14,16 @@
             {{ item.name }}
           </template>
           <template v-slot:footer.prepend>
-            <v-tooltip top>
-              <template v-slot:activator="{ on, attrs }">
-                <download-csv
-                  :data="filteredRooms"
-                  :labels="headers"
-                  name="rooms.csv"
-                >
-                  <v-chip label outlined v-on="on" v-bind="attrs">
+            <v-tooltip location="top">
+              <template v-slot:activator="{ props }">
+                <download-csv :data="filteredRooms" :labels="headers" name="rooms.csv">
+                  <v-chip label variant=outlined v-bind="props">
                     <v-icon>
                       mdi-download
                     </v-icon>
                   </v-chip>
                 </download-csv>
+                <v-spacer />
               </template>
               <span>Download CSV</span>
             </v-tooltip>
@@ -71,11 +61,11 @@ export default {
   computed: {
     ...mapState("administration/users", ["user"]),
 
-    isAdmin: function() {
+    isAdmin: function () {
       return this.user.admin;
     },
     ...mapState("rooms", ["rooms"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "Name", value: "name" },
         { text: "Purpose", value: "purpose" },
@@ -84,7 +74,7 @@ export default {
       // return Object.keys(this.rooms)
     },
   },
-  mounted: async function() {
+  mounted: async function () {
     this.loadingRooms = false;
     // this.formAItems = await this.getDepartmentFormAList(
     //   this.$route.params.departmentId
@@ -92,7 +82,7 @@ export default {
     // this.loadingFormA = false;
   },
   methods: {
-    currentItems: function(value) {
+    currentItems: function (value) {
       this.filteredRooms = value;
     },
     ...mapActions("rooms", ["getAllRooms", "getRoom"]),

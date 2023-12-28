@@ -1,39 +1,28 @@
 <template>
   <v-app>
-    <!-- <v-overlay
-        persistent
-        :model-value="!isInitialized"
-        class="align-center justify-center">
-        <div class="text-center pt-15 my-10">
-          <v-progress-circular
-            indeterminate
-            size="64"
-            color="white"></v-progress-circular>
-        </div>
+    <v-overlay persistent :model-value="!isInitialized" class="align-center justify-center">
+      <div class="text-center pt-15 my-10">
+        <v-progress-circular indeterminate size="64" color="white" />
+      </div>
 
-        <h2 class="text-white text my-10">Loading Application...</h2>
-      </v-overlay>
-    </div> -->
+      <h2 class="text-white text my-10">Loading Application...</h2>
+    </v-overlay>
 
-    <!-- <div class="bg-white">Initialized: {{ isInitialized }}</div>
-    <div class="bg-white">Authenticated: {{ isAuthenticated }}</div> -->
-    <!-- <v-container
-      ><v-row>
-        <v-col> -->
-    <v-btn @click="login"> Login! </v-btn>
-    {{ user }}
-    <!-- <router-view> </router-view> -->
-    <!-- </v-col>
+    <v-container fluid>
+      <v-row>
+        <v-col>
+          <router-view />
+        </v-col>
       </v-row>
-    </v-container> -->
-    <!-- <Notifications></Notifications> -->
+    </v-container>
+    <Notifications />
   </v-app>
 </template>
 
 <script setup>
 import { useAuth0 } from "@auth0/auth0-vue";
 // import { auth0 } from "@/plugins/auth0";
-import { computed } from "vue";
+import { onMounted } from "vue";
 
 const auth0 = useAuth0();
 
@@ -45,10 +34,21 @@ async function login() {
         console.log("token: " + token);
       });
     }
+
   });
 }
 
-const user = computed(() => auth0);
+onMounted(async () => {
+
+  if (!auth0.isAuthenticated) {
+    await login();
+
+  }
+  console.log(auth0.isAuthenticated.value);
+  console.log(auth0.user.value);
+});
+
+// const user = computed(() => auth0);
 </script>
 
 <script>
@@ -61,6 +61,7 @@ export default {
   data: () => ({
     overlay: true,
     drawer: { show: false },
+    isInitialized: true,
   }),
 
   computed: {
@@ -73,6 +74,15 @@ export default {
     //     return false;
     //   }
     // },
+  },
+  async mounted() { },
+  async created() {
+    // if (!this.isInitialized) {
+    //   console.log("App.vue: App is not initialized");
+    //   await this.initialize();
+    // } else {
+    //   console.log("App.vue: App is initialized");
+    // }
   },
 
   methods: {
@@ -87,15 +97,6 @@ export default {
     //     return false;
     //   }
     // },
-  },
-  async mounted() {},
-  async created() {
-    // if (!this.isInitialized) {
-    //   console.log("App.vue: App is not initialized");
-    //   await this.initialize();
-    // } else {
-    //   console.log("App.vue: App is initialized");
-    // }
   },
 };
 </script>

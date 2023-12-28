@@ -7,9 +7,7 @@
 
       <v-card>
         <v-card-title>
-          <v-tabs
-            mandatory
-            v-model="activeTab">
+          <v-tabs mandatory v-model="activeTab">
             <v-tab>Rooms</v-tab>
             <v-tab>Assets</v-tab>
             <v-tab>Keys</v-tab>
@@ -18,38 +16,40 @@
         </v-card-title>
         <v-row>
           <v-col cols="10">
-            {{ activeTab }}
 
             <v-card-text>
-              <!-- <v-window v-model="activeTab">
-                <v-window-item> rooms </v-window-item>
-              </v-window> -->
-            </v-card-text>
-            <v-tab-item>
-              <!-- <room-table :search="search"></room-table> -->
-              <!-- <floorplan-eco> </floorplan-eco> -->
-            </v-tab-item>
+              <v-window v-model="activeTab">
+                <v-window-item>
 
-            <v-tab-item>
-              <!-- <assets-grid
+                  <RoomTable />
+                </v-window-item>
+              </v-window>
+            </v-card-text>
+            <!-- <v-tab-item> -->
+            <!-- <room-table :search="search"></room-table> -->
+            <!-- <floorplan-eco> </floorplan-eco> -->
+            <!-- </v-tab-item> -->
+
+            <!-- <v-tab-item> -->
+            <!-- <assets-grid
                   all
                   :search="search"></assets-grid
               > -->
-            </v-tab-item>
+            <!-- </v-tab-item> -->
 
-            <v-tab-item>
-              <!-- <keys-table
+            <!-- <v-tab-item> -->
+            <!-- <keys-table
                   all
                   :search="search"></keys-table
               > -->
-            </v-tab-item>
+            <!-- </v-tab-item> -->
 
-            <v-tab-item>
-              <!-- <personnel-table
+            <!-- <v-tab-item> -->
+            <!-- <personnel-table
                   all
                   :search="search"></personnel-table
               > -->
-            </v-tab-item>
+            <!-- </v-tab-item> -->
           </v-col>
           <!-- <v-col>
             <add-room-btn
@@ -84,7 +84,7 @@ import { mapGetters } from "vuex";
 // import FloorplanEco from "@/modules/rooms/components/floorplan/floorplanECO.vue";
 
 export default {
-  name: "Dashboard",
+  name: "DashboardView",
   components: {
     RoomTable,
     AssetsGrid,
