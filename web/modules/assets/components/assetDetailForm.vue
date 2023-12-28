@@ -1,39 +1,18 @@
 <template>
-  <v-form
-    v-model="valid"
-    ref="form"
-    :lazy-validation="true"
-    :validate-on-blur="false"
-    :validate-on-change="false"
-  >
+  <v-form v-model="valid" ref="form" :lazy-validation="true" :validate-on-blur="false" :validate-on-change="false">
     <v-row class="pt-5">
       <v-col cols="3">
-        <v-switch
-          class=""
-          v-model="asset.active"
-          :label="activeLabel.text"
-          :color="activeLabel.color"
-          inset
-        ></v-switch>
+        <v-switch class="" v-model="asset.active" :label="activeLabel.text" :color="activeLabel.color" inset></v-switch>
       </v-col>
     </v-row>
     <v-row class="">
       <v-col>
-        <v-text-field
-          v-model="asset.assetNum"
-          label="Asset Number"
-          :rules="[rules.required]"
-          :readonly="!edit"
-        ></v-text-field>
+        <v-text-field v-model="asset.assetNum" label="Asset Number" :rules="[rules.required]"
+          :readonly="!edit"></v-text-field>
       </v-col>
       <v-col>
-        <v-autocomplete
-          v-model="asset.type"
-          :items="allTypes"
-          label="Type"
-          :rules="[rules.required]"
-          :readonly="!edit"
-        ></v-autocomplete>
+        <v-autocomplete v-model="asset.type" :items="allTypes" label="Type" :rules="[rules.required]"
+          :readonly="!edit"></v-autocomplete>
       </v-col>
     </v-row>
     <v-row>
@@ -42,73 +21,33 @@
         </v-text-field>
       </v-col>
       <v-col>
-        <v-text-field
-          v-model="asset.model"
-          label="Model"
-          :readonly="!edit"
-        ></v-text-field>
+        <v-text-field v-model="asset.model" label="Model" :readonly="!edit"></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <v-text-field
-          v-model="asset.description"
-          label="Description"
-          :readonly="!edit"
-        ></v-text-field>
+        <v-text-field v-model="asset.description" label="Description" :readonly="!edit"></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <v-menu
-          v-model="menu"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="asset.purchaseDate"
-              label="Purchase Date"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
+        <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+          min-width="auto">
+          <template v-slot:activator="{ props }">
+            <v-text-field v-model="asset.purchaseDate" label="Purchase Date" prepend-icon="mdi-calendar" readonly
+              v-bind="props"></v-text-field>
           </template>
-          <v-date-picker
-            color="primary"
-            v-model="asset.purchaseDate"
-            @input="menu = false"
-          ></v-date-picker>
+          <v-date-picker color="primary" v-model="asset.purchaseDate" @input="menu = false"></v-date-picker>
         </v-menu>
       </v-col>
       <v-col>
-        <v-menu
-          v-model="menu2"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="asset.installDate"
-              label="Installed Date"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
+        <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+          min-width="auto">
+          <template v-slot:activator="{ props }">
+            <v-text-field v-model="asset.installDate" label="Installed Date" prepend-icon="mdi-calendar" readonly
+              v-bind="props"></v-text-field>
           </template>
-          <v-date-picker
-            color="primary"
-            v-model="asset.installDate"
-            @input="menu2 = false"
-          ></v-date-picker>
+          <v-date-picker color="primary" v-model="asset.installDate" @input="menu2 = false"></v-date-picker>
         </v-menu>
       </v-col>
     </v-row>
@@ -116,7 +55,7 @@
       <v-col>
         <v-card>
           <v-card-title>
-            <span class="subtitle-1">Assigments</span>
+            <span class="text-subtitle-1">Assigments</span>
           </v-card-title>
           <v-card-text>
             <v-tabs>
@@ -124,13 +63,8 @@
                 Room
               </v-tab>
               <v-tab-item>
-                <v-autocomplete
-                  v-if="edit"
-                  v-model="asset.room"
-                  :items="rooms"
-                  item-value="_id"
-                  item-text="name"
-                ></v-autocomplete>
+                <v-autocomplete v-if="edit" v-model="asset.room" :items="rooms" item-value="_id"
+                  item-title="name"></v-autocomplete>
 
                 <div class="text-subtitle-1 d-flex pl-5 pt-5">
                   {{ roomName(asset.room) }}
@@ -150,23 +84,11 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-autocomplete
-          v-model="asset.status"
-          :items="statuses"
-          label="Status"
-          :readonly="!edit"
-        >
-          ></v-autocomplete
-        >
+        <v-autocomplete v-model="asset.status" :items="statuses" label="Status" :readonly="!edit">
+          ></v-autocomplete>
       </v-col>
       <v-col>
-        <v-textarea
-          v-model="asset.statusReason"
-          :rows="3"
-          label="Status Reason"
-          auto-grow
-          :readonly="!edit"
-        >
+        <v-textarea v-model="asset.statusReason" :rows="3" label="Status Reason" auto-grow :readonly="!edit">
         </v-textarea>
       </v-col>
     </v-row>
@@ -217,7 +139,7 @@ export default {
         this.$store.commit("assets/SET_ASSET", value);
       },
     },
-    activeLabel: function() {
+    activeLabel: function () {
       if (this.asset.active == true) {
         return { text: "Active", color: "yg_moss" };
       } else {
@@ -226,7 +148,7 @@ export default {
     },
   },
   methods: {
-    roomName: function(roomID) {
+    roomName: function (roomID) {
       //find the room in the list of rooms and return the name of the room matching roomID
       if (roomID && this.rooms.length > 0) {
         return this.rooms.find((room) => room._id == roomID).name;

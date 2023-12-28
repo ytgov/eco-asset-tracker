@@ -1,6 +1,6 @@
 <template>
   <span>
-    <v-btn color="primary" dark @click="createNewAsset()">
+    <v-btn color="primary" variant="tonal" @click="createNewAsset()">
       Add
     </v-btn>
     <v-dialog max-width="600" v-model="dialog">
@@ -13,13 +13,13 @@
           mdi-close
         </v-icon>
       </v-toolbar>
-      <v-card tile>
+      <v-card rounded="0">
         <v-card-text>
           <asset-detail-form :edit="true"></asset-detail-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" dark @click="create()">
+          <v-btn color="primary" variant="tonal" @click="create()">
             Save
           </v-btn>
         </v-card-actions>
@@ -46,7 +46,7 @@ export default {
   computed: {
     ...mapState("rooms", ["rooms"]),
     ...mapState("assets", ["currentAsset"]),
-    activeLabel: function() {
+    activeLabel: function () {
       if (this.asset.active == true) {
         return { text: "Active", color: "yg_moss" };
       } else {
@@ -58,12 +58,12 @@ export default {
     ...mapActions("assets", ["createAsset", "clearAsset"]),
     ...mapMutations("assets", ["SET_ASSET"]),
 
-    close: function() {
+    close: function () {
       this.dialog = false;
       this.SET_ASSET = {};
     },
 
-    create: async function() {
+    create: async function () {
       if (this.currentAsset.assetNum) {
         await this.createAsset(this.currentAsset);
         await this.clearAsset();
@@ -76,12 +76,12 @@ export default {
 
       this.close();
     },
-    createNewAsset: async function() {
+    createNewAsset: async function () {
       await this.clearAsset();
       this.dialog = true;
     },
   },
-  mounted: async function() {
+  mounted: async function () {
     if (this.rooms.length == 0) {
       // console.log("Initializing Rooms");
       // await this.getAllRooms();

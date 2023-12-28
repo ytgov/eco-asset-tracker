@@ -1,5 +1,5 @@
 <template>
-  <v-card tile>
+  <v-card rounded="0">
     <v-toolbar>
       <v-toolbar-title>
         Infrastructure
@@ -38,7 +38,7 @@ export default {
     dialog: false,
   }),
   computed: {
-    items: function() {
+    items: function () {
       return this.getAssetsByRoom(this.roomID).filter((asset) =>
         this.infrastructureTypes.includes(asset.type)
       );
@@ -46,7 +46,7 @@ export default {
     ...mapGetters("administration/users", ["isAdmin"]),
     ...mapGetters("administration/assetTypes", ["infrastructureTypes"]),
     ...mapGetters("assets", ["getAssetsByRoom"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "Type", value: "type" },
         // { text: "Name", value: "name" },
@@ -55,7 +55,7 @@ export default {
       // return Object.keys(this.rooms)
     },
   },
-  mounted: async function() {
+  mounted: async function () {
     this.loading = false;
   },
   methods: {},

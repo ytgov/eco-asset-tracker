@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb
-      :title="page.title"
-      :icon="page.icon"
-      :breadcrumbs="breadcrumbs">
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -14,15 +11,11 @@
       </template>
 
       <template v-slot:right>
-        <add-asset-btn
-          all
-          v-if="isAdmin"></add-asset-btn>
+        <add-asset-btn all v-if="isAdmin"></add-asset-btn>
       </template>
 
       <v-card>
-        <assets-grid
-          all
-          :search="search"></assets-grid>
+        <assets-grid all :search="search"></assets-grid>
         <notifications ref="notifier"></notifications>
       </v-card>
     </BaseCard>
@@ -35,7 +28,7 @@ import AddAssetBtn from "../components/addAssetBtn.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "",
+  name: "AssetsPage",
   components: {
     AssetsGrid,
     AddAssetBtn,
@@ -47,7 +40,7 @@ export default {
     },
     dialog: false,
   }),
-  created() {},
+  created() { },
   computed: {
     ...mapGetters("administration/users", ["isAdmin"]),
     breadcrumbs: function () {

@@ -5,12 +5,7 @@
         No one is assigned to this asset.
       </div>
       <div class="text-center">
-        <v-btn
-          v-if="edit"
-          color="primary"
-          outlined
-          @click="editPerson = !editPerson"
-        >
+        <v-btn v-if="edit" color="primary" variant="outlined" @click="editPerson = !editPerson">
           Assign a Person
         </v-btn>
       </div>
@@ -31,12 +26,7 @@
           </div>
         </v-col>
         <v-col>
-          <v-btn
-            v-if="edit"
-            color="primary"
-            outlined
-            @click="editPerson = !editPerson"
-          >
+          <v-btn v-if="edit" color="primary" variant="outlined" @click="editPerson = !editPerson">
             Edit
           </v-btn>
         </v-col>
@@ -71,7 +61,7 @@ export default {
   computed: {
     ...mapGetters("personnel", ["getEmployeeDetails"]),
     ...mapState("assets", ["currentAsset"]),
-    personnelLink: function() {
+    personnelLink: function () {
       return `/personnel/${this.currentAsset.person}`;
     },
     person() {
@@ -81,10 +71,10 @@ export default {
     },
   },
   methods: {
-    goToPersonnel: function() {
+    goToPersonnel: function () {
       this.$router.push(this.personnelLink);
     },
-    unhidePersonDetails: function() {
+    unhidePersonDetails: function () {
       this.editPerson = false;
     },
   },

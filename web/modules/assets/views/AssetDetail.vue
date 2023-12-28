@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb
-      :title="page.title"
-      :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -12,9 +8,9 @@
     <v-row>
       <v-col cols="6">
         <v-toolbar dark :color="appbarColor">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-toolbar-title v-bind="attrs" v-on="on">
+          <v-tooltip location="right">
+            <template v-slot:activator="{ props }">
+              <v-toolbar-title v-bind="props">
                 {{ asset.assetNum }}
               </v-toolbar-title>
             </template>
@@ -30,21 +26,16 @@
             </v-icon>
           </slot>
         </v-toolbar>
-        <v-card tile>
+        <v-card rounded="0">
           <v-card-text>
             <asset-detail-form :edit="!readonly"></asset-detail-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              v-if="!readonly && isAdmin"
-              dark
-              color="yg_moss"
-              @click="save()"
-            >
+            <v-btn v-if="!readonly && isAdmin" variant="tonal" color="yg_moss" @click="save()">
               Save
             </v-btn>
-            <v-btn v-else dark color="primary" @click="close()">
+            <v-btn v-else variant="tonal" color="primary" @click="close()">
               Close
             </v-btn>
           </v-card-actions>
@@ -59,7 +50,7 @@
 import AssetDetailForm from "../components/assetDetailForm.vue";
 import { mapActions, mapState, mapGetters } from "vuex";
 export default {
-  name: "",
+  name: "AssetDetailPage",
   components: {
     AssetDetailForm,
   },
@@ -79,17 +70,17 @@ export default {
       else color = "yg_twilight";
       return color;
     },
-    assetID: function() {
+    assetID: function () {
       return this.$route.params.assetID;
     },
     ...mapState("assets", ["currentAsset"]),
     ...mapState("rooms", ["rooms"]),
     ...mapGetters("administration/users", ["isAdmin"]),
-    asset: function() {
+    asset: function () {
       return this.currentAsset;
     },
 
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Assets", to: "/assets", exact: true },
@@ -100,18 +91,18 @@ export default {
   methods: {
     ...mapActions("rooms", ["getAllRooms"]),
     ...mapActions("assets", ["getAsset", "saveAsset"]),
-    edit: function() {
+    edit: function () {
       if (this.rooms.length == 0) {
         this.getAllRooms();
       }
 
       this.readonly = false;
     },
-    save: function() {
+    save: function () {
       this.saveAsset(this.asset);
       this.readonly = true;
     },
-    close: function() {
+    close: function () {
       this.$router.push(`/assets`);
     },
   },

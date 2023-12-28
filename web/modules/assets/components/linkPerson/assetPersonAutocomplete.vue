@@ -1,14 +1,7 @@
 <template>
   <div>
-    <v-autocomplete
-      v-model="person"
-      :items="employees"
-      item-text="display_name"
-      item-value="ynet_id"
-      @change="$emit('change')"
-      clearable
-      label="Person"
-    >
+    <v-autocomplete v-model="person" :items="employees" item-title="display_name" item-value="ynet_id"
+      @update:model-value="$emit('change')" clearable label="Person">
     </v-autocomplete>
   </div>
 </template>

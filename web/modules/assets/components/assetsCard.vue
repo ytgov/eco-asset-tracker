@@ -1,5 +1,5 @@
 <template>
-  <v-card tile>
+  <v-card rounded="0">
     <v-toolbar>
       <v-toolbar-title>
         Assets
@@ -45,13 +45,13 @@ export default {
   }),
 
   computed: {
-    items: function() {
+    items: function () {
       return this.getAssetsByRoom(this.roomID);
     },
     ...mapGetters("administration/users", ["isAdmin"]),
     ...mapGetters("assets", ["getAssetsByRoom"]),
   },
-  mounted: async function() {
+  mounted: async function () {
     this.loading = false;
   },
   methods: {},
