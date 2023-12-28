@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-toolbar dark :color="appbarColor">
-      <v-tooltip right>
-        <template v-slot:activator="{ on, attrs }">
-          <v-toolbar-title v-bind="attrs" v-on="on">
+      <v-tooltip location="right">
+        <template v-slot:activator="{ props }">
+          <v-toolbar-title v-bind="props">
             {{ currentRoom.name }}
           </v-toolbar-title>
         </template>
@@ -20,15 +20,9 @@
       </slot>
     </v-toolbar>
 
-    <v-card tile>
+    <v-card rounded="0">
       <v-card-text>
-        <v-text-field
-          :clearable="clearable"
-          v-model="currentRoom.name"
-          label="Name"
-          dense
-          v-if="!readonly"
-        >
+        <v-text-field :clearable="clearable" v-model="currentRoom.name" label="Name" density="compact" v-if="!readonly">
         </v-text-field>
         <!-- <v-text-field
           :clearable="clearable"
@@ -38,39 +32,15 @@
           dense
         >
         </v-text-field> -->
-        <v-autocomplete
-          label="Purpose"
-          v-model="currentRoom.purpose"
-          :items="purposes"
-          :readonly="readonly"
-          dense
-        >
+        <v-autocomplete label="Purpose" v-model="currentRoom.purpose" :items="purposes" :readonly="readonly">
         </v-autocomplete>
-        <v-autocomplete
-          label="Status"
-          v-model="currentRoom.status"
-          :items="statuses"
-          :readonly="readonly"
-          dense
-        >
+        <v-autocomplete label="Status" v-model="currentRoom.status" :items="statuses" :readonly="readonly">
         </v-autocomplete>
-        <v-text-field
-          :clearable="clearable"
-          v-model="currentRoom.size"
-          label="Size"
-          :readonly="readonly"
-          dense
-        >
+        <v-text-field :clearable="clearable" v-model="currentRoom.size" label="Size" :readonly="readonly"
+          density="compact">
         </v-text-field>
-        <v-textarea
-          :clearable="clearable"
-          v-model="currentRoom.notes"
-          label="Notes"
-          dense
-          :readonly="readonly"
-          rows="2"
-          auto-grow
-        >
+        <v-textarea :clearable="clearable" v-model="currentRoom.notes" label="Notes" density="compact"
+          :readonly="readonly" rows="2" auto-grow>
         </v-textarea>
       </v-card-text>
 
@@ -145,20 +115,20 @@ export default {
       "getRoomPurposes",
       "getRoomStatuses"
     ]),
-    edit: function() {
+    edit: function () {
       //switch edit mode on or off
       this.readonly = !this.readonly;
     },
-    close: function() {
+    close: function () {
       this.clearRoom();
       this.readonly = true;
       this.$emit("close");
     },
-    save: async function() {
+    save: async function () {
       await this.saveRoom();
       this.readonly = true;
     },
-    del: async function() {
+    del: async function () {
       await this.deleteRoom(this.currentRoom._id);
       this.close();
     }

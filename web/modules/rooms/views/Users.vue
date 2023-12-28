@@ -7,28 +7,16 @@
       <div class="col-md-12">
         <v-card class="mt-5 default">
           <v-card-text>
-            <v-text-field
-              v-model="search"
-              dense
-              outlined
-              background-color="white"
-              label="Search"
-              prepend-icon="mdi-magnify"
-            ></v-text-field>
+            <v-text-field v-model="search" density="compact" variant="outlined" bg-color="white" label="Search"
+              prepend-icon="mdi-magnify"></v-text-field>
 
-            <v-data-table
-              :items="users"
-              :search="search"
-              :headers="[
-                { text: 'Name', value: 'display_name' },
-                { text: 'Email', value: 'email' },
-                { text: 'Roles', value: 'roles' },
-                { text: 'Mail Code', value: 'mailcode' },
-                { text: 'Managing Mail Codes', value: 'manage_mailcodes' }
-              ]"
-              @click:row="rowClick"
-              class="row-clickable"
-            ></v-data-table>
+            <v-data-table :items="users" :search="search" :headers="[
+              { text: 'Name', value: 'display_name' },
+              { text: 'Email', value: 'email' },
+              { text: 'Roles', value: 'roles' },
+              { text: 'Mail Code', value: 'mailcode' },
+              { text: 'Managing Mail Codes', value: 'manage_mailcodes' }
+            ]" @click:row="rowClick" class="row-clickable"></v-data-table>
           </v-card-text>
         </v-card>
       </div>
@@ -43,7 +31,7 @@
 import axios from "axios";
 import { USER_URL } from "@/urls";
 export default {
-  name: "Home",
+  name: "RoomUsersView",
   data: () => ({
     search: "",
     is_loading: false,

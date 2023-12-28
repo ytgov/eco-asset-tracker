@@ -1,5 +1,5 @@
 <template>
-  <v-btn dark color="yg_lichen" @click="doIt()">
+  <v-btn color="yg_lichen" @click="doIt()">
     Delete
   </v-btn>
 </template>
@@ -27,7 +27,7 @@ export default {
   }),
   methods: {
     ...mapActions("rooms", ["deleteRoom"]),
-    doIt: function() {
+    doIt: function () {
       this.deleteRoom(this.roomID);
       this.$emit("close");
     }

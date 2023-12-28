@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb
-      :title="page.title"
-      :icon="page.icon"
-      :breadcrumbs="breadcrumbs">
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -30,7 +27,7 @@ import AddRoomBtn from "../components/addRoomBtn.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "",
+  name: "RoomsView",
   components: {
     RoomTable,
     AddRoomBtn,
@@ -42,7 +39,7 @@ export default {
     },
     dialog: false,
   }),
-  created() {},
+  created() { },
   computed: {
     breadcrumbs: function () {
       return [

@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb
-      :title="page.title"
-      :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -54,7 +50,7 @@ import personnelCard from "@/modules/personnel/components/personnelCard.vue";
 import AssetsCard from "../../assets/components/assetsCard.vue";
 import KeysCard from "@/modules/keys/components/keysCard.vue";
 export default {
-  name: "",
+  name: "RoomDetailView",
   components: {
     roomCard,
     InfrastructureCard,
@@ -70,14 +66,14 @@ export default {
     // breadcrumbs: [],
     dialog: false,
   }),
-  created() {},
+  created() { },
   computed: {
     ...mapState("rooms", ["currentRoom"]),
 
-    roomID: function() {
+    roomID: function () {
       return this.$route.params.roomID;
     },
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Rooms", to: "/rooms", exact: true },

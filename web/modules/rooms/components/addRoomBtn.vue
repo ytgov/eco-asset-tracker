@@ -2,8 +2,8 @@
   <!-- <room-detail-dialog>
      <template v-slot:content> -->
   <v-dialog max-width="600" v-model="dialog">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="clearRoom()">
+    <template v-slot:activator="{ props }">
+      <v-btn color="primary" variant=tonal v-bind="props" @click="clearRoom()">
         Add
       </v-btn>
     </template>
@@ -11,12 +11,16 @@
       <notifications ref="notifier"></notifications>
       <v-toolbar dark :color="appbarColor">
         <v-toolbar-title> Create new room - {{ room.name }} </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-icon @click="close()">
-          mdi-close
-        </v-icon>
+        <!-- <v-spacer></v-spacer> -->
+        <v-btn icon @click="close()">
+          <v-icon>
+            mdi-close
+          </v-icon>
+        </v-btn>
+
+
       </v-toolbar>
-      <v-card tile>
+      <v-card rounded="0">
         <v-card-actions>
           <span class="text-h4">{{ room.name }}</span>
           <v-spacer></v-spacer>
@@ -30,39 +34,16 @@
             class="pt-5">
           </v-text-field> -->
 
-          <v-text-field
-            v-model="room.name"
-            label="Name"
-            dense
-            :rules="[rules.required]"
-          >
+          <v-text-field v-model="room.name" label="Name" density="compact" :rules="[rules.required]">
           </v-text-field>
           <!-- <v-text-field v-model="room.branchID" label="Branch" dense>
           </v-text-field> -->
-          <v-autocomplete
-            label="Purpose"
-            v-model="room.purpose"
-            :items="purposes"
-            :readonly="readonly"
-            dense
-          >
+          <v-autocomplete label="Purpose" v-model="room.purpose" :items="purposes" :readonly="readonly">
           </v-autocomplete>
-          <v-autocomplete
-            label="Status"
-            v-model="room.status"
-            :items="statuses"
-            :readonly="readonly"
-            dense
-          >
+          <v-autocomplete label="Status" v-model="room.status" :items="statuses" :readonly="readonly">
           </v-autocomplete>
-          <v-text-field v-model="room.size" label="Size" dense> </v-text-field>
-          <v-textarea
-            v-model="room.notes"
-            label="Notes"
-            dense
-            rows="1"
-            auto-grow
-          >
+          <v-text-field v-model="room.size" label="Size" density="compact"> </v-text-field>
+          <v-textarea v-model="room.notes" label="Notes" density="compact" rows="1" auto-grow>
           </v-textarea>
         </v-card-text>
 
@@ -113,10 +94,10 @@ export default {
       "getRoomStatuses"
     ]),
 
-    close: function() {
+    close: function () {
       this.dialog = false;
     },
-    clearRoom: function() {
+    clearRoom: function () {
       this.room = {
         // _id: "",
         name: "",
@@ -128,7 +109,7 @@ export default {
       };
     },
 
-    create: async function() {
+    create: async function () {
       if (this.room.name) {
         await this.createRoom(this.room);
       } else {
@@ -138,7 +119,7 @@ export default {
       this.close();
     }
   },
-  mounted: async function() {
+  mounted: async function () {
     this.purposes = Object.keys(await this.getRoomPurposes());
     this.statuses = Object.keys(await this.getRoomStatuses());
   }
