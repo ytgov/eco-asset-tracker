@@ -2,7 +2,7 @@
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 
-import commonjs from "vite-plugin-commonjs";
+// import commonjs from "vite-plugin-commonjs";
 
 // Utilities
 import { defineConfig } from "vite";
@@ -17,7 +17,7 @@ export default defineConfig({
       autoImport: true,
     }),
 
-    commonjs(/* options */),
+    // commonjs(/* options */),
   ],
   define: { "process.env": {} },
   resolve: {

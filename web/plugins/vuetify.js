@@ -8,7 +8,7 @@
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 import { md2 } from "vuetify/blueprints";
-import { VDataTable } from "vuetify/labs/VDataTable";
+// import { VDataTable } from "vuetify/labs/VDataTable";
 // Composables
 import { createVuetify } from "vuetify";
 
@@ -16,7 +16,7 @@ import { createVuetify } from "vuetify";
 export default createVuetify({
   blueprint: md2,
   components: {
-    VDataTable,
+    // VDataTable,
   },
   theme: {
     themes: {
