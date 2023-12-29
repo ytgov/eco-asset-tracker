@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
+    <BaseBreadcrumb
+      :title="page.title"
+      :icon="page.icon"
+      :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -66,7 +69,7 @@ export default {
     // breadcrumbs: [],
     dialog: false,
   }),
-  created() { },
+  created() {},
   computed: {
     ...mapState("rooms", ["currentRoom"]),
 
@@ -75,9 +78,9 @@ export default {
     },
     breadcrumbs: function () {
       return [
-        { text: "Home", to: "/dashboard", exact: true },
-        { text: "Rooms", to: "/rooms", exact: true },
-        { text: `${this.currentRoom.name}` },
+        { title: "Home", to: "/dashboard", exact: true },
+        { title: "Rooms", to: "/rooms", exact: true },
+        { title: `${this.currentRoom.name}` },
       ];
     },
   },
