@@ -3,7 +3,7 @@
  *
  * Automatically included in `./src/main.js`
  */
-
+import vuetify from "./vuetify";
 import { loadFonts } from "./webfontloader";
 import BaseComponents from "./baseComponents";
 import Auth from "./auth";
@@ -13,4 +13,5 @@ export function registerPlugins(app) {
   loadFonts();
   BaseComponents.register(app);
   Auth.register(app);
+  app.use(vuetify);
 }
