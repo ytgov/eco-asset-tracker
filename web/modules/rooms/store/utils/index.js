@@ -1,11 +1,10 @@
-import crypto from "crypto";
-
 function randomValueHex(len) {
-  return crypto
-    .randomBytes(Math.ceil(len / 2))
-    .toString("hex") // convert to hexadecimal format
-    .slice(0, len)
-    .toUpperCase(); // return required number of characters
+  const characters = "0123456789ABCDEF";
+  let result = "";
+  for (let i = 0; i < len; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
 }
 
 export default function RandomID() {
