@@ -6,13 +6,13 @@ const state = {
   // fullName: "",
   // roles: [],
   // authService: null,
-  token: null
+  token: null,
 };
 const getters = {};
 const actions = {
   async checkAuthentication({ commit }) {
     await secureGet(AUTH_CHECK_URL)
-      .then(resp => {
+      .then((resp) => {
         commit("setUser", resp.data.data);
       })
       .catch(() => {
@@ -21,7 +21,7 @@ const actions = {
   },
   async signOut({ commit }) {
     commit("profile/clearUser");
-  }
+  },
 };
 const mutations = {
   setToken(state, paylod) {
@@ -35,7 +35,7 @@ const mutations = {
   clearUser(state) {
     state.user = null;
     state.fullName = null;
-  }
+  },
 };
 
 export default {
@@ -43,5 +43,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

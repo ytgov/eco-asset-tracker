@@ -1,15 +1,28 @@
 import axios from "axios";
-import { getInstance } from "@/auth/auth0-plugin";
+import { auth0 } from "@/plugins/auth";
+
+async function getAccessTokenSilentlyOutsideComponent(options) {
+  return auth0.getAccessTokenSilently(options);
+}
+
+function isAuthenticated() {
+  return auth0.isAuthenticated.value;
+}
+
+// import { getInstance } from "@/auth/auth0-plugin";
 
 export async function prepareAxios() {
-  const auth = await getInstance();
-  const token = await auth.getTokenSilently();
+  let headers = {
+    "Content-Type": "application/json",
+  };
+
+  if (isAuthenticated()) {
+    let token = await getAccessTokenSilentlyOutsideComponent();
+    headers["Authorization"] = `Bearer ${token}`;
+  }
 
   return axios.create({
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
+    headers,
   });
 }
 
