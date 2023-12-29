@@ -1,10 +1,11 @@
 <template>
-  <v-container fluid class="down-top-padding">
+  <v-container
+    fluid
+    class="down-top-padding">
     <BaseBreadcrumb
       :title="page.title"
       :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
+      :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -19,8 +20,7 @@
             v-if="loading"
             :indeterminate="loading"
             color="primary"
-            height="5"
-          />
+            height="5" />
 
           <v-card v-show="!loading">
             <v-card-text>
@@ -47,14 +47,16 @@
           <v-row>
             <v-col>
               <v-card>
-                <v-card-title>
-                  Keys Assigned
-                </v-card-title>
+                <v-card-title> Keys Assigned </v-card-title>
                 <v-card-text>
-                  <v-row v-for="(key, index) in employee.keys" :key="index">
+                  <v-row
+                    v-for="(key, index) in employee.keys"
+                    :key="index">
                     <v-col>
                       <span class="text-subtitle-1 ml-5">
-                        <router-link :to="keyLink(key.key_id)" exact>
+                        <router-link
+                          :to="keyLink(key.key_id)"
+                          exact>
                           Tag: {{ key.code }} Stamp: {{ key.number }}
                         </router-link></span
                       >
@@ -82,17 +84,16 @@
           <v-row>
             <v-col>
               <v-card>
-                <v-card-title>
-                  Rooms Assigned
-                </v-card-title>
+                <v-card-title> Rooms Assigned </v-card-title>
                 <v-card-text>
                   <v-row
                     v-for="(room, index) in employee.assignedRooms"
-                    :key="index"
-                  >
+                    :key="index">
                     <v-col>
                       <span class="text-subtitle-1 ml-5">
-                        <router-link :to="roomLink(room.room_id)" exact>
+                        <router-link
+                          :to="roomLink(room.room_id)"
+                          exact>
                           {{ room.name }} - {{ room.purpose }}
                         </router-link></span
                       >
@@ -107,11 +108,11 @@
       <v-row>
         <v-col>
           <v-card>
-            <v-card-title>
-              Assets Assigned
-            </v-card-title>
+            <v-card-title> Assets Assigned </v-card-title>
 
-            <assets-grid :items="employee.assets" :loading="loading">
+            <assets-grid
+              :items="employee.assets"
+              :loading="loading">
             </assets-grid>
           </v-card>
           <!-- <assets-grid :all="true" ></assets-grid> -->
@@ -133,7 +134,7 @@ export default {
     page: { title: "Personnel Detail" },
   }),
   computed: {
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Personnel", to: "/personnel", exact: true },
@@ -142,10 +143,10 @@ export default {
     },
     ...mapState("personnel", ["employee"]),
 
-    personnelID: function() {
+    personnelID: function () {
       return this.$route.params.personnelID;
     },
-    employeeEmailLink: function() {
+    employeeEmailLink: function () {
       return "mailto:" + this.employee.email;
     },
   },
@@ -157,10 +158,10 @@ export default {
       "getEmployeeAssets",
       "getAssignedKeys",
     ]),
-    roomLink: function(roomID) {
+    roomLink: function (roomID) {
       return "/rooms/" + roomID;
     },
-    keyLink: function(keyID) {
+    keyLink: function (keyID) {
       return "/keys/" + keyID;
     },
   },

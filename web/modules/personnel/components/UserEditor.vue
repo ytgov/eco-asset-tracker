@@ -1,58 +1,59 @@
 <template>
-  <v-dialog persistent v-model="showDialog" width="600">
-    <v-app-bar dark color="#0097A9">
+  <v-dialog
+    persistent
+    v-model="showDialog"
+    width="600">
+    <v-app-bar color="#0097A9">
       <v-toolbar-title>Edit User</v-toolbar-title>
       <v-spacer />
-      <v-icon title="Close" @click="showDialog = false"
+      <v-icon
+        title="Close"
+        @click="showDialog = false"
         >mdi-close</v-icon
       > </v-app-bar
-    ><v-card tile>
+    ><v-card rounded="0">
       <v-card-text class="mt-5 pb-0">
         <v-text-field
           v-model="item.display_name"
           label="Name"
-          dense
-          outlined
+          density="compact"
+          variant="outlined"
           readonly
-          append-icon="mdi-lock"
-        ></v-text-field>
+          append-icon="mdi-lock"></v-text-field>
         <v-text-field
           v-model="item.email"
           label="Email"
-          dense
-          outlined
+          density="compact"
+          variant="outlined"
           readonly
-          append-icon="mdi-lock"
-        ></v-text-field>
+          append-icon="mdi-lock"></v-text-field>
         <v-select
           label="Status"
           v-model="item.status"
-          dense
-          outlined
-          :items="['Active', 'Inactive']"
-        ></v-select>
+          variant="outlined"
+          :items="['Active', 'Inactive']"></v-select>
         <v-select
           label="Role"
-          dense
-          outlined
+          variant="outlined"
           v-model="item.roles"
           :items="roleOptions"
-          clearable
-        ></v-select>
+          clearable></v-select>
         <v-select
           v-if="isDepartmentAdmin"
           class="pl-2"
           label="Department"
-          dense
-          outlined
+          variant="outlined"
           v-model="item.department_admin_for"
           :items="departmentList"
-          item-text="display_name"
+          item-title="display_name"
           item-value="dept"
-          clearable
-        ></v-select>
+          clearable></v-select>
 
-        <v-btn @click="save" color="primary">Save</v-btn>
+        <v-btn
+          @click="save"
+          color="primary"
+          >Save</v-btn
+        >
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -67,13 +68,13 @@ export default {
   data: () => ({
     showDialog: false,
     item: {},
-    roleOptions: ["System Admin", "Finance Admin", "Department Admin"]
+    roleOptions: ["System Admin", "Finance Admin", "Department Admin"],
   }),
   computed: {
-    isDepartmentAdmin: function() {
+    isDepartmentAdmin: function () {
       return this.item.roles === "Department Admin";
     },
-    ...mapGetters("department", ["departmentList"])
+    ...mapGetters("department", ["departmentList"]),
   },
   methods: {
     ...mapActions("administration", ["saveUser"]),
@@ -85,7 +86,7 @@ export default {
       let resp = await this.saveUser(this.item);
       console.log(resp);
       this.showDialog = false;
-    }
-  }
+    },
+  },
 };
 </script>

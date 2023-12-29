@@ -1,16 +1,18 @@
 <template>
   <div>
-    <v-toolbar dark color="yg_moss">
-      <v-toolbar-title>
-        Personnel
-      </v-toolbar-title>
+    <v-toolbar
+      dark
+      color="yg_moss">
+      <v-toolbar-title> Personnel </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <link-personnel-room-dialog v-if="isEditor"></link-personnel-room-dialog>
     </v-toolbar>
-    <v-card tile>
+    <v-card rounded="0">
       <!-- <v-card-text> -->
-      <personnel-table :items="assignedPeopletoRooms" :isLoading="loading">
+      <personnel-table
+        :items="assignedPeopletoRooms"
+        :isLoading="loading">
       </personnel-table>
       <!-- </v-card-text> -->
     </v-card>
@@ -42,14 +44,14 @@ export default {
     people: [],
   }),
   computed: {
-    roomID: function() {
+    roomID: function () {
       return this.$route.params.roomID;
     },
     ...mapState("rooms", ["currentRoom", "assignedPeopletoRooms"]),
     ...mapGetters("rooms", ["assignedPersonnel"]),
     ...mapGetters("administration/users", ["isEditor"]),
     // ...mapGetters("rooms", ["assignedPersonnel"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: "Name", value: "name" },
         { text: "Purpose", value: "purpose" },
@@ -59,7 +61,7 @@ export default {
       // return Object.keys(this.rooms)
     },
   },
-  mounted: async function() {
+  mounted: async function () {
     this.loading = true;
     // this.people = await this.getAssignedPersonnel(this.roomID);
     await this.getAssignedPersonnel(this.roomID);

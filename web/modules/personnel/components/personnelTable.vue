@@ -9,20 +9,19 @@
           @click:row="rowClick"
           class="row-clickable"
           :loading="loading"
-          @current-items="currentItems"
-        >
+          @current-items="currentItems">
           <template v-slot:footer.prepend>
-            <v-tooltip top>
-              <template v-slot:activator="{ on, attrs }">
+            <v-tooltip location="top">
+              <template v-slot:activator="{ props }">
                 <download-csv
                   :data="filteredPersonnel"
                   :labels="headers"
-                  name="personnel.csv"
-                >
-                  <v-chip label outlined v-on="on" v-bind="attrs">
-                    <v-icon>
-                      mdi-download
-                    </v-icon>
+                  name="personnel.csv">
+                  <v-chip
+                    label
+                    variant="outlined"
+                    v-bind="props">
+                    <v-icon> mdi-download </v-icon>
                   </v-chip>
                 </download-csv>
               </template>
@@ -69,7 +68,7 @@ export default {
   }),
 
   computed: {
-    localHeaders: function() {
+    localHeaders: function () {
       if (this.headers.length > 0) {
         return this.headers;
       } else {
@@ -80,7 +79,7 @@ export default {
         ];
       }
     },
-    localItems: function() {
+    localItems: function () {
       if (this.items && this.items != "all") {
         return this.items;
       } else {
@@ -90,7 +89,7 @@ export default {
     ...mapState("personnel", ["employees"]),
   },
   methods: {
-    currentItems: function(value) {
+    currentItems: function (value) {
       this.filteredPersonnel = value;
     },
     saveComplete(resp) {

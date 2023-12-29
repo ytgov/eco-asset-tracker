@@ -1,10 +1,11 @@
 <template>
-  <v-container fluid class="down-top-padding">
+  <v-container
+    fluid
+    class="down-top-padding">
     <BaseBreadcrumb
       :title="page.title"
       :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
+      :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -12,79 +13,83 @@
 
     <BaseCard
       showHeader="true"
-      :heading="
-        `${employee.first_name} ${employee.last_name} (${employee.ynet_id})`
-      "
-    >
+      :heading="`${employee.first_name} ${employee.last_name} (${employee.ynet_id})`">
       <v-row>
-        <v-col cols="12" sm="6">
+        <v-col
+          cols="12"
+          sm="6">
           <h3>Employee Details</h3>
           <v-card class="default">
             <v-card-text>
               <v-row>
-                <v-col cols="12" sm="6">
+                <v-col
+                  cols="12"
+                  sm="6">
                   <v-text-field
                     v-model="employee.first_name"
-                    dense
-                    outlined
-                    background-color="white"
+                    density="compact"
+                    variant="outlined"
+                    bg-color="white"
                     label="First name"
-                    hide-details
-                  >
+                    hide-details>
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col
+                  cols="12"
+                  sm="6">
                   <v-text-field
                     v-model="employee.last_name"
-                    dense
-                    outlined
-                    background-color="white"
+                    density="compact"
+                    variant="outlined"
+                    bg-color="white"
                     label="Last name"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col
+                  cols="12"
+                  sm="6">
                   <v-text-field
                     v-model="employee.employee_id"
-                    dense
-                    outlined
-                    background-color="white"
+                    density="compact"
+                    variant="outlined"
+                    bg-color="white"
                     label="Employee Id"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col
+                  cols="12"
+                  sm="6">
                   <v-text-field
                     v-model="employee.ynet_id"
-                    dense
-                    outlined
-                    background-color="white"
+                    density="compact"
+                    variant="outlined"
+                    bg-color="white"
                     label="YNET Id"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12">
+                <v-col
+                  cols="12"
+                  sm="12">
                   <v-text-field
                     v-model="employee.email"
-                    dense
-                    outlined
-                    background-color="white"
+                    density="compact"
+                    variant="outlined"
+                    bg-color="white"
                     label="Email"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12">
+                <v-col
+                  cols="12"
+                  sm="12">
                   <v-select
                     v-model="employee.primary_department"
-                    dense
-                    outlined
-                    background-color="white"
+                    variant="outlined"
+                    bg-color="white"
                     label="Primary department"
                     hide-details
                     :items="departments"
-                    item-text="descr"
-                    item-value="dept"
-                  ></v-select>
+                    item-title="descr"
+                    item-value="dept"></v-select>
                 </v-col>
               </v-row>
               <v-row>
@@ -92,8 +97,7 @@
                   <v-btn
                     color="primary"
                     class="mb-0 mt-5"
-                    @click="saveEmployee"
-                  >
+                    @click="saveEmployee">
                     Save
                   </v-btn>
                 </v-col>
@@ -102,8 +106,7 @@
                   <v-btn
                     class="mb-0 mt-5 mr-0"
                     color="primary"
-                    @click="createNewAuthority()"
-                  >
+                    @click="createNewAuthority()">
                     Create New Authority
                   </v-btn>
                 </v-col>
@@ -114,10 +117,14 @@
           <!--  <list-files></list-files> -->
         </v-col>
 
-        <v-col cols="12" sm="6">
+        <v-col
+          cols="12"
+          sm="6">
           <h3>Authorities:</h3>
 
-          <div v-for="(item, idx) in employee.authorities" :key="idx">
+          <div
+            v-for="(item, idx) in employee.authorities"
+            :key="idx">
             <AuthorityRenderer :authority="item"></AuthorityRenderer>
           </div>
         </v-col>
@@ -134,26 +141,27 @@ import axios from "axios";
 //import ListFiles from "../../components/forms/listFiles.vue";
 
 export default {
+  name: "AuthorityForm",
   components: { AuthorityRenderer },
   computed: {
     ...mapState("department", ["departments"]),
     ...mapGetters("employee", ["employee"]),
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       let b = [{ text: "Dashboard", to: "/dashboard" }];
       b.push({
-        text: `${this.employee.first_name} ${this.employee.last_name}`
+        text: `${this.employee.first_name} ${this.employee.last_name}`,
       });
       return b;
     },
-    employee_department_name: function() {
+    employee_department_name: function () {
       return this.departments.find(
-        d => d.dept === this.employee.primary_department
+        (d) => d.dept === this.employee.primary_department
       );
-    }
+    },
   },
   watch: {},
   data: () => ({
-    page: { title: "Employee" }
+    page: { title: "Employee" },
   }),
   async mounted() {
     this.loadEmployee(this.$route.params.id);
@@ -175,23 +183,23 @@ export default {
         employee_signed: false,
         supervisor_signed: false,
         supervisor_title: "",
-        authority_lines: []
+        authority_lines: [],
       };
 
       axios
         .post(AUTHORITY_URL, authItem, {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         })
-        .then(response => {
+        .then((response) => {
           //  this.$refs.notifier.showAPIMessages(response.data)
           if (response.status == 200) {
             console.log("Create Successful");
             this.loadEmployee(this.employee._id);
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>

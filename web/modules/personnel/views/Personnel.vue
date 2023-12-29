@@ -1,10 +1,11 @@
 <template>
-  <v-container fluid class="down-top-padding">
+  <v-container
+    fluid
+    class="down-top-padding">
     <BaseBreadcrumb
       :title="page.title"
       :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
+      :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -17,28 +18,30 @@
         <v-text-field
           v-model="search"
           hide-details
-          background-color="white"
+          bg-color="white"
           label="Search"
           prepend-icon="mdi-magnify"
           :loading="isLoading"
-          clearable
-        ></v-text-field>
+          clearable></v-text-field>
       </template>
       <template v-slot:right>
         <create-user-btn
           v-if="isAdmin"
           ref="create-user-btn"
-          :onSave="saveComplete"
-        ></create-user-btn>
+          :onSave="saveComplete"></create-user-btn>
       </template>
       <v-card class="default">
         <v-card-text>
-          <personnel-table :search="search" :all="true"></personnel-table>
+          <personnel-table
+            :search="search"
+            :all="true"></personnel-table>
         </v-card-text>
       </v-card>
     </BaseCard>
 
-    <user-editor ref="userEditor" :onSave="saveComplete"></user-editor>
+    <user-editor
+      ref="userEditor"
+      :onSave="saveComplete"></user-editor>
     <notifications ref="notifier"></notifications>
   </v-container>
 </template>
@@ -51,7 +54,7 @@ import CreateUserBtn from "../components/createUserBtn.vue";
 import PersonnelTable from "../components/personnelTable.vue";
 
 export default {
-  name: "Personnel",
+  name: "PersonnelPage",
   components: { userEditor, CreateUserBtn, PersonnelTable },
 
   data: () => ({
@@ -66,7 +69,7 @@ export default {
     this.loadUserList();
   },
   computed: {
-    localHeaders: function() {
+    localHeaders: function () {
       if (this.headers) {
         return this.headers;
       } else {
@@ -77,7 +80,7 @@ export default {
         ];
       }
     },
-    localItems: function() {
+    localItems: function () {
       if (this.items) {
         return this.items;
       } else {
@@ -86,7 +89,7 @@ export default {
     },
     ...mapGetters("administration/users", ["isAdmin"]),
     ...mapState("personnel", ["employees"]),
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
         { text: "Home", to: "/dashboard", exact: true },
         { text: "Personnel" },

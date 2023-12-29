@@ -1,82 +1,80 @@
 <template>
   <div>
-    <v-dialog v-model="show" persistent width="800">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" small v-bind="attrs" v-on="on" @click="doShow"
+    <v-dialog
+      v-model="show"
+      persistent
+      width="800">
+      <template v-slot:activator="{ props }">
+        <v-btn
+          color="primary"
+          size="small"
+          v-bind="props"
+          @click="doShow"
           >Add</v-btn
         >
       </template>
 
-      <v-app-bar dark color="#0097A9">
-        <v-toolbar-title>
-          Add User
-        </v-toolbar-title>
+      <v-app-bar color="#0097A9">
+        <v-toolbar-title> Add User </v-toolbar-title>
         <v-spacer />
-        <v-icon title="Close" @click="show = false">mdi-close</v-icon>
+        <v-icon
+          title="Close"
+          @click="show = false"
+          >mdi-close</v-icon
+        >
       </v-app-bar>
-      <v-card tile>
+      <v-card rounded="0">
         <v-card-text class="mt-5 pb-0">
           <employee-lookup
             actionName="Select"
             label="Employee : "
             :select="pickEmployee"
-            v-if="!selectedEmployee.email"
-          ></employee-lookup>
+            v-if="!selectedEmployee.email"></employee-lookup>
 
           <v-text-field
             v-model="selectedEmployee.display_name"
             readonly
-            dense
-            outlined
+            density="compact"
+            variant="outlined"
             label="Employee"
             append-icon="mdi-lock"
             v-if="selectedEmployee.email"
-            append-outer-icon="mdi-close-circle"
-            @click:append-outer="unselectEmployee"
-          ></v-text-field>
+            @click:append="unselectEmployee"></v-text-field>
           <div v-if="selectedEmployee.email">
             <v-text-field
               label="Employee title"
-              dense
-              outlined
-              v-model="selectedEmployee.title"
-            ></v-text-field>
+              density="compact"
+              variant="outlined"
+              v-model="selectedEmployee.title"></v-text-field>
             <v-text-field
               v-model="selectedEmployee.email"
               label="Email"
-              dense
-              outlined
+              density="compact"
+              variant="outlined"
               readonly
-              append-icon="mdi-lock"
-            ></v-text-field>
+              append-icon="mdi-lock"></v-text-field>
 
             <v-select
               label="Status"
               v-model="selectedEmployee.status"
-              dense
-              outlined
-              :items="['Active', 'Inactive']"
-            ></v-select>
+              variant="outlined"
+              :items="['Active', 'Inactive']"></v-select>
             <v-select
               label="Role"
-              dense
-              outlined
+              variant="outlined"
               v-model="selectedEmployee.roles"
               :items="roleOptions"
-              clearable
-            ></v-select>
+              clearable></v-select>
             <v-select
               v-if="isDepartmentAdmin"
               class="pl-2"
               label="Department"
-              dense
-              outlined
+              variant="outlined"
               v-model="selectedEmployee.department_admin_for"
               :items="departmentList"
-              item-text="display_name"
+              item-title="display_name"
               item-value="dept"
-              clearable
-            ></v-select>
+              clearable></v-select>
           </div>
 
           <div>
@@ -87,7 +85,10 @@
               :disabled="!isValid"
               >Add</v-btn
             >
-            <v-btn @click="show = false" color="secondary" class="float-right"
+            <v-btn
+              @click="show = false"
+              color="secondary"
+              class="float-right"
               >Close</v-btn
             >
           </div>
@@ -121,10 +122,10 @@ export default {
 
     selectedEmployee: {},
     selectedSupervisor: {},
-    supervisorTitle: ""
+    supervisorTitle: "",
   }),
   computed: {
-    isDepartmentAdmin: function() {
+    isDepartmentAdmin: function () {
       return this.item.roles === "Department Admin";
     },
     ...mapGetters("department", ["departmentList"]),
@@ -134,7 +135,7 @@ export default {
         return true;
 
       return false;
-    }
+    },
   },
   watch: {
     employeeSearch(val) {
@@ -148,17 +149,17 @@ export default {
 
       // Lazily load input items
       this.searchEmployees({ terms: val })
-        .then(res => {
+        .then((res) => {
           this.employeeItems = res;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         })
         .finally(() => (this.isEmployeeLoading = false));
-    }
+    },
   },
 
-  mounted: async function() {},
+  mounted: async function () {},
   methods: {
     ...mapActions("employee", ["searchEmployees"]),
     ...mapActions("administration", ["createUser"]),
@@ -189,7 +190,7 @@ export default {
     },
     unselectSupervisor() {
       this.selectedSupervisor = {};
-    }
-  }
+    },
+  },
 };
 </script>

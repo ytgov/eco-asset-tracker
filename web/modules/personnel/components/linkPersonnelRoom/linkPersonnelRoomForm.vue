@@ -9,27 +9,24 @@
     >
     </link-asset-assigned-dialog> -->
     <v-text-field
-      class="pb-10 "
+      class="pb-10"
       v-model="search"
       prepend-icon="mdi-magnify"
       label="Search"
       single-line
       hide-details
-      clearable
-    ></v-text-field>
+      clearable></v-text-field>
 
     <v-data-table
       :headers="headers"
       :items="employees"
       :search="search"
-      :loading="loading"
-    >
+      :loading="loading">
       <template v-slot:item.personnel="{ item }">
-        <v-simple-checkbox
+        <v-checkbox-btn
           :value="isAssigned(item.ynet_id)"
-          @click="doAssignPerson(item)"
-        >
-        </v-simple-checkbox>
+          @click="doAssignPerson(item)">
+        </v-checkbox-btn>
       </template>
     </v-data-table>
   </v-container>
@@ -56,7 +53,7 @@ export default {
   computed: {
     ...mapState("personnel", ["employees", "currentPersonnel"]),
     ...mapState("rooms", ["currentRoom", "assignedPeopletoRooms"]),
-    headers: function() {
+    headers: function () {
       return [
         { text: ``, value: "personnel" },
         { text: "Name", value: "display_name" },
@@ -76,20 +73,20 @@ export default {
       return y;
     },
     ...mapActions("rooms", ["getAssignedPersonnel", "assignPeopletoRooms"]),
-    isAssigned: function(person) {
+    isAssigned: function (person) {
       if (this.assignments.people.findIndex((p) => p === person) > -1) {
         return true;
       }
       return false;
     },
-    openAssetDetails: function(item) {
+    openAssetDetails: function (item) {
       this.$router.push("/assets/" + item._id);
     },
-    doOverwrite: async function() {
+    doOverwrite: async function () {
       await this.assignRoom(this.currentRoom._id);
       this.warn = false;
     },
-    doAssignPerson: async function(item) {
+    doAssignPerson: async function (item) {
       if (this.isAssigned(item.ynet_id)) {
         let newList = this.assignments.people.filter((p) => p != item.ynet_id);
 
