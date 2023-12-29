@@ -7,51 +7,39 @@
 
       <v-card>
         <v-card-title>
-          <v-tabs mandatory v-model="activeTab">
-            <v-tab>Rooms</v-tab>
-            <v-tab>Assets</v-tab>
-            <v-tab>Keys</v-tab>
-            <v-tab>Personnel</v-tab>
+          <v-tabs
+            mandatory
+            v-model="activeTab">
+            <v-tab
+              v-for="(page, i) in activePages"
+              :value="i"
+              :key="page.index"
+              @click="step = i">
+              {{ page.title }}
+            </v-tab>
           </v-tabs>
         </v-card-title>
         <v-row>
           <v-col cols="10">
-
             <v-card-text>
-              <v-window v-model="activeTab">
-                <v-window-item>
-
-                  <RoomTable />
+              <v-window
+                class="mt-5"
+                v-model="step">
+                <v-window-item
+                  v-for="(page, i) in activePages"
+                  :key="i"
+                  :value="i">
+                  <component
+                    all
+                    :search="search"
+                    :is="page.component" />
                 </v-window-item>
               </v-window>
             </v-card-text>
-            <!-- <v-tab-item> -->
-            <!-- <room-table :search="search"></room-table> -->
+
             <!-- <floorplan-eco> </floorplan-eco> -->
-            <!-- </v-tab-item> -->
-
-            <!-- <v-tab-item> -->
-            <!-- <assets-grid
-                  all
-                  :search="search"></assets-grid
-              > -->
-            <!-- </v-tab-item> -->
-
-            <!-- <v-tab-item> -->
-            <!-- <keys-table
-                  all
-                  :search="search"></keys-table
-              > -->
-            <!-- </v-tab-item> -->
-
-            <!-- <v-tab-item> -->
-            <!-- <personnel-table
-                  all
-                  :search="search"></personnel-table
-              > -->
-            <!-- </v-tab-item> -->
           </v-col>
-          <!-- <v-col>
+          <v-col>
             <add-room-btn
               v-if="activeTab == tabs['rooms'] && isEditor"></add-room-btn>
             <add-asset-btn
@@ -62,7 +50,7 @@
               v-if="
                 activeTab == tabs['personnel'] && isEditor
               "></create-user-btn>
-          </v-col> -->
+          </v-col>
         </v-row>
 
         <notifications ref="notifier"></notifications>
@@ -84,6 +72,18 @@ import { mapGetters } from "vuex";
 // import FloorplanEco from "@/modules/rooms/components/floorplan/floorplanECO.vue";
 
 export default {
+  setup() {
+    //define pages in steup() to avoid reactivity warning
+    const pages = [
+      { title: "Rooms", component: RoomTable, active: true },
+      { title: "Assets", component: AssetsGrid, active: true },
+      { title: "Keys", component: KeysTable, active: true },
+      { title: "Personnel", component: PersonnelTable, active: true },
+    ];
+    return {
+      pages,
+    };
+  },
   name: "DashboardView",
   components: {
     RoomTable,
@@ -109,9 +109,14 @@ export default {
       keys: 2,
       personnel: 3,
     },
+    step: 0,
   }),
   computed: {
     ...mapGetters("administration/users", ["isEditor"]),
+
+    activePages() {
+      return this.pages.filter((page) => page.active === true);
+    },
   },
   methods: {
     searchKeyUp(event) {
