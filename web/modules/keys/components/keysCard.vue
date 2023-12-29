@@ -1,16 +1,14 @@
 <template>
   <v-card rounded="0">
     <v-toolbar>
-      <v-toolbar-title>
-        Keys
-      </v-toolbar-title>
+      <v-toolbar-title> Keys </v-toolbar-title>
       <!-- <v-spacer></v-spacer>
       <v-icon v-if="isAdmin">
         mdi-plus
       </v-icon> -->
     </v-toolbar>
     <!-- <v-card-text> -->
-    <keys-table :items="items" :headers="headers"></keys-table>
+    <!-- <keys-table :items="items" :headers="headers"></keys-table> -->
 
     <!-- </v-card-text> -->
   </v-card>
