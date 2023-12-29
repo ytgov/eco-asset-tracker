@@ -12,7 +12,7 @@ const state = {
 };
 
 const getters = {
-  assignedPersonnel: function(state) {
+  assignedPersonnel: function (state) {
     return state.currentRoom.assignedPersonnel;
   },
 };
