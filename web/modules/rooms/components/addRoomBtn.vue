@@ -1,12 +1,15 @@
 <template>
   <!-- <room-detail-dialog>
      <template v-slot:content> -->
+  <v-btn color="primary" variant=tonal @click="clearRoom()">
+    Add
+  </v-btn>
   <v-dialog max-width="600" v-model="dialog">
-    <template v-slot:activator="{ props }">
+    <!-- <template v-slot:activator="{ props }">
       <v-btn color="primary" variant=tonal v-bind="props" @click="clearRoom()">
         Add
       </v-btn>
-    </template>
+    </template> -->
     <div>
       <notifications ref="notifier"></notifications>
       <v-toolbar dark :color="appbarColor">
@@ -98,6 +101,7 @@ export default {
       this.dialog = false;
     },
     clearRoom: function () {
+
       this.room = {
         // _id: "",
         name: "",
@@ -107,6 +111,7 @@ export default {
         size: "",
         status: ""
       };
+      this.dialog = true;
     },
 
     create: async function () {

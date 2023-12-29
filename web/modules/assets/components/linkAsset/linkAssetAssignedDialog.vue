@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="warn" width="500">
+  <v-dialog :model-value="warn" width="500">
     <v-toolbar dark :color="appbarColor">
       <v-toolbar-title> Warning - Asset already assigned </v-toolbar-title>
       <v-spacer></v-spacer>

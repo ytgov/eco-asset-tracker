@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar dark :color="appbarColor">
+    <v-toolbar :color="appbarColor">
       <v-tooltip location="right">
         <template v-slot:activator="{ props }">
           <v-toolbar-title v-bind="props">
@@ -11,18 +11,31 @@
       </v-tooltip>
       <v-spacer></v-spacer>
       <slot name="top-right-action">
-        <v-icon v-if="isAdmin && readonly" dark @click="edit">
-          mdi-pencil
-        </v-icon>
-        <v-icon v-else-if="isAdmin && !readonly" dark @click="save">
-          mdi-content-save
-        </v-icon>
+        <v-btn icon>
+          <v-icon
+            v-if="isAdmin && readonly"
+            dark
+            @click="edit">
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            v-else-if="isAdmin && !readonly"
+            dark
+            @click="save">
+            mdi-content-save
+          </v-icon>
+        </v-btn>
       </slot>
     </v-toolbar>
 
     <v-card rounded="0">
       <v-card-text>
-        <v-text-field :clearable="clearable" v-model="currentRoom.name" label="Name" density="compact" v-if="!readonly">
+        <v-text-field
+          :clearable="clearable"
+          v-model="currentRoom.name"
+          label="Name"
+          density="compact"
+          v-if="!readonly">
         </v-text-field>
         <!-- <v-text-field
           :clearable="clearable"
@@ -32,15 +45,33 @@
           dense
         >
         </v-text-field> -->
-        <v-autocomplete label="Purpose" v-model="currentRoom.purpose" :items="purposes" :readonly="readonly">
+        <v-autocomplete
+          label="Purpose"
+          v-model="currentRoom.purpose"
+          :items="purposes"
+          :readonly="readonly">
         </v-autocomplete>
-        <v-autocomplete label="Status" v-model="currentRoom.status" :items="statuses" :readonly="readonly">
+        <v-autocomplete
+          label="Status"
+          v-model="currentRoom.status"
+          :items="statuses"
+          :readonly="readonly">
         </v-autocomplete>
-        <v-text-field :clearable="clearable" v-model="currentRoom.size" label="Size" :readonly="readonly"
+        <v-text-field
+          :clearable="clearable"
+          v-model="currentRoom.size"
+          label="Size"
+          :readonly="readonly"
           density="compact">
         </v-text-field>
-        <v-textarea :clearable="clearable" v-model="currentRoom.notes" label="Notes" density="compact"
-          :readonly="readonly" rows="2" auto-grow>
+        <v-textarea
+          :clearable="clearable"
+          v-model="currentRoom.notes"
+          label="Notes"
+          density="compact"
+          :readonly="readonly"
+          rows="2"
+          auto-grow>
         </v-textarea>
       </v-card-text>
 
@@ -62,7 +93,10 @@
           >
             Close
           </v-btn> -->
-          <v-btn v-if="isAdmin && !readonly" color="primary" @click="save()">
+          <v-btn
+            v-if="isAdmin && !readonly"
+            color="primary"
+            @click="save()">
             Save
           </v-btn>
         </v-card-actions>
@@ -79,17 +113,17 @@ export default {
   props: {
     dialog: {
       type: Boolean,
-      default: false
+      default: false,
     },
     _id: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data: () => ({
     readonly: true,
     purposes: [],
-    statuses: []
+    statuses: [],
   }),
 
   computed: {
@@ -103,7 +137,7 @@ export default {
       if (!this.readonly) color = "yg_sun";
       else color = "yg_twilight";
       return color;
-    }
+    },
   },
   methods: {
     ...mapActions("rooms", [
@@ -113,7 +147,7 @@ export default {
       "deleteRoom",
       "getRoom",
       "getRoomPurposes",
-      "getRoomStatuses"
+      "getRoomStatuses",
     ]),
     edit: function () {
       //switch edit mode on or off
@@ -131,12 +165,12 @@ export default {
     del: async function () {
       await this.deleteRoom(this.currentRoom._id);
       this.close();
-    }
+    },
   },
   async mounted() {
     this.purposes = Object.keys(await this.getRoomPurposes());
     this.statuses = Object.keys(await this.getRoomStatuses());
-  }
+  },
 };
 </script>
 

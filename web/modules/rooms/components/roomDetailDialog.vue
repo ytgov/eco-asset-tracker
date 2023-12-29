@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" max-width="700px" @click:outside="close()">
+  <v-dialog
+    model-value="dialog"
+    max-width="700px"
+    @click:outside="close()">
     <template>
       <span> </span>
     </template>
@@ -13,16 +16,16 @@ import RoomCard from "./roomCard";
 export default {
   name: "roomDetailDialog",
   components: {
-    RoomCard
+    RoomCard,
   },
   props: {
     dialog: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data: () => ({
-    readonly: true
+    readonly: true,
   }),
   computed: {
     ...mapState("rooms", ["currentRoom"]),
@@ -31,20 +34,20 @@ export default {
       if (!this.readonly) color = "yg_sun";
       else color = "yg_twilight";
       return color;
-    }
+    },
   },
   methods: {
     ...mapActions("rooms", ["saveRoom", "clearRoom"]),
-    edit: function() {
+    edit: function () {
       //switch edit mode on or off
       this.readonly = !this.readonly;
     },
-    close: function() {
+    close: function () {
       this.clearRoom();
       this.readonly = true;
       this.$emit("close");
     },
-    save: function() {
+    save: function () {
       console.log(this.currentRooom);
       if (this.currentRooom._id) {
         this.createRoom();
@@ -52,7 +55,7 @@ export default {
         this.saveRoom();
       }
       this.close();
-    }
-  }
+    },
+  },
 };
 </script>
