@@ -1,10 +1,16 @@
 <template>
   <span>
-    <v-btn variant="tonal" color="primary" @click="createNewKey()">
+    <v-btn
+      color="primary"
+      @click="createNewKey()">
       Add
     </v-btn>
-    <v-dialog max-width="600" v-model="dialog">
-      <v-toolbar dark :color="appbarColor">
+    <v-dialog
+      max-width="600"
+      v-model="dialog">
+      <v-toolbar
+        dark
+        :color="appbarColor">
         <v-toolbar-title> Add Key </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-icon @click="close()"> mdi-close </v-icon>
@@ -15,7 +21,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" variant="tonal" @click="create()">
+          <v-btn
+            color="primary"
+            variant="tonal"
+            @click="create()">
             Create
           </v-btn>
         </v-card-actions>
@@ -73,6 +82,6 @@ export default {
       this.dialog = true;
     },
   },
-  mounted: async function () { },
+  mounted: async function () {},
 };
 </script>
