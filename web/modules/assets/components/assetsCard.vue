@@ -1,18 +1,17 @@
 <template>
   <v-card rounded="0">
     <v-toolbar>
-      <v-toolbar-title>
-        Assets
-      </v-toolbar-title>
+      <v-toolbar-title> Assets </v-toolbar-title>
       <v-spacer></v-spacer>
-      <link-asset-dialog v-if="isAdmin">
-        mdi-plus
-      </link-asset-dialog>
+      <link-asset-dialog v-if="isAdmin"> mdi-plus </link-asset-dialog>
     </v-toolbar>
 
     <v-card-text>
       <p>A list of assets assigned to the room {{ roomID }}</p>
-      <assets-grid :items="items" :loading="loading"> </assets-grid>
+      <assets-grid
+        :items="items"
+        :loading="loading">
+      </assets-grid>
     </v-card-text>
   </v-card>
 </template>

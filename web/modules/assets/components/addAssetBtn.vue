@@ -6,14 +6,16 @@
       Add
     </v-btn>
     <v-dialog
-      max-width="600"
+      max-width="800"
       v-model="dialog">
       <v-toolbar
         dark
         :color="appbarColor">
         <v-toolbar-title> Add Asset </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-icon @click="close()"> mdi-close </v-icon>
+        <v-btn icon>
+          <v-icon @click="close()"> mdi-close </v-icon>
+        </v-btn>
       </v-toolbar>
       <v-card rounded="0">
         <v-card-text>
@@ -22,7 +24,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="primary"
+            color="yg_moss"
             variant="tonal"
             @click="create()">
             Save
