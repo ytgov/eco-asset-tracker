@@ -4,7 +4,6 @@
     width="500">
     <template v-slot:activator="{ props }">
       <v-btn
-        class="mt-0"
         color="primary"
         v-bind="props">
         Add Asset Type

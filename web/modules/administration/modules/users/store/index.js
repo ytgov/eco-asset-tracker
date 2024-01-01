@@ -1,6 +1,6 @@
 import { USER_URL, PROFILE_URL } from "@/urls";
 import axios from "axios";
-import { getInstance } from "@/auth/auth0-plugin";
+// import { getInstance } from "@/auth/auth0-plugin";
 // import store from  "@/store";
 
 const state = {
@@ -18,6 +18,9 @@ const state = {
 };
 const getters = {
   isAdmin: (state) => {
+    if (state.user.username === "Offline User") {
+      return true;
+    }
     if (state.currentUser.roles.includes("System Admin")) {
       return true;
     } else return false;

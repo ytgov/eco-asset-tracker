@@ -13,15 +13,17 @@
         >
       </template>
 
-      <v-app-bar color="#0097A9">
+      <v-toolbar color="primary">
         <v-toolbar-title> Add User </v-toolbar-title>
         <v-spacer />
-        <v-icon
-          title="Close"
-          @click="show = false"
-          >mdi-close</v-icon
-        >
-      </v-app-bar>
+        <v-btn icon>
+          <v-icon
+            title="Close"
+            @click="show = false"
+            >mdi-close</v-icon
+          >
+        </v-btn>
+      </v-toolbar>
       <v-card rounded="0">
         <v-card-text class="mt-5 pb-0">
           <employee-lookup

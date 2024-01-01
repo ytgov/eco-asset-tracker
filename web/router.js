@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { authGuard } from "@auth0/auth0-vue";
 import homeRoutes from "@/modules/home/router";
 import keyRoutes from "@/modules/keys/router";
 import roomsRoutes from "@/modules/rooms/router";
 import assetRoutes from "@/modules/assets/router";
+import personnelRoutes from "@/modules/personnel/router";
+import administrationRoutes from "@/modules/administration/router";
+
 // import { useAuthStore } from "@/stores/AuthStore";
 // import myStatusRoutes from "@/modules/mystatus/router";
 // import rosterRoutes from "@/modules/roster/router";
@@ -11,7 +15,6 @@ import assetRoutes from "@/modules/assets/router";
 // import eventsRoutes from "@/modules/events/router";
 
 // import homeRoutes from "@/modules/home/router";
-
 const routes = [
   // {
   //   path: "/login",
@@ -19,8 +22,10 @@ const routes = [
   //   component: () => import("@/modules/login/views/Login.vue"),
   // },
   {
-    path: "/",
-    name: "Home",
+    path: "",
+    // name: "Home",
+    redirect: { name: "Dashboard" },
+    // beforeEnter: authGuard,
     // component: () => import("@/views/Main.vue"),
     // redirect: "/status",
     // component: () => import("@/layouts/Layout.vue"),
@@ -28,19 +33,13 @@ const routes = [
     //   requiresAuth: true,
     // },
     children: [
-      //   ...myStatusRoutes,
-      //   ...rosterRoutes,
-      //   ...pagingRouter,
-      //   ...adminRoutes,
-      //   ...eventsRoutes,
       ...homeRoutes,
-      ...keyRoutes,
+      // ...authenticationRoutes,
       ...roomsRoutes,
       ...assetRoutes,
-      //   // {
-      //   //   path: "dashboard",
-      //   //   component: () => import("@/components/HelloWorld.vue"),
-      //   // },
+      ...administrationRoutes,
+      ...keyRoutes,
+      ...personnelRoutes,
     ],
   },
   {

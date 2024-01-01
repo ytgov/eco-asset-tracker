@@ -59,7 +59,7 @@
       <v-col>
         <v-menu
           v-model="menu"
-          :close-on-content-click="true"
+          :close-on-content-click="false"
           :nudge-right="40"
           transition="scale-transition"
           min-width="auto">

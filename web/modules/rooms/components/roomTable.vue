@@ -2,14 +2,13 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table
+        <v-data-table-virtual
           dense
           :headers="headers"
           :search="search"
           :items="rooms"
           :loading="loadingRooms"
-          @click:row="openRoomDetails"
-          @current-items="currentItems">
+          @click:row="openRoomDetails">
           <template v-slot:item.name="{ item }">
             <!-- <v-icon>
               mdi-delete
@@ -19,26 +18,38 @@
             </v-icon> -->
             {{ item.name }}
           </template>
-          <template v-slot:footer.prepend>
+          <template v-slot:bottom>
             <v-tooltip location="top">
               <template v-slot:activator="{ props }">
-                <download-csv
-                  :data="filteredRooms"
-                  :labels="headers"
-                  name="rooms.csv">
-                  <v-chip
-                    label
-                    variant="outlined"
-                    v-bind="props">
-                    <v-icon> mdi-download </v-icon>
-                  </v-chip>
-                </download-csv>
                 <v-spacer />
               </template>
               <span>Download CSV</span>
             </v-tooltip>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <div class="text-right">
+          <v-tooltip location="top">
+            <template v-slot:activator="{ props }">
+              <download-csv
+                class="mt-3"
+                :data="filteredRooms"
+                :labels="headers"
+                name="rooms.csv">
+                <v-chip
+                  label
+                  variant="outlined"
+                  v-bind="props">
+                  <v-icon> mdi-download </v-icon>
+                </v-chip>
+              </download-csv>
+            </template>
+            <span>Download CSV</span>
+          </v-tooltip>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -70,7 +81,11 @@ export default {
   }),
   computed: {
     ...mapState("administration/users", ["user"]),
-
+    filteredThings: function () {
+      return this.rooms.filter((room) => {
+        return room.name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    },
     isAdmin: function () {
       return this.user.admin;
     },

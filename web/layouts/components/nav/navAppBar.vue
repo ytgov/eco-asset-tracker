@@ -33,7 +33,7 @@
         color="primary">
         Sign In
       </v-btn>
-
+      <span v-else>{{ user }}</span>
       <div class="pl-2">
         <v-btn
           color="primary"

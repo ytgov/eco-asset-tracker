@@ -21,8 +21,8 @@
         <v-card-text>
           <asset-detail-form :edit="true"></asset-detail-form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
+        <v-card-actions class="mr-4">
+          <v-spacer />
           <v-btn
             color="yg_moss"
             variant="tonal"

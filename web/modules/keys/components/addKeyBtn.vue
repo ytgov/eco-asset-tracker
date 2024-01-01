@@ -13,7 +13,9 @@
         :color="appbarColor">
         <v-toolbar-title> Add Key </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-icon @click="close()"> mdi-close </v-icon>
+        <v-btn icon>
+          <v-icon @click="close()"> mdi-close </v-icon>
+        </v-btn>
       </v-toolbar>
       <v-card rounded="0">
         <v-card-text>

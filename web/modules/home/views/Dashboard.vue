@@ -56,6 +56,7 @@
         <notifications ref="notifier"></notifications>
       </v-card>
     </BaseCard>
+    <add-new-item-dialog> </add-new-item-dialog>
   </v-container>
 </template>
 

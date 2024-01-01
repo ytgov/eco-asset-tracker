@@ -1,86 +1,93 @@
 <template>
   <div>
-    <v-dialog v-model="show" persistent width="800">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" small v-bind="attrs" v-on="on" @click="doShow"
+    <v-dialog
+      v-model="show"
+      persistent
+      width="800">
+      <template v-slot:activator="{ props }">
+        <v-btn
+          color="primary"
+          variant="flat"
+          v-bind="props"
+          @click="doShow"
           >Add</v-btn
         >
       </template>
 
-      <v-app-bar dark color="#0097A9">
-        <v-toolbar-title>
-          Add User
-        </v-toolbar-title>
+      <v-toolbar color="yg_twilight">
+        <v-toolbar-title> Add User </v-toolbar-title>
         <v-spacer />
-        <v-icon title="Close" @click="show = false">mdi-close</v-icon>
-      </v-app-bar>
-      <v-card tile>
+        <v-btn icon>
+          <v-icon
+            title="Close"
+            @click="show = false"
+            >mdi-close</v-icon
+          >
+        </v-btn>
+      </v-toolbar>
+      <v-card rounded="0">
         <v-card-text class="mt-5 pb-0">
           <employee-lookup
             actionName="Select"
             label="Employee : "
             :select="pickEmployee"
-            v-if="!selectedEmployee.email"
-          ></employee-lookup>
+            v-if="!selectedEmployee.email"></employee-lookup>
 
           <v-text-field
             v-model="selectedEmployee.display_name"
             readonly
-            dense
-            outlined
+            density="compact"
+            variant="outlined"
             label="Employee"
             append-icon="mdi-lock"
             v-if="selectedEmployee.email"
-            append-outer-icon="mdi-close-circle"
-            @click:append-outer="unselectEmployee"
-          ></v-text-field>
+            @click:append="unselectEmployee"></v-text-field>
           <div v-if="selectedEmployee.email">
             <v-text-field
               label="Employee title"
-              dense
-              outlined
-              v-model="selectedEmployee.title"
-            ></v-text-field>
+              density="compact"
+              variant="outlined"
+              v-model="selectedEmployee.title"></v-text-field>
             <v-text-field
               v-model="selectedEmployee.email"
               label="Email"
-              dense
-              outlined
+              density="compact"
+              variant="outlined"
               readonly
-              append-icon="mdi-lock"
-            ></v-text-field>
+              append-icon="mdi-lock"></v-text-field>
 
             <v-select
               label="Status"
               v-model="selectedEmployee.status"
-              dense
-              outlined
-              :items="['Active', 'Inactive']"
-            ></v-select>
+              variant="outlined"
+              :items="['Active', 'Inactive']"></v-select>
             <v-select
               label="Role"
-              dense
-              outlined
+              variant="outlined"
               v-model="selectedEmployee.roles"
               :items="roleOptions"
-              clearable
-            ></v-select>
+              clearable></v-select>
           </div>
-
-          <div>
-            <v-btn
-              @click="doCreate"
-              color="primary"
-              class="float-left"
-              :disabled="!isValid"
-              >Add</v-btn
-            >
-            <v-btn @click="show = false" color="secondary" class="float-right"
-              >Close</v-btn
-            >
-          </div>
-          <div style="clear: both"></div>
         </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            @click="show = false"
+            color="secondary"
+            variant="outlined"
+            class="float-right"
+            >Close</v-btn
+          >
+          <v-btn
+            @click="doCreate"
+            color="primary"
+            class="float-left"
+            :disabled="!isValid"
+            >Add</v-btn
+          >
+        </v-card-actions>
+        <!-- <div style="clear: both"></div> -->
       </v-card>
     </v-dialog>
   </div>
@@ -143,7 +150,7 @@ export default {
     },
   },
 
-  mounted: async function() {},
+  mounted: async function () {},
   methods: {
     ...mapActions("employee", ["searchEmployees"]),
     ...mapActions("administration/users", ["createUser"]),

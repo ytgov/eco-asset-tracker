@@ -1,16 +1,15 @@
 <template>
-  <v-container fluid class="down-top-padding">
+  <v-container
+    fluid
+    class="down-top-padding">
     <BaseBreadcrumb
       :title="page.title"
       :icon="page.icon"
-      :breadcrumbs="breadcrumbs"
-    >
-      <template v-slot:right>
-        <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
-      </template>
+      :breadcrumbs="breadcrumbs">
     </BaseBreadcrumb>
 
-    <v-tabs optional v-model="currentTab">
+    <v-tabs v-model="currentTab">
+      <!-- <v-tab>A Tab</v-tab> -->
       <v-tab to="/administration/users">Users</v-tab>
 
       <v-tab to="/administration/asset-types">Lookup Tables </v-tab>
@@ -31,8 +30,6 @@
         </v-card>
       </div>
     </div> -->
-
-    <notifications ref="notifier"></notifications>
   </v-container>
 </template>
 
@@ -41,7 +38,7 @@
 // import SeedData from "../components/seed/seedData.vue";
 
 export default {
-  name: "Home",
+  name: "AdministratonHomePage",
   components: {
     // healthCheck,
     // SeedData,
@@ -57,10 +54,10 @@ export default {
   }),
   created() {},
   computed: {
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
-        { text: "Home", to: "/dashboard", exact: true },
-        { text: "Administration" },
+        { title: "Home", to: "/dashboard", exact: true },
+        { title: "Administration" },
       ];
     },
   },
