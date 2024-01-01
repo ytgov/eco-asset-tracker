@@ -1,28 +1,55 @@
 <template>
-  <v-app-bar color="#fff" flat height="70" style="left: 0; border-bottom: 3px #f3b228 solid">
-    <img :src="yukonSVG" style="margin: -8px 85px 0 15px" height="44" />
+  <v-app-bar
+    color="#fff"
+    flat
+    height="70"
+    style="left: 0; border-bottom: 3px #f3b228 solid">
+    <img
+      :src="yukonSVG"
+      style="margin: -8px 85px 0 15px"
+      height="44" />
 
     <v-toolbar-title style="font-weight: 700">{{
       applicationName
     }}</v-toolbar-title>
 
     <template v-slot:append>
-      <v-btn color="primary" variant="text" class="mr-1" to="/dashboard"><v-icon size="x-large">mdi-home</v-icon></v-btn>
-      <v-divider class="ma-5" vertical inset></v-divider>
-      <!-- <v-btn
+      <v-btn
+        color="primary"
+        variant="text"
+        class="mr-1"
+        to="/dashboard"
+        ><v-icon size="x-large">mdi-home</v-icon></v-btn
+      >
+
+      <v-divider
+        class="ma-5"
+        vertical
+        inset></v-divider>
+      <v-btn
+        v-if="!isAuthenticated"
         @click="login"
+        variant="elevated"
         color="primary">
         Sign In
-      </v-btn> -->
-      <span>{{ fromStore }}Jane Smith {{ user }}</span>
+      </v-btn>
+
       <div class="pl-2">
-        <v-btn color="primary" variant="text" icon="mdi-dots-vertical">
+        <v-btn
+          color="primary"
+          variant="text"
+          icon="mdi-dots-vertical">
         </v-btn>
 
         <v-menu activator="parent">
           <v-card>
-            <v-list density="compact" style="min-width: 200px">
-              <v-list-item v-for="(item, index) in items" :key="index" :to="item.path == '#' ? '' : item.path">
+            <v-list
+              density="compact"
+              style="min-width: 200px">
+              <v-list-item
+                v-for="(item, index) in items"
+                :key="index"
+                :to="item.path == '#' ? '' : item.path">
                 <v-list-item-title class="">
                   {{ item.title }}
                 </v-list-item-title>
@@ -48,18 +75,19 @@
   </v-navigation-drawer> -->
 </template>
 <script setup>
-import { useAuth0 } from "@auth0/auth0-vue";
-import { computed } from "vue";
-const auth0 = useAuth0();
-
+// import { useAuth0 } from "@auth0/auth0-vue";
+// import { computed } from "vue";
+// const auth0 = useAuth0(); -->
 
 // const user = computed(() => Object.keys(auth0));
-const user = computed(() => auth0.isAuthenticated)
+// const user = computed(() => auth0.user);
+// console.log(auth0)
 </script>
 
 <script>
+// import { useAuth0 } from "@auth0/auth0-vue";
 import { applicationName } from "@/config";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import yukonSVG from "@/assets/yukon.svg";
 // import { useAuthStore } from "@/stores/AuthStore";
 import { LOGIN_URL, LOGOUT_URL } from "@/urls";
@@ -68,9 +96,10 @@ import { LOGIN_URL, LOGOUT_URL } from "@/urls";
 
 // import goLocalButton from "../goLocalButton"
 
-
-
 export default {
+  setup() {
+    return {};
+  },
   name: "navAppBar",
   components: {
     // navDrawer,
@@ -101,9 +130,23 @@ export default {
   // },
   computed: {
     ...mapState(["fromStore"]),
+    ...mapGetters(["isAuthenticated"]),
+    user() {
+      if (this.$auth0.isAuthenticated.value) {
+        return this.$auth0.user.value.name;
+      }
+      return "Not logged in";
+    },
+    // isAuthenticated() {
+    //   return this.$auth0.isAuthenticated.value;
+    // },
   },
-  metds: {},
-  moued() { },
+  methods: {
+    login: function () {
+      this.$auth0.loginWithRedirect();
+    },
+  },
+  mounted() {},
 };
 </script>
 web/urls
