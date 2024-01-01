@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
+    <BaseBreadcrumb
+      :title="page.title"
+      :icon="page.icon"
+      :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
@@ -14,7 +17,7 @@
         <add-room-btn v-if="isAdmin"></add-room-btn>
       </template>
 
-      <v-card>
+      <v-card class="default">
         <room-table :search="search"></room-table>
       </v-card>
     </BaseCard>
@@ -39,7 +42,7 @@ export default {
     },
     dialog: false,
   }),
-  created() { },
+  created() {},
   computed: {
     breadcrumbs: function () {
       return [
