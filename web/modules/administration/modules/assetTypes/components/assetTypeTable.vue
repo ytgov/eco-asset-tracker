@@ -1,15 +1,20 @@
 <template>
   <v-container fluid>
-    <v-simple-table>
+    <v-table>
       <thead>
         <tr>
-          <th v-for="header in headers" :key="header.index" class="text-center">
+          <th
+            v-for="header in headers"
+            :key="header.index"
+            class="text-center">
             {{ header.text }}
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in assetTypes" :key="item.index">
+        <tr
+          v-for="item in assetTypes"
+          :key="item.index">
           <td class="text-right">{{ item.name }}</td>
           <td class="text-center">
             <v-icon>{{ isOffice(item) }}</v-icon>
@@ -21,7 +26,7 @@
             <v-icon>{{ isInfrastructure(item) }}</v-icon>
           </td>
         </tr>
-      </tbody></v-simple-table
+      </tbody></v-table
     >
   </v-container>
 </template>
