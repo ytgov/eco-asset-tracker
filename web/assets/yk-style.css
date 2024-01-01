@@ -143,3 +143,8 @@ ul.v-breadcrumbs {
   > td {
   cursor: pointer;
 }
+
+.v-data-table-header__content {
+  font-weight: 800;
+  font-size: 14px;
+}

@@ -27,6 +27,7 @@
               </template>
               <span>Download CSV</span>
             </v-tooltip>
+            <v-spacer />
           </template>
         </v-data-table>
       </v-col>
@@ -73,9 +74,9 @@ export default {
         return this.headers;
       } else {
         return [
-          { text: "Name", value: "display_name" },
-          { text: "Email", value: "email" },
-          { text: "Title", value: "title" },
+          { title: "Name", value: "display_name" },
+          { title: "Email", value: "email" },
+          { title: "Title", value: "title" },
         ];
       }
     },

@@ -5,8 +5,9 @@
       color="yg_moss">
       <v-toolbar-title> Personnel </v-toolbar-title>
       <v-spacer></v-spacer>
-
-      <link-personnel-room-dialog v-if="isEditor"></link-personnel-room-dialog>
+      <v-btn icon>
+        <link-personnel-room-dialog v-if="isEditor"></link-personnel-room-dialog
+      ></v-btn>
     </v-toolbar>
     <v-card rounded="0">
       <!-- <v-card-text> -->

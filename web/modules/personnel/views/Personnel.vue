@@ -20,7 +20,7 @@
           hide-details
           bg-color="white"
           label="Search"
-          prepend-icon="mdi-magnify"
+          append-icon="mdi-magnify"
           :loading="isLoading"
           clearable></v-text-field>
       </template>
@@ -74,9 +74,9 @@ export default {
         return this.headers;
       } else {
         return [
-          { text: "Name", value: "display_name" },
-          { text: "Email", value: "email" },
-          { text: "Title", value: "title" },
+          { title: "Name", value: "display_name" },
+          { title: "Email", value: "email" },
+          { title: "Title", value: "title" },
         ];
       }
     },
@@ -91,8 +91,8 @@ export default {
     ...mapState("personnel", ["employees"]),
     breadcrumbs: function () {
       return [
-        { text: "Home", to: "/dashboard", exact: true },
-        { text: "Personnel" },
+        { title: "Home", to: "/dashboard", exact: true },
+        { title: "Personnel" },
       ];
     },
   },

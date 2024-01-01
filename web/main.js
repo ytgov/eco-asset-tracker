@@ -12,6 +12,7 @@ axios.defaults.withCredentials = true;
 
 // Plugins
 import { registerPlugins } from "@/plugins";
+// import vuetify from "@/plugins/vuetify";
 
 // const router = createRouter(createWebHistory());
 // const pinia = createPinia();
