@@ -1,7 +1,7 @@
 import { ROOMS_URL } from "@/urls";
 import { Room } from "./models/room";
 import axios from "axios";
-import randomID from "./utils";
+import randomID from "@/utils/randomValueHex";
 // import store from  "@/store";
 
 const state = {
@@ -145,24 +145,44 @@ const actions = {
     return axios
       .get(`${ROOMS_URL}/purposes`)
       .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        } else throw new Error(response.statusText);
+        try {
+          if (response.status === 200) {
+            return response.data;
+          } else {
+            throw new Error(
+              `Error getting room purposes from the API. HTTP Code: ${response.statusText}`
+            );
+          }
+        } catch (err) {
+          console.log(err);
+          return ["no Status"];
+        }
       })
       .catch((err) => {
         console.log(err);
+        return ["no Status"];
       });
   },
   async getRoomStatuses() {
     return axios
       .get(`${ROOMS_URL}/statuses`)
       .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        } else throw new Error(response.statusText);
+        try {
+          if (response.status === 200) {
+            return response.data;
+          } else {
+            throw new Error(
+              `Error getting room statuses from the API. HTTP Code: ${response.statusText}`
+            );
+          }
+        } catch (err) {
+          console.log(err);
+          return ["no Status"];
+        }
       })
       .catch((err) => {
         console.log(err);
+        return ["no Status"];
       });
   },
 };
