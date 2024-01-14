@@ -18,7 +18,7 @@ switch (process.env.NODE_ENV) {
 dotenv.config({ path: path });
 
 let obj = process.env;
-let pattern = "VUE_APP_";
+let pattern = "VITE_";
 
 export const VUE_APP: any = Object.keys(obj)
   .filter((k) => k.includes(pattern))
