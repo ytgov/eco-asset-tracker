@@ -3,6 +3,7 @@
      <template v-slot:content> -->
   <v-btn
     color="primary"
+    variant="flat"
     @click="clearRoom()">
     Add
   </v-btn>
