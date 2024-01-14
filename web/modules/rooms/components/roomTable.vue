@@ -20,7 +20,7 @@
           </template>
           <template v-slot:bottom>
             <v-tooltip location="top">
-              <template v-slot:activator="{ props }">
+              <template>
                 <v-spacer />
               </template>
               <span>Download CSV</span>
@@ -36,7 +36,7 @@
             <template v-slot:activator="{ props }">
               <download-csv
                 class="mt-3"
-                :data="filteredRooms"
+                :data="rooms"
                 :labels="headers"
                 name="rooms.csv">
                 <v-chip
