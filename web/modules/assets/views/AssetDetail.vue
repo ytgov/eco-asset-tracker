@@ -1,13 +1,18 @@
 <template>
   <v-container fluid>
-    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs">
+    <BaseBreadcrumb
+      :title="page.title"
+      :icon="page.icon"
+      :breadcrumbs="breadcrumbs">
       <template v-slot:right>
         <!-- <timed-message ref="messager" class="mr-4"></timed-message> -->
       </template>
     </BaseBreadcrumb>
     <v-row>
       <v-col cols="6">
-        <v-toolbar dark :color="appbarColor">
+        <v-toolbar
+          dark
+          :color="appbarColor">
           <v-tooltip location="right">
             <template v-slot:activator="{ props }">
               <v-toolbar-title v-bind="props">
@@ -18,10 +23,16 @@
           </v-tooltip>
           <v-spacer></v-spacer>
           <slot name="top-right-action">
-            <v-icon v-if="isAdmin && readonly" dark @click="edit()">
+            <v-icon
+              v-if="isAdmin && readonly"
+              dark
+              @click="edit()">
               mdi-pencil
             </v-icon>
-            <v-icon v-else-if="isAdmin && !readonly" dark @click="save()">
+            <v-icon
+              v-else-if="isAdmin && !readonly"
+              dark
+              @click="save()">
               mdi-content-save
             </v-icon>
           </slot>
@@ -32,10 +43,18 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn v-if="!readonly && isAdmin" variant="tonal" color="yg_moss" @click="save()">
+            <v-btn
+              v-if="!readonly && isAdmin"
+              variant="tonal"
+              color="yg_moss"
+              @click="save()">
               Save
             </v-btn>
-            <v-btn v-else variant="tonal" color="primary" @click="close()">
+            <v-btn
+              v-else
+              variant="tonal"
+              color="primary"
+              @click="close()">
               Close
             </v-btn>
           </v-card-actions>
@@ -82,9 +101,9 @@ export default {
 
     breadcrumbs: function () {
       return [
-        { text: "Home", to: "/dashboard", exact: true },
-        { text: "Assets", to: "/assets", exact: true },
-        { text: `${this.$route.params.assetID} ` },
+        { title: "Home", to: "/dashboard", exact: true },
+        { title: "Assets", to: "/assets", exact: true },
+        { title: `${this.$route.params.assetID} ` },
       ];
     },
   },

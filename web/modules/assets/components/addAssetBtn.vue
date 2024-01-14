@@ -2,6 +2,7 @@
   <span>
     <v-btn
       color="primary"
+      variant="flat"
       @click="createNewAsset()">
       Add
     </v-btn>

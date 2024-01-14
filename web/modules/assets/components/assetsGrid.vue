@@ -2,29 +2,41 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table :headers="localHeaders" :items="dataset" :search="search" :loading="localLoading"
-          @click:row="openAssetDetails" @current-items="currentItems">
+        <v-data-table-virtual
+          :headers="localHeaders"
+          :items="dataset"
+          :search="search"
+          :loading="localLoading"
+          @click:row="openAssetDetails"
+          @currentItems="currentItems()">
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
               {{ roomName(item.room) }}
             </span>
           </template>
-          <template v-slot:footer.prepend>
-            <v-tooltip location="top">
-              <template v-slot:activator="{ props }">
-                <download-csv :data="filteredAssets" :labels="headers" name="assets.csv">
-                  <v-chip label variant="outlined" v-bind="props">
-                    <v-icon>
-                      mdi-download
-                    </v-icon>
-                  </v-chip>
-                </download-csv>
-              </template>
-              <span>Download CSV</span>
-            </v-tooltip>
-            <v-spacer />
-          </template>
-        </v-data-table>
+        </v-data-table-virtual>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <div class="text-right">
+          <v-tooltip location="top">
+            <template v-slot:activator="{ props }">
+              <download-csv
+                :data="filteredAssets"
+                :labels="headers"
+                name="assets.csv">
+                <v-chip
+                  label
+                  variant="outlined"
+                  v-bind="props">
+                  <v-icon> mdi-download </v-icon>
+                </v-chip>
+              </download-csv>
+            </template>
+            <span>Download CSV</span>
+          </v-tooltip>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -106,11 +118,17 @@ export default {
   },
   methods: {
     currentItems: function (value) {
+      console.log(value);
       this.filteredAssets = value;
     },
     ...mapActions("assets", ["getAllAssets"]),
-    openAssetDetails: function (item) {
+    openRoomDetails(event, dataTableRow) {
+      const { item } = dataTableRow;
+      this.$router.push("/rooms/" + item._id);
+    },
+    openAssetDetails: function (event, dataTableRow) {
       // alert("Asset detail goes here!");
+      const { item } = dataTableRow;
       this.$router.push("/assets/" + item._id);
     },
     roomName: function (roomID) {
@@ -122,7 +140,7 @@ export default {
     },
   },
 
-  async mounted() { },
+  async mounted() {},
 };
 </script>
 
