@@ -2,34 +2,38 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table
+        <v-data-table-virtual
           :items="localItems"
           :search="search"
           :headers="localHeaders"
-          @click:row="rowClick"
+          @click:row="openPersonDetails"
           class="row-clickable"
           :loading="loading"
           @current-items="currentItems">
           <template v-slot:footer.prepend>
-            <v-tooltip location="top">
-              <template v-slot:activator="{ props }">
-                <download-csv
-                  :data="filteredPersonnel"
-                  :labels="headers"
-                  name="personnel.csv">
-                  <v-chip
-                    label
-                    variant="outlined"
-                    v-bind="props">
-                    <v-icon> mdi-download </v-icon>
-                  </v-chip>
-                </download-csv>
-              </template>
-              <span>Download CSV</span>
-            </v-tooltip>
             <v-spacer />
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="text-right">
+        <v-tooltip location="top">
+          <template v-slot:activator="{ props }">
+            <download-csv
+              :data="filteredPersonnel"
+              :labels="headers"
+              name="personnel.csv">
+              <v-chip
+                label
+                variant="outlined"
+                v-bind="props">
+                <v-icon> mdi-download </v-icon>
+              </v-chip>
+            </download-csv>
+          </template>
+          <span>Download CSV</span>
+        </v-tooltip>
       </v-col>
     </v-row>
   </v-container>
@@ -97,12 +101,10 @@ export default {
       this.$refs.notifier.showAPIMessages(resp.data);
       this.loadUserList();
     },
-    rowClick(item) {
-      //set current employee to the item...
 
-      //then go to the employee details page
+    openPersonDetails(event, dataTableRow) {
+      const { item } = dataTableRow;
       this.$router.push("/personnel/" + item.ynet_id);
-      // this.$refs.userEditor.show(_.clone(item));
     },
   },
   mounted() {
