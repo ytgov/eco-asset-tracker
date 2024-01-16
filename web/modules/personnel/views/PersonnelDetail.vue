@@ -136,9 +136,9 @@ export default {
   computed: {
     breadcrumbs: function () {
       return [
-        { text: "Home", to: "/dashboard", exact: true },
-        { text: "Personnel", to: "/personnel", exact: true },
-        { text: this.employee.display_name, disabled: true },
+        { title: "Home", to: "/dashboard", exact: true },
+        { title: "Personnel", to: "/personnel", exact: true },
+        { title: this.employee.display_name, disabled: true },
       ];
     },
     ...mapState("personnel", ["employee"]),

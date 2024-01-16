@@ -105,13 +105,13 @@ export default {
         return this.headers;
       } else {
         return [
-          { text: "Asset", value: "assetNum" },
-          { text: "Type", value: "type" },
-          { text: "Description", value: "description" },
+          { title: "Asset", value: "assetNum" },
+          { title: "Type", value: "type" },
+          { title: "Description", value: "description" },
           // { text: "Room", value: "room" },
-          { text: "Status", value: "status" },
-          { text: "Purchased", value: "purchaseDate" },
-          { text: "Installed", value: "installDate" },
+          { title: "Status", value: "status" },
+          { title: "Purchased", value: "purchaseDate" },
+          { title: "Installed", value: "installDate" },
         ];
       }
     },
