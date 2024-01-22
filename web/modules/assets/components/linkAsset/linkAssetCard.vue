@@ -1,11 +1,13 @@
 <template>
   <div>
-    <v-toolbar dark :color="appbarColor">
+    <v-toolbar
+      dark
+      :color="appbarColor">
       <v-toolbar-title> Link Assets </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-icon @click="close()">
-        mdi-close
-      </v-icon>
+      <v-btn icon>
+        <v-icon @click="close()"> mdi-close </v-icon>
+      </v-btn>
     </v-toolbar>
     <v-card rounded="0">
       <v-card-actions>
@@ -17,7 +19,11 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="yg_blue" class="mr-3" variant="tonal" @click="save()">
+        <v-btn
+          color="yg_blue"
+          class="mr-3"
+          variant="tonal"
+          @click="save()">
           Close
         </v-btn>
       </v-card-actions>
@@ -30,17 +36,17 @@ import linkAssetForm from "./linkAssetForm.vue";
 export default {
   name: "linkAssetCard",
   components: {
-    linkAssetForm
+    linkAssetForm,
   },
   data: () => ({
     room: {
-      name: "Room 23"
-    }
+      name: "Room 23",
+    },
   }),
   computed: {
     appbarColor: function () {
       return "yg_moss";
-    }
+    },
   },
   methods: {
     close: function () {
@@ -48,8 +54,8 @@ export default {
     },
     save: function () {
       this.close(); //replace with link asset methed (then close)
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -23,18 +23,21 @@
           </v-tooltip>
           <v-spacer></v-spacer>
           <slot name="top-right-action">
-            <v-icon
-              v-if="isAdmin && readonly"
-              dark
-              @click="edit()">
-              mdi-pencil
-            </v-icon>
-            <v-icon
-              v-else-if="isAdmin && !readonly"
-              dark
-              @click="save()">
-              mdi-content-save
-            </v-icon>
+            <v-btn icon>
+              <v-icon
+                v-if="isAdmin && readonly"
+                dark
+                @click="edit()">
+                mdi-pencil
+              </v-icon>
+
+              <v-icon
+                v-else-if="isAdmin && !readonly"
+                dark
+                @click="save()">
+                mdi-content-save
+              </v-icon>
+            </v-btn>
           </slot>
         </v-toolbar>
         <v-card rounded="0">
@@ -77,7 +80,7 @@ export default {
     readonly: true,
     headingStyle: "text-overline",
     page: {
-      title: "Aseset Detail",
+      title: "Asset Detail",
     },
     dialog: false,
     snackbarOpen: false,

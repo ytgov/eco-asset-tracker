@@ -1,8 +1,9 @@
 <template>
   <v-card rounded="0">
-    <v-toolbar>
+    <v-toolbar :color="appbarColor">
       <v-toolbar-title> Assets </v-toolbar-title>
       <v-spacer></v-spacer>
+
       <link-asset-dialog v-if="isAdmin"> mdi-plus </link-asset-dialog>
     </v-toolbar>
 
@@ -41,6 +42,7 @@ export default {
     // formAItems: [],
     loading: true,
     dialog: false,
+    appbarColor: "",
   }),
 
   computed: {
