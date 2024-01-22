@@ -2,8 +2,13 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table :headers="localHeaders" :items="dataset" :search="search" :loading="loading"
-          @click:row="openKeyDetails" @current-items="currentItems">
+        <v-data-table
+          :headers="localHeaders"
+          :items="dataset"
+          :search="search"
+          :loading="loading"
+          @click:row="openKeyDetails"
+          @current-items="currentItems">
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
               {{ roomName(item.room) }}
@@ -13,11 +18,15 @@
           <template v-slot:footer.prepend>
             <v-tooltip location="top">
               <template v-slot:activator="{ props }">
-                <download-csv :data="filteredKeys" :labels="headers" name="keys.csv">
-                  <v-chip label variant="outlined" v-bind="props">
-                    <v-icon>
-                      mdi-download
-                    </v-icon>
+                <download-csv
+                  :data="filteredKeys"
+                  :labels="headers"
+                  name="keys.csv">
+                  <v-chip
+                    label
+                    variant="outlined"
+                    v-bind="props">
+                    <v-icon> mdi-download </v-icon>
                   </v-chip>
                 </download-csv>
               </template>
@@ -92,8 +101,9 @@ export default {
     currentItems: function (value) {
       this.filteredKeys = value;
     },
-    openKeyDetails: function (item) {
-      // alert("Asset detail goes here!");
+    openKeyDetails: function (event, dataTableRow) {
+      const { item } = dataTableRow;
+      console.log(item._id);
       this.$router.push("/keys/" + item._id);
     },
     roomName: function (roomID) {
