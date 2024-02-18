@@ -3,7 +3,7 @@ const routes = [
     path: "",
     name: "",
     component: () => import("../views/assetTypes.vue"),
-    meta: { requiresAuth: false },
+    // meta: { requiresAuth: false },
     children: [
       // {
       //   name: "",
@@ -24,8 +24,8 @@ const routes = [
       //     import("../views/Users"),
       //   meta: { requiresAuth: true },
       // }
-    ]
-  }
+    ],
+  },
 ];
 
 export default routes;
