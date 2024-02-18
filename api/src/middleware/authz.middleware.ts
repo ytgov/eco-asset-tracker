@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+
+import { attemptSilentLogin } from "express-openid-connect";
 import jwt from "express-jwt";
 import axios from "axios";
 import jwksRsa from "jwks-rsa";
@@ -6,19 +8,19 @@ import { AUTH0_DOMAIN, AUTH0_AUDIENCE } from "../config";
 // import { UserService } from "../services";
 import { KnexUserService } from "../services";
 
-export const checkJwt = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `${AUTH0_DOMAIN}.well-known/jwks.json`,
-  }),
+// export const checkJwt = jwt({
+//   secret: jwksRsa.expressJwtSecret({
+//     cache: true,
+//     rateLimit: true,
+//     jwksRequestsPerMinute: 5,
+//     jwksUri: `${AUTH0_DOMAIN}.well-known/jwks.json`,
+//   }),
 
-  // Validate the audience and the issuer.
-  audience: AUTH0_AUDIENCE,
-  issuer: [AUTH0_DOMAIN],
-  algorithms: ["RS256"],
-});
+//   // Validate the audience and the issuer.
+//   audience: AUTH0_AUDIENCE,
+//   issuer: [AUTH0_DOMAIN],
+//   algorithms: ["RS256"],
+// });
 
 export async function loadUser(
   req: Request,
@@ -67,6 +69,7 @@ export async function isSystemAdministrator(
   res: Response,
   next: NextFunction
 ) {
+  req.user.roles = "System Admin";
   return next();
   // const db = new KnexUserService("users");
   // let sub = req.user.sub;
@@ -82,6 +85,7 @@ export async function isEditor(
   res: Response,
   next: NextFunction
 ) {
+  req.user.roles = "System Admin";
   return next();
   // const db = new KnexUserService("users");
   // let sub = req.user.sub;
