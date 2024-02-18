@@ -18,14 +18,12 @@
             </v-icon> -->
             {{ item.name }}
           </template>
-          <template v-slot:bottom>
+          <!-- <template v-slot:bottom>
             <v-tooltip location="top">
-              <template>
-                <v-spacer />
-              </template>
+              <v-spacer />
               <span>Download CSV</span>
             </v-tooltip>
-          </template>
+          </template> -->
         </v-data-table-virtual>
       </v-col>
     </v-row>
