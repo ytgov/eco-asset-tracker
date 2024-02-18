@@ -7,6 +7,7 @@
       <template v-slot:activator="{ props }">
         <v-btn
           color="primary"
+          variant="flat"
           v-bind="props"
           @click="doShow"
           >Add</v-btn
@@ -55,24 +56,25 @@
               readonly
               append-icon="mdi-lock"></v-text-field>
           </div>
-
-          <div>
-            <v-btn
-              @click="doCreate"
-              color="primary"
-              class="float-left"
-              :disabled="!isValid"
-              >Add</v-btn
-            >
-            <v-btn
-              @click="show = false"
-              color="secondary"
-              class="float-right"
-              >Close</v-btn
-            >
-          </div>
-          <div style="clear: both"></div>
         </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            @click="show = false"
+            variant="tonal"
+            color="secondary">
+            cancel</v-btn
+          >
+          <v-btn
+            @click="doCreate"
+            color="primary"
+            variant="flat"
+            class="float-left"
+            :disabled="!isValid"
+            >Add</v-btn
+          >
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

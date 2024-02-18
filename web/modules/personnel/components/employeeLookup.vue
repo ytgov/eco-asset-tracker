@@ -5,7 +5,7 @@
       v-model="model"
       :items="items"
       :loading="isLoading"
-      v-model:search-input="search"
+      v-model:search="search"
       item-title="long_name"
       append-icon="mdi-search"
       item-value="id"
@@ -15,6 +15,7 @@
       clearable
       return-object
       @click:prepend="changeIcon"
+      @click:clear="clear"
       @update:model-value="selected"
       ref="searchField">
       <template v-slot:no-data>
@@ -64,6 +65,16 @@
 
 <script>
 import { mapActions } from "vuex";
+const defaultModel = {
+  email: "",
+  officeLocation: "",
+  department: "",
+  title: "",
+  ynet_id: "",
+  long_name: "",
+  display_name: "",
+  id: "",
+};
 
 export default {
   name: "DirectorySearchAdd",
@@ -72,7 +83,7 @@ export default {
     isLoading: false,
     items: [],
     search: "",
-    model: {},
+    model: defaultModel,
     searchIndex: 1,
     searches: [
       {
@@ -104,7 +115,7 @@ export default {
       }
     },
     clear() {
-      this.model = {};
+      this.model = defaultModel;
       this.search = "";
     },
   },
