@@ -119,6 +119,7 @@ export default {
       { title: "Assets", icon: "mdi-clipboard-list-outline", path: "/assets" },
       { title: "Personnel", icon: "mdi-account-multiple", path: "/personnel" },
       { title: "Keys", icon: "mdi-key-outline", path: "/keys" },
+      { title: "Admin", icon: "mdi-key-outline", path: "/administration" },
       { title: "Logout", icon: "mdi-forum", path: "/logout" },
     ],
   }),
