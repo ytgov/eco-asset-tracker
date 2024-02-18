@@ -6,12 +6,10 @@ import { DirectoryService } from "../services";
 import { Employee, emptyEmployee } from "../data/models";
 import { body, param } from "express-validator";
 import moment from "moment";
-import { checkJwt } from "../middleware/authz.middleware";
 
 const db = new KnexService("personnel");
 
 export const employeeRouter = express.Router();
-// employeeRouter.use(RequiresData, checkJwt);
 const directoryService = new DirectoryService();
 
 ////////////////////////////////////

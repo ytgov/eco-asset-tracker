@@ -5,12 +5,10 @@ import _, { join } from "lodash";
 import { Employee, emptyEmployee } from "../data/models";
 import { body, param } from "express-validator";
 import moment from "moment";
-import { checkJwt } from "../middleware/authz.middleware";
 
 const db = new KnexService("personnel_room");
 
 export const assignRoom = express.Router();
-// assignRoom.use(RequiresData, checkJwt);
 
 assignRoom.get("/", async (req: Request, res: Response) => {
   //get all personnel_room assignments

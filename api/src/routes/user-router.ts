@@ -5,17 +5,25 @@ import { body, param } from "express-validator";
 import _ from "lodash";
 
 import { ReturnValidationErrors } from "../middleware";
-import { checkJwt, loadUser } from "../middleware/authz.middleware";
+// import { checkJwt, loadUser } from "../middleware/authz.middleware";
 
 const db = new KnexUserService("users");
 
 export const userRouter = express.Router();
 // userRouter.use(checkJwt, loadUser);
 
+// userRouter.get(
+//   "/me",
+//   checkJwt,
+//   loadUser,
+//   async (req: Request, res: Response) => {
+//     return res.json(req.user);
+//   }
+// );
+
 userRouter.get(
   "/me",
-  checkJwt,
-  loadUser,
+
   async (req: Request, res: Response) => {
     return res.json(req.user);
   }
