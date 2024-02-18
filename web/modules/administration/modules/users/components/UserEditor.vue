@@ -1,47 +1,58 @@
 <template>
-  <v-dialog persistent v-model="showDialog" width="600">
-    <v-app-bar dark color="#0097A9">
+  <v-dialog
+    persistent
+    v-model="showDialog"
+    width="600">
+    <v-toolbar color="primary">
       <v-toolbar-title>Edit User</v-toolbar-title>
-      <v-spacer />
-      <v-icon title="Close" @click="showDialog = false"
-        >mdi-close</v-icon
-      > </v-app-bar
-    ><v-card tile>
+      <slot name="top-right-action">
+        <v-btn>
+          <v-icon
+            title="Close"
+            @click="showDialog = false"
+            >mdi-close</v-icon
+          >
+        </v-btn>
+      </slot> </v-toolbar
+    ><v-card rounded="0">
       <v-card-text class="mt-5 pb-0">
         <v-text-field
           v-model="item.display_name"
           label="Name"
-          dense
-          outlined
+          density="compact"
+          variant="outlined"
           readonly
-          append-icon="mdi-lock"
-        ></v-text-field>
+          append-icon="mdi-lock"></v-text-field>
         <v-text-field
           v-model="item.email"
           label="Email"
-          dense
-          outlined
+          density="compact"
+          variant="outlined"
           readonly
-          append-icon="mdi-lock"
-        ></v-text-field>
+          append-icon="mdi-lock"></v-text-field>
         <v-select
           label="Status"
           v-model="item.status"
-          dense
-          outlined
-          :items="['Active', 'Inactive']"
-        ></v-select>
+          density="compact"
+          variant="outlined"
+          :items="['Active', 'Inactive']"></v-select>
         <v-select
           label="Role"
-          dense
-          outlined
+          density="compact"
+          variant="outlined"
           v-model="item.roles"
           :items="roleOptions"
-          clearable
-        ></v-select>
-
-        <v-btn @click="save" color="primary">Save</v-btn>
+          clearable></v-select>
       </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          @click="save"
+          color="primary"
+          variant="tonal"
+          >Save</v-btn
+        ></v-card-actions
+      >
     </v-card>
   </v-dialog>
 </template>

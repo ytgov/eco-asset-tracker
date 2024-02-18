@@ -75,19 +75,18 @@
           <v-btn
             @click="show = false"
             color="secondary"
-            variant="outlined"
-            class="float-right"
+            variant="tonal"
             >Close</v-btn
           >
           <v-btn
             @click="doCreate"
             color="primary"
+            variant="flat"
             class="float-left"
             :disabled="!isValid"
             >Add</v-btn
           >
         </v-card-actions>
-        <!-- <div style="clear: both"></div> -->
       </v-card>
     </v-dialog>
   </div>

@@ -5,21 +5,19 @@
       v-model="model"
       :items="items"
       :loading="isLoading"
-      :search-input.sync="search"
-      item-text="long_name"
+      v-model:search="search"
+      item-title="long_name"
       append-icon="mdi-search"
       item-value="id"
       auto-select-first
       no-filter
-      outlined
-      dense
+      variant="outlined"
       clearable
       return-object
       @click:prepend="changeIcon"
-      @change="selected"
-      ref="searchField"
-    >
-      <template slot="no-data">
+      @update:model-value="selected"
+      ref="searchField">
+      <template v-slot:no-data>
         <div class="mx-4 text-caption">
           <strong>No matches found?</strong>
           This search matches the beginning of names and titles only
@@ -27,7 +25,9 @@
       </template>
     </v-autocomplete>
 
-    <v-card class="default mb-4" v-if="model.email">
+    <v-card
+      class="default mb-4"
+      v-if="model.email">
       <v-card-text>
         <v-row>
           <v-col cols="9">
@@ -40,11 +40,19 @@
             <strong>Location:</strong> {{ model.officeLocation }}
           </v-col>
           <v-col class="text-right">
-            <v-btn @click="doSelect" color="primary" class="mb-0" small>
+            <v-btn
+              @click="doSelect"
+              color="primary"
+              class="mb-0"
+              size="small">
               <v-icon class="mr-2">mdi-account-check</v-icon>
               {{ actionName }}
             </v-btn>
-            <v-btn @click="clear" color="secondary" class="ml-4 mb-0 mt-4" small
+            <v-btn
+              @click="clear"
+              color="secondary"
+              class="ml-4 mb-0 mt-4"
+              size="small"
               >Clear</v-btn
             ></v-col
           >
@@ -57,6 +65,17 @@
 <script>
 import { mapActions } from "vuex";
 
+const defaultModel = {
+  email: "",
+  officeLocation: "",
+  department: "",
+  title: "",
+  ynet_id: "",
+  long_name: "",
+  display_name: "",
+  id: "",
+};
+
 export default {
   name: "DirectorySearchAdd",
   props: ["select", "actionName", "label"],
@@ -64,7 +83,7 @@ export default {
     isLoading: false,
     items: [],
     search: "",
-    model: {},
+    model: defaultModel,
     searchIndex: 1,
     searches: [
       {
@@ -96,7 +115,7 @@ export default {
       }
     },
     clear() {
-      this.model = {};
+      this.model = defaultModel;
       this.search = "";
     },
   },
