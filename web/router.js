@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { authGuard } from "@auth0/auth0-vue";
+// import { authGuard } from "@auth0/auth0-vue";
 import homeRoutes from "@/modules/home/router";
 import keyRoutes from "@/modules/keys/router";
 import roomsRoutes from "@/modules/rooms/router";
