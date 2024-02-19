@@ -53,7 +53,7 @@ import userEditor from "../components/UserEditor.vue";
 import CreateUserBtn from "../components/createUserBtn.vue";
 
 export default {
-  name: "Home",
+  name: "SystemUsers",
   components: { userEditor, CreateUserBtn },
   data: () => ({
     page: { title: "Manage Users" },
