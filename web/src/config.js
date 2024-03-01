@@ -1,4 +1,4 @@
-export const applicationName = "ECO Assets";
+export const applicationName = process.env.APPLICATION_NAME;
 export const applicationIcon = "mdi-cash-register";
 export const hasSidebar = true;
 export const hasSidebarClosable = false;
