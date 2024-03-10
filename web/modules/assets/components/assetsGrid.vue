@@ -2,19 +2,19 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table-virtual
+        <v-data-table
           :headers="localHeaders"
-          :items="dataset"
+          :items="localItems"
           :search="search"
           :loading="localLoading"
           @click:row="openAssetDetails"
-          @currentItems="currentItems()">
+          @update:currentItems="currentItems">
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
               {{ roomName(item.room) }}
             </span>
           </template>
-        </v-data-table-virtual>
+        </v-data-table>
       </v-col>
     </v-row>
     <v-row>
@@ -23,7 +23,7 @@
           <v-tooltip location="top">
             <template v-slot:activator="{ props }">
               <download-csv
-                :data="filteredAssets"
+                :data="downloadCSVData"
                 :labels="headers"
                 name="assets.csv">
                 <v-chip
@@ -44,6 +44,8 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { filterData } from "@/mixins/dataTableCurrenItems";
+
 // import AddAssetBtn from './addAssetBtn.vue'
 
 export default {
@@ -51,6 +53,7 @@ export default {
   components: {
     // AddAssetBtn
   },
+  mixins: [filterData], // mixin to surface the visible data on a datatable
   props: {
     search: {
       type: String,
@@ -77,6 +80,11 @@ export default {
   }),
 
   computed: {
+    downloadData() {
+      return this.filteredItems.length > 0
+        ? this.filteredItems
+        : this.localItems;
+    },
     localLoading: function () {
       if (this.items) {
         return this.loading;
@@ -88,7 +96,7 @@ export default {
     ...mapState("administration/users", ["user"]),
     ...mapState("rooms", ["rooms"]),
     ...mapState("assets", ["assets"]),
-    dataset: function () {
+    localItems: function () {
       if (this.all) {
         return this.assets;
       } else {

@@ -2,13 +2,14 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table-virtual
+        <v-data-table
           dense
           :headers="headers"
           :search="search"
           :items="rooms"
           :loading="loadingRooms"
-          @click:row="openRoomDetails">
+          @click:row="openRoomDetails"
+          @update:currentItems="currentItems">
           <template v-slot:item.name="{ item }">
             <!-- <v-icon>
               mdi-delete
@@ -24,7 +25,7 @@
               <span>Download CSV</span>
             </v-tooltip>
           </template> -->
-        </v-data-table-virtual>
+        </v-data-table>
       </v-col>
     </v-row>
     <v-row>
@@ -34,7 +35,7 @@
             <template v-slot:activator="{ props }">
               <download-csv
                 class="mt-3"
-                :data="rooms"
+                :data="downloadData"
                 :labels="headers"
                 name="rooms.csv">
                 <v-chip
@@ -54,6 +55,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import { filterData } from "@/mixins/dataTableCurrenItems";
 // import AddRoomBtn from "./addRoomBtn.vue";
 
 export default {
@@ -63,6 +65,7 @@ export default {
     // AddRoomBtn,
     // departmentFormASummary,
   },
+  mixins: [filterData], // mixin to surface the visible data on a datatable
   props: {
     search: {
       type: String,
@@ -75,14 +78,11 @@ export default {
     // loadingFormA: false,
     loadingRooms: true,
     dialog: false,
-    filteredRooms: [],
   }),
   computed: {
     ...mapState("administration/users", ["user"]),
-    filteredThings: function () {
-      return this.rooms.filter((room) => {
-        return room.name.toLowerCase().includes(this.search.toLowerCase());
-      });
+    downloadData() {
+      return this.filteredItems.length > 0 ? this.filteredItems : this.rooms;
     },
     isAdmin: function () {
       return this.user.admin;
@@ -105,9 +105,11 @@ export default {
     // this.loadingFormA = false;
   },
   methods: {
-    currentItems: function (value) {
-      this.filteredRooms = value;
-    },
+    // currentItems(value) {
+    //   this.filteredRooms = value.map((element) => {
+    //     return toRaw(element.raw);
+    //   });
+    // },
     ...mapActions("rooms", ["getAllRooms", "getRoom"]),
 
     openRoomDetails(event, dataTableRow) {

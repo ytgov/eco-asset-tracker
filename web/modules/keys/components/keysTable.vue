@@ -4,11 +4,11 @@
       <v-col>
         <v-data-table
           :headers="localHeaders"
-          :items="dataset"
+          :items="localItems"
           :search="search"
           :loading="loading"
           @click:row="openKeyDetails"
-          @current-items="currentItems">
+          @update:currentItems="currentItems">
           <template v-slot:item.room="{ item }">
             <span v-if="item.room">
               {{ roomName(item.room) }}
@@ -19,7 +19,7 @@
             <v-tooltip location="top">
               <template v-slot:activator="{ props }">
                 <download-csv
-                  :data="filteredKeys"
+                  :data="downloadData"
                   :labels="headers"
                   name="keys.csv">
                   <v-chip
@@ -41,10 +41,12 @@
 
 <script>
 import { mapState } from "vuex";
+import { filterData } from "@/mixins/dataTableCurrenItems";
 
 export default {
   name: "KeyTable",
   components: {},
+  mixins: [filterData],
   props: {
     search: {
       type: String,
@@ -63,14 +65,19 @@ export default {
   },
   data: () => ({
     loading: true,
-    filteredKeys: [],
   }),
 
   computed: {
+    downloadData() {
+      console.log(this.filteredItems);
+      return this.filteredItems.length > 0
+        ? this.filteredItems
+        : this.localItems;
+    },
     ...mapState("administration/users", ["user"]),
     ...mapState("rooms", ["rooms"]),
     ...mapState("keys", ["keys"]),
-    dataset: function () {
+    localItems: function () {
       if (this.all) {
         return this.keys;
       } else {
@@ -98,9 +105,6 @@ export default {
     },
   },
   methods: {
-    currentItems: function (value) {
-      this.filteredKeys = value;
-    },
     openKeyDetails: function (event, dataTableRow) {
       const { item } = dataTableRow;
       console.log(item._id);

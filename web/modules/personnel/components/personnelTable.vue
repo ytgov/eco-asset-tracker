@@ -2,18 +2,18 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-data-table-virtual
+        <v-data-table
           :items="localItems"
           :search="search"
           :headers="localHeaders"
           @click:row="openPersonDetails"
           class="row-clickable"
           :loading="loading"
-          @current-items="currentItems">
+          @update:currentItems="currentItems">
           <template v-slot:footer.prepend>
             <v-spacer />
           </template>
-        </v-data-table-virtual>
+        </v-data-table>
       </v-col>
     </v-row>
     <v-row>
@@ -21,7 +21,7 @@
         <v-tooltip location="top">
           <template v-slot:activator="{ props }">
             <download-csv
-              :data="filteredPersonnel"
+              :data="downloadData"
               :labels="headers"
               name="personnel.csv">
               <v-chip
@@ -41,6 +41,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { filterData } from "@/mixins/dataTableCurrenItems";
 // import _ from "lodash";
 export default {
   name: "PersonnelTable",
@@ -68,11 +69,16 @@ export default {
   },
   data: () => ({
     editUser: null,
-    filteredPersonnel: [],
     loading: true,
   }),
-
+  mixins: [filterData], // mixin to surface the visible data on a datatable
   computed: {
+    downloadData() {
+      console.log(this.filteredItems);
+      return this.filteredItems.length > 0
+        ? this.filteredItems
+        : this.localItems;
+    },
     localHeaders: function () {
       if (this.headers.length > 0) {
         return this.headers;
@@ -94,9 +100,6 @@ export default {
     ...mapState("personnel", ["employees"]),
   },
   methods: {
-    currentItems: function (value) {
-      this.filteredPersonnel = value;
-    },
     saveComplete(resp) {
       this.$refs.notifier.showAPIMessages(resp.data);
       this.loadUserList();
