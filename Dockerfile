@@ -4,7 +4,7 @@ FROM node:20-alpine
 
 RUN mkdir /home/node/web && chown -R node:node /home/node/web
 WORKDIR /home/node/web
-COPY --chown=node:node web/package*.json ./
+COPY --chown=node:node package*.json ./
 RUN npm install && npm cache clean --force --loglevel=error
 COPY --chown=node:node web ./
 

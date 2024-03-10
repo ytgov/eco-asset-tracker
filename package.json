@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "start": "node ./server/app.js",
     "start-dev": "NODE_ENV=development nodemon server/app.js",
+    "build:docker": "vite build --outDir ../app/dist/web",
     "test": "mocha server/test/"
   },
   "dependencies": {
