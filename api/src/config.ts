@@ -14,7 +14,6 @@ if (process.env.NODE_ENV == "development") {
   dotenv.config();
 }
 let obj = process.env;
-console.log(obj);
 
 let pattern = "VITE_";
 
