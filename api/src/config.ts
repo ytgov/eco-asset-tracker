@@ -9,11 +9,12 @@ if (process.env.NODE_ENV == "development") {
   console.log("dev!");
   // dotenv.config({ path: ".env.development.local" });
   path = `../.env.development`;
+  dotenv.config({ path: path });
 } else {
   dotenv.config();
 }
 let obj = process.env;
-console.log(`Env VAR list: ${obj}`);
+console.log(obj);
 
 let pattern = "VITE_";
 
