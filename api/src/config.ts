@@ -8,9 +8,9 @@ switch (process.env.NODE_ENV) {
   case "test":
     path = `../../.env.test`;
     break;
-  // case "production":
-  //   path = `./.env.production`;
-  //   break;
+  case "production":
+    // path = `./.env.production`;
+    break;
   default:
     path = `../.env.development`;
 }
