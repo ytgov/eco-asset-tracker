@@ -8,9 +8,9 @@ switch (process.env.NODE_ENV) {
   case "test":
     path = `../../.env.test`;
     break;
-  case "production":
-    path = `../.env.production`;
-    break;
+  // case "production":
+  //   path = `./.env.production`;
+  //   break;
   default:
     path = `../.env.development`;
 }
@@ -18,6 +18,7 @@ switch (process.env.NODE_ENV) {
 dotenv.config({ path: path });
 
 let obj = process.env;
+
 let pattern = "VITE_";
 
 export const VUE_APP: any = Object.keys(obj)
@@ -26,6 +27,7 @@ export const VUE_APP: any = Object.keys(obj)
     return Object.assign(cur, { [key]: obj[key] });
   }, {});
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
+
 export const apiBaseUrl =
   process.env.NODE_ENV == "production" ? "" : "http://localhost:3000";
 export const API_PORT = process.env.API_PORT || "3000";
