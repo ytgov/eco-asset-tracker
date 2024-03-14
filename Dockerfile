@@ -27,8 +27,8 @@ WORKDIR /home/node/app
 RUN npm install && npm cache clean --force --loglevel=error
 # COPY --chown=node:node web ./
 
-# ENV NODE_ENV=production
-# RUN npm run build:docker
+ENV NODE_ENV=production
+RUN npm run build:docker
 
 WORKDIR /home/node/app
 EXPOSE 3000
