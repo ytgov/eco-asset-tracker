@@ -10,12 +10,12 @@ switch (process.env.NODE_ENV) {
     break;
   case "production":
     // path = `./.env.production`;
+    dotenv.config();
     break;
   default:
     path = `../.env.development`;
+    dotenv.config({ path: path });
 }
-
-dotenv.config({ path: path });
 
 let obj = process.env;
 
