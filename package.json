@@ -8,11 +8,11 @@
     "preview": "vite preview",
     "start": "node ./server/app.js",
     "start-dev": "NODE_ENV=development nodemon server/app.js",
-    "build:docker": "vite build --outDir ../app/dist/web",
+    "build:docker": "vite build --outDir ./api/dist/web",
     "test": "mocha server/test/"
   },
   "dependencies": {
-    "@auth0/auth0-vue": "^2.3.1",
+    "@auth0/auth0-vue": "^2.3.3",
     "@mdi/font": "^7.1.96",
     "@sentry/node": "^7.53.1",
     "@sentry/vue": "^7.66.0",
@@ -24,7 +24,7 @@
     "express-openid-connect": "^2.12.0",
     "history": "^5.2.0",
     "mocha": "^10.2.0",
-    "pinia": "^2.0.30",
+    "pinia": "^2.1.7",
     "roboto-fontface": "*",
     "slugify": "^1.6.5",
     "vue": "^3.2.47",

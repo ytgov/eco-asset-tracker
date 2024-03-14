@@ -2,11 +2,7 @@ FROM node:20-alpine
 
 # RUN apk add --no-cache  chromium
 
-RUN mkdir /home/node/web && chown -R node:node /home/node/web
-WORKDIR /home/node/web
-COPY --chown=node:node package*.json ./
-RUN npm install && npm cache clean --force --loglevel=error
-COPY --chown=node:node web ./
+
 
 RUN mkdir /home/node/app && chown -R node:node /home/node/app
 RUN mkdir /home/node/app/db && chown -R node:node /home/node/app/db
@@ -20,7 +16,12 @@ COPY --chown=node:node api ./
 
 RUN npm run build
 
+RUN mkdir /home/node/web && chown -R node:node /home/node/web
 WORKDIR /home/node/web
+COPY --chown=node:node package*.json ./
+RUN npm install && npm cache clean --force --loglevel=error
+COPY --chown=node:node web ./
+
 ENV NODE_ENV=production
 
 RUN npm run build:docker
