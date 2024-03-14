@@ -4,20 +4,16 @@ import { toNumber } from "lodash";
 export const NODE_ENV = process.env.NODE_ENV || "development";
 
 let path;
-switch (process.env.NODE_ENV) {
-  case "test":
-    path = `../../.env.test`;
-    break;
-  case "production":
-    // path = `./.env.production`;
-    dotenv.config();
-    break;
-  default:
-    path = `../.env.development`;
-    dotenv.config({ path: path });
-}
 
+if (process.env.NODE_ENV == "development") {
+  console.log("dev!");
+  // dotenv.config({ path: ".env.development.local" });
+  path = `../.env.development`;
+} else {
+  dotenv.config();
+}
 let obj = process.env;
+console.log(`Env VAR list: ${obj}`);
 
 let pattern = "VITE_";
 
