@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { VUE_APP } from "../config";
+import { AUTH_CONFIG } from "../config";
 
 export const configRouter = express.Router();
 
@@ -9,10 +9,7 @@ configRouter.post("/", async (req: Request, res: Response) => {
   //have a config service that returns the config variables
 
   const auth = {
-    domain: VUE_APP.VUE_APP_AUTH_DOMAIN,
-    client_id: VUE_APP.VUE_APP_AUTH_CLIENTID,
-    audience: VUE_APP.VUE_APP_AUTH_AUDIENCE,
-    logout_redirect: VUE_APP.VUE_APP_FRONTEND_URL,
+    ...AUTH_CONFIG,
   };
 
   return res.json(auth);

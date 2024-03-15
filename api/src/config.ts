@@ -13,15 +13,15 @@ if (NODE_ENV == "development") {
 } else {
   dotenv.config();
 }
-let obj = process.env;
 
-let pattern = "VITE_";
+export const AUTH_CONFIG = {
+  issuerBaseURL: process.env.VITE_ISSUER_BASE_URL,
+  baseURL: process.env.VITE_BASE_URL,
+  clientID: process.env.VITE_CLIENT_ID,
+  clientSecret: process.env.VITE_CLIENT_SECRET,
+  secret: process.env.VITE_SECRET,
+};
 
-export const VUE_APP: any = Object.keys(obj)
-  .filter((k) => k.includes(pattern))
-  .reduce((cur, key) => {
-    return Object.assign(cur, { [key]: obj[key] });
-  }, {});
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
 
 export const apiBaseUrl =

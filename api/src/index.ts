@@ -10,7 +10,7 @@ import {
   FRONTEND_URL,
   APPLICATION_NAME,
   AUTH0_DOMAIN,
-  VUE_APP,
+  AUTH_CONFIG,
 } from "./config";
 // import { doHealthCheck } from "./utils/healthCheck";
 // import { userRouter, authoritiesRouter, employeeRouter, departmentRouter, formARouter } from "./routes";
@@ -39,6 +39,11 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 
 app.use(
   auth({
+    issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
+    baseURL: AUTH_CONFIG.baseURL,
+    clientID: AUTH_CONFIG.clientID,
+    clientSecret: AUTH_CONFIG.clientSecret,
+    secret: AUTH_CONFIG.secret,
     authRequired: false,
     auth0Logout: false,
     authorizationParams: {
@@ -114,11 +119,13 @@ app.use(express.static(path.join(__dirname, "web")));
 if (process.env.NODE_ENV === "development") {
   // eslint-disable-next-line no-unused-vars
   app.use("/", (req, res, next) => {
-    if (req.oidc.isAuthenticated()) {
-      // let oidcUser = req.oidc.user;
-      // req.user = oidcUser;
-      // console.log(req.user);
-    }
+    console.log("Redirecting to http://localhost:8080/");
+    console.log(req.oidc.isAuthenticated());
+    // if (req.oidc.isAuthenticated()) {
+    //   let oidcUser = req.oidc.user;
+    //   req.user = oidcUser;
+    //   console.log(req.user);
+    // }
     res.redirect("http://localhost:8080/");
   });
 }
