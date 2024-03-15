@@ -5,7 +5,7 @@ export const NODE_ENV = process.env.NODE_ENV || "development";
 
 let path;
 
-if (process.env.NODE_ENV == "development") {
+if (NODE_ENV == "development") {
   console.log("dev!");
   // dotenv.config({ path: ".env.development.local" });
   path = `../.env.development`;
