@@ -1,15 +1,15 @@
 <template>
   <v-container class="fill-height">
     <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="4">
-        <v-card class="elevation-12 text-center">
+      <v-col sm="2">
+        <v-card
+          rounded="4"
+          class="elevation-12 text-center">
           <v-toolbar
             dark
-            color="primary"
+            color="secondary"
             flat>
-            <v-toolbar-title>Assets</v-toolbar-title>
+            <v-toolbar-title>{{ applicationName }}</v-toolbar-title>
           </v-toolbar>
           <v-card-text> <v-btn :href="loginURL">Login</v-btn> </v-card-text>
         </v-card>
@@ -19,34 +19,22 @@
 </template>
 <script>
 import { LOGIN_URL } from "@/urls";
-import { mapActions, mapState } from "pinia";
-// import { useAuthStore } from "@/stores/AuthStore";
-// import localLogin from "@/components/auth/localLogin"
+import { applicationName } from "@/config";
+
 export default {
   name: "LoginView",
 
-  components: {
-    // localLogin
-  },
+  components: {},
   data: () => ({
     loginURL: LOGIN_URL,
-    environment: process.env.NODE_ENV,
+    applicationName: applicationName,
   }),
-  methods: {
-    // ...mapActions(useAuthStore, ["initialize"]),
-  },
+  methods: {},
   computed: {
-    // ...mapState(useAuthStore, ["isAuthenticated", "isInitialized"]),
     showOverlay: function () {
       return !this.isInitialized;
     },
   },
-  async mounted() {
-    // console.log(" The user is authenticated, redirecting to home");
-    // // await this.initialize();
-    // if (this.isAuthenticated) {
-    //   this.$router.push({ name: "Home" });
-    // }
-  },
+  async mounted() {},
 };
 </script>
