@@ -13,22 +13,31 @@ import { validationResult } from "express-validator";
 
 //     next();
 // }
-export async function ReturnValidationErrors(req: Request, res: Response, next: NextFunction) {
-    const errors = validationResult(req);
+export * from "./authz.middleware";
+export async function ReturnValidationErrors(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    next();
+  next();
 }
 
-export function RequiresAuthentication(req: Request, res: Response, next: NextFunction) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
+export function RequiresAuthentication(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
 
-    res.redirect('/api/auth/login');
+  res.redirect("/api/auth/login");
 }
 
 // export async function RequiresData(req: Request, res: Response, next: NextFunction) {

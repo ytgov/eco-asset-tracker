@@ -1,26 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 
 import { attemptSilentLogin } from "express-openid-connect";
-import jwt from "express-jwt";
 import axios from "axios";
-import jwksRsa from "jwks-rsa";
 import { AUTH0_DOMAIN, AUTH0_AUDIENCE } from "../config";
+import { auth } from "express-oauth2-jwt-bearer";
 // import { UserService } from "../services";
 import { KnexUserService } from "../services";
 
-// export const checkJwt = jwt({
-//   secret: jwksRsa.expressJwtSecret({
-//     cache: true,
-//     rateLimit: true,
-//     jwksRequestsPerMinute: 5,
-//     jwksUri: `${AUTH0_DOMAIN}.well-known/jwks.json`,
-//   }),
-
-//   // Validate the audience and the issuer.
-//   audience: AUTH0_AUDIENCE,
-//   issuer: [AUTH0_DOMAIN],
-//   algorithms: ["RS256"],
-// });
+export const checkJwt = auth({
+  audience: "testing",
+  issuerBaseURL: `https://cirque.auth0.com/`,
+});
 
 export async function loadUser(
   req: Request,
