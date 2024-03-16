@@ -1,26 +1,13 @@
 <template>
   <v-app>
-    <v-overlay
-      persistent
-      :model-value="!isInitialized"
-      class="align-center justify-center">
-      <div class="text-center pt-15 my-10">
-        <v-progress-circular
-          indeterminate
-          size="64"
-          color="white" />
-      </div>
-
-      <h2 class="text-white text my-10">Loading Application...</h2>
-    </v-overlay>
-
-    <v-container fluid>
+    <router-view />
+    <!-- <v-container fluid>
       <v-row>
         <v-col>
           <router-view />
         </v-col>
       </v-row>
-    </v-container>
+    </v-container> -->
     <Notifications />
   </v-app>
 </template>
