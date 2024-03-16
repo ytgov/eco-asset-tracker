@@ -12,7 +12,6 @@
     <v-toolbar-title style="font-weight: 700">{{
       applicationName
     }}</v-toolbar-title>
-
     <template v-slot:append>
       <v-btn
         color="primary"
@@ -21,14 +20,13 @@
         to="/dashboard"
         ><v-icon size="x-large">mdi-home</v-icon></v-btn
       >
-
       <v-divider
         class="ma-5"
         vertical
         inset></v-divider>
       <v-btn
         v-if="!isAuthenticated"
-        @click="login"
+        :href="loginURL"
         variant="elevated"
         color="primary">
         Sign In
@@ -55,6 +53,15 @@
                 </v-list-item-title>
                 <template v-slot:prepend>
                   <v-icon :icon="item.icon"></v-icon>
+                </template>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item
+                v-if="isAuthenticated"
+                @click="logout">
+                <v-list-item-title> Logout </v-list-item-title>
+                <template v-slot:prepend>
+                  <v-icon>mdi-logout</v-icon>
                 </template>
               </v-list-item>
 
@@ -90,7 +97,7 @@ import { applicationName } from "@/config";
 import { mapState, mapActions, mapGetters } from "vuex";
 import yukonSVG from "@/assets/yukon.svg";
 // import { useAuthStore } from "@/stores/AuthStore";
-import { LOGIN_URL, LOGOUT_URL } from "@/urls";
+import { LOGIN_URL, POST_LOGOUT_URL } from "@/urls";
 // import navDrawer from "./navDrawer.vue";
 // import callMenu from "./callMenu.vue";
 
@@ -119,8 +126,7 @@ export default {
       { title: "Assets", icon: "mdi-clipboard-list-outline", path: "/assets" },
       { title: "Personnel", icon: "mdi-account-multiple", path: "/personnel" },
       { title: "Keys", icon: "mdi-key-outline", path: "/keys" },
-      { title: "Admin", icon: "mdi-key-outline", path: "/administration" },
-      { title: "Logout", icon: "mdi-forum", path: "/logout" },
+      { title: "Admin", icon: "mdi-cog-outline", path: "/administration" },
     ],
   }),
   // watch: {
@@ -138,13 +144,21 @@ export default {
       }
       return "Not logged in";
     },
-    // isAuthenticated() {
-    //   return this.$auth0.isAuthenticated.value;
-    // },
+    isAuthenticated() {
+      return this.$auth0.isAuthenticated.value;
+    },
   },
   methods: {
     login: function () {
-      this.$auth0.loginWithRedirect();
+      // this.$auth0.loginWithRedirect();
+      // console.log(this.loginURL);
+      this.$router.push(this.loginURL);
+    },
+    logout: function () {
+      this.$auth0.logout({
+        logoutParams: { returnTo: POST_LOGOUT_URL },
+      });
+      // this.$auth0.logout();
     },
   },
   mounted() {},

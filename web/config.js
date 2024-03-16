@@ -11,7 +11,9 @@ export const applicationName = "ECO Assets";
 export const authConfig = {
   domain: import.meta.env.VITE_ISSUER_BASE_URL,
   clientId: import.meta.env.VITE_CLIENT_ID,
+
   authorizationParams: {
     redirect_uri: window.location.origin,
+    audience: import.meta.env.VITE_AUDIENCE,
   },
 };
