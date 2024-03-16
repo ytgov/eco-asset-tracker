@@ -25,9 +25,9 @@ Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
 });
 
-registerPlugins(app);
-
-// app.use(pinia);
 app.use(router);
+registerPlugins(app);
+// app.use(pinia);
+
 app.use(store);
 app.mount("#app");

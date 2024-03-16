@@ -6,17 +6,17 @@ const routes = [
       {
         name: "Dashboard",
         path: "dashboard",
-        meta: { requiresAuth: false },
-        component: () => import("../views/Dashboard.vue")
+        meta: { requiresAuth: true },
+        component: () => import("../views/Dashboard.vue"),
       },
       {
         name: "Profile",
         path: "profile",
         meta: { requiresAuth: true },
-        component: () => import("../views/Profile")
-      }
-    ]
-  }
+        component: () => import("../views/Profile"),
+      },
+    ],
+  },
 ];
 
 export default routes;
