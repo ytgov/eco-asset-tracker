@@ -1,5 +1,8 @@
+export * from "./authz.middleware";
+export * from "./authn.middleware";
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+
 // import { Storage } from "../data";
 
 // const store = new Storage();
@@ -13,7 +16,7 @@ import { validationResult } from "express-validator";
 
 //     next();
 // }
-export * from "./authz.middleware";
+
 export async function ReturnValidationErrors(
   req: Request,
   res: Response,

@@ -20,6 +20,7 @@ export const AUTH_CONFIG = {
   clientID: process.env.VITE_CLIENT_ID,
   clientSecret: process.env.VITE_CLIENT_SECRET,
   secret: process.env.VITE_SECRET,
+  audience: process.env.VITE_AUDIENCE,
 };
 
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);

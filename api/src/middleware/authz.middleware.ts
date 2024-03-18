@@ -1,27 +1,25 @@
-import { NextFunction, Request, Response } from "express";
-
-import { attemptSilentLogin } from "express-openid-connect";
-import axios from "axios";
-import { AUTH0_DOMAIN, AUTH0_AUDIENCE } from "../config";
-import { auth } from "express-oauth2-jwt-bearer";
-// import { UserService } from "../services";
+import { AUTH_CONFIG, AUTH0_AUDIENCE, AUTH0_DOMAIN } from "../config";
 import { KnexUserService } from "../services";
-
-export const checkJwt = auth({
-  audience: "testing",
-  issuerBaseURL: `https://cirque.auth0.com/`,
-});
+import { Request, Response, NextFunction } from "express";
 
 export async function loadUser(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  // const db = req.store.Users as KnexUserService;
-  const db = new KnexUserService("users");
+  if (!req.auth) {
+    const err = new Error("Not Authenticated");
+    // @ts-ignore
+    err.status = 401; // HTTP status code for Unauthorized
+    return next(err);
+  }
 
-  let sub = req.user.sub;
-  const token = req.headers.authorization || "";
+  // const db = req.store.Users as KnexUserService;
+  req.user = await loadUserProfileFromIdp(req.auth?.token || "");
+  // req.user.roles = await loadUserProfileFromDb(req.user?.email);
+  req.user.roles = await loadUserProfileFromDb("Jackie.Taylor@yukon.ca");
+
+  // req.roles await
 
   // let u = await db.getAll(sub);
 
@@ -30,28 +28,7 @@ export async function loadUser(
   //   return next();
   // }
 
-  await axios
-    .get(`${AUTH0_DOMAIN}userinfo`, { headers: { authorization: token } })
-    .then(async (resp) => {
-      if (resp.data && resp.data.email) {
-        let email = resp.data.email;
-        sub = resp.data.sub;
-
-        let u = await db.getAll({ email: email });
-        if (u.length > 0) {
-          req.user = u[0];
-          next();
-        } else {
-          req.user = resp.data;
-          req.user.roles = "System Admin";
-          //Optionally, you could craete the user in the database and leave them as inactive
-          // await db.create({ email, sub, status: "Inactive" });
-          //return res.status(406).send();
-          next();
-        }
-      }
-    })
-    .catch();
+  next();
 }
 
 export async function isSystemAdministrator(
@@ -84,4 +61,54 @@ export async function isEditor(
   //   return next();
   // }
   // return res.status(401).send();
+}
+
+async function loadUserProfileFromIdp(token: string) {
+  const url = `${AUTH_CONFIG.issuerBaseURL}/userinfo`; // replace with your endpoint
+  return await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      // Bearer token authorization
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+async function loadUserProfileFromDb(email: string) {
+  const db = new KnexUserService("users");
+  let u = await db.getAll({ email: email });
+  console.log(u);
+  return u;
+
+  // await axios
+  //   .get(`${AUTH0_DOMAIN}userinfo`, { headers: { authorization: token } })
+  //   .then(async (resp) => {
+  //     if (resp.data && resp.data.email) {
+  //       let email = resp.data.email;
+  //       sub = resp.data.sub;
+
+  //       let u = await db.getAll({ email: email });
+  //       if (u.length > 0) {
+  //         req.user = u[0];
+  //         next();
+  //       } else {
+  //         req.user = resp.data;
+  //         req.user.roles = "System Admin";
+  //         //Optionally, you could craete the user in the database and leave them as inactive
+  //         // await db.create({ email, sub, status: "Inactive" });
+  //         //return res.status(406).send();
+  //         next();
+  //       }
+  //     }
+  //   })
+  //   .catch();
 }

@@ -1,10 +1,15 @@
-import express, { application, Request, Response } from "express";
+import express, { Request, Response, NextFunction, Errback } from "express";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
-import { auth, requiresAuth } from "express-openid-connect";
-import { isEditor, isSystemAdministrator } from "./middleware/authz.middleware";
 
+import {
+  checkJwt,
+  loadUser,
+  isEditor,
+  isSystemAdministrator,
+} from "./middleware";
+// import { checkJwt } from "./middleware/authn.middleware";
 import {
   API_PORT,
   FRONTEND_URL,
@@ -37,28 +42,8 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(fileUpload());
 
-app.use(
-  auth({
-    issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
-    baseURL: AUTH_CONFIG.baseURL,
-    clientID: AUTH_CONFIG.clientID,
-    clientSecret: AUTH_CONFIG.clientSecret,
-    secret: AUTH_CONFIG.secret,
-    authRequired: false,
-    auth0Logout: false,
-    authorizationParams: {
-      response_type: "code",
-      audience: "",
-      scope: "openid profile email",
-    },
+app.use(checkJwt); //check for JWT token but don't require it
 
-    routes: {
-      login: "/auth/login",
-      logout: "/auth/logout",
-      // postLogoutRedirect: FRONTEND_URL
-    },
-  })
-);
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -85,9 +70,29 @@ app.use(
   })
 );
 
-app.get("/api/boo", requiresAuth(), async (req, res) => {
-  console.log("req.user", req.oidc.user);
-  res.send("Hello World!");
+app.get("/api/boo", checkJwt, loadUser, async (req: Request, res: Response) => {
+  // console.log("req.user", req?.oidc.user);
+
+  const url = "https://cirque.auth0.com/userinfo"; // replace with your endpoint
+  const token = req.auth?.token; // replace with your token
+
+  // await fetch(url, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     // Bearer token authorization
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     req.user = data;
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error);
+  //   });
+  res.json({ message: req?.user });
 });
 
 // app.get("/seed", RequiresData, async (req: Request, res: Response) => {
@@ -129,6 +134,13 @@ if (process.env.NODE_ENV === "development") {
     res.redirect("http://localhost:8080/");
   });
 }
+
+// last ditch route to nicely handle errors without dumping the stack
+app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
+  res.status(err.status || 500);
+  res.json({ error: err.message });
+});
+
 // if no other routes match, just send the front-end
 app.use((req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "web") + "/index.html");
