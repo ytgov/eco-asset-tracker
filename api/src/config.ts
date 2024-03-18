@@ -18,7 +18,7 @@ export const AUTH_CONFIG = {
   issuerBaseURL: process.env.VITE_ISSUER_BASE_URL,
   baseURL: process.env.VITE_BASE_URL,
   clientID: process.env.VITE_CLIENT_ID,
-  clientSecret: process.env.VITE_CLIENT_SECRET,
+  clientSecret: process.env.CLIENT_SECRET, //this doesn't need to be in the FE
   secret: process.env.VITE_SECRET,
   audience: process.env.VITE_AUDIENCE,
 };
