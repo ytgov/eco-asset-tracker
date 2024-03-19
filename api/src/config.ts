@@ -3,7 +3,7 @@ import { toNumber } from "lodash";
 
 export const NODE_ENV = process.env.NODE_ENV || "development";
 
-let path;
+let path = `Runtime Environment: ${NODE_ENV}`;
 
 if (NODE_ENV == "development") {
   console.log("dev!");
@@ -24,6 +24,7 @@ export const AUTH_CONFIG = {
 };
 
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
+console.log(process.env);
 
 export const apiBaseUrl =
   process.env.NODE_ENV == "production" ? "" : "http://localhost:3000";
