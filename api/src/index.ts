@@ -43,13 +43,13 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(fileUpload());
 
-app.use(
-  auth({
-    audience: AUTH_CONFIG.audience,
-    issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
-    authRequired: false,
-  })
-); //check for JWT token but don't require it
+// app.use(
+//   auth({
+//     audience: AUTH_CONFIG.audience,
+//     issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
+//     authRequired: false,
+//   })
+// ); //check for JWT token but don't require it
 
 app.use(
   helmet.contentSecurityPolicy({
