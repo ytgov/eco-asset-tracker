@@ -1,7 +1,8 @@
 FROM node:20-alpine
 
-# RUN apk add --no-cache  chromium
-
+ENV VITE_ISSUER_BASE_URL= https://cirque.auth0.com
+ENV VITE_CLIENT_ID ='KNtKQKCEIGLJYSDH8rj3WhCkzK9QECqF'
+ENV VITE_AUDIENCE = testing
 
 
 RUN mkdir /home/node/app && chown -R node:node /home/node/app
