@@ -3,13 +3,8 @@ import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 
-import { auth } from "express-oauth2-jwt-bearer";
-import {
-  checkJwt,
-  loadUser,
-  isEditor,
-  isSystemAdministrator,
-} from "./middleware";
+// import { auth } from "express-oauth2-jwt-bearer";
+import { loadUser, isEditor, isSystemAdministrator } from "./middleware";
 // import { checkJwt } from "./middleware/authn.middleware";
 import {
   API_PORT,
@@ -77,11 +72,11 @@ app.use(
   })
 );
 
-app.get("/api/boo", checkJwt, loadUser, async (req: Request, res: Response) => {
+app.get("/api/boo", async (req: Request, res: Response) => {
   // console.log("req.user", req?.oidc.user);
 
-  const url = "https://cirque.auth0.com/userinfo"; // replace with your endpoint
-  const token = req.auth?.token; // replace with your token
+  // const url = "https://cirque.auth0.com/userinfo"; // replace with your endpoint
+  // const token = req.auth?.token; // replace with your token
 
   // await fetch(url, {
   //   method: "GET",

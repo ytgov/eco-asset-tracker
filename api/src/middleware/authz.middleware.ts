@@ -7,6 +7,7 @@ export async function loadUser(
   res: Response,
   next: NextFunction
 ) {
+  // @ts-ignore
   if (!req.auth) {
     const err = new Error("Not Authenticated");
     // @ts-ignore
@@ -15,6 +16,7 @@ export async function loadUser(
   }
 
   // const db = req.store.Users as KnexUserService;
+  //@ts-ignore
   req.user = await loadUserProfileFromIdp(req.auth?.token || "");
   // req.user.roles = await loadUserProfileFromDb(req.user?.email);
   req.user.roles = await loadUserProfileFromDb("Jackie.Taylor@yukon.ca");
