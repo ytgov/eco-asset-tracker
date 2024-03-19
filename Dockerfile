@@ -1,13 +1,5 @@
 FROM node:20-alpine
 
-ARG VITE_ISSUER_BASE_URL
-ARG VITE_CLIENT_ID
-ARG VITE_AUDIENCE
-
-ENV VITE_ISSUER_BASE_URL=$VITE_ISSUER_BASE_URL
-ENV VITE_CLIENT_ID=$VITE_CLIENT_ID
-ENV VITE_AUDIENCE=$VITE_AUDIENCE
-
 
 RUN mkdir /home/node/app && chown -R node:node /home/node/app
 # RUN mkdir /home/node/app/db && chown -R node:node /home/node/app/db
