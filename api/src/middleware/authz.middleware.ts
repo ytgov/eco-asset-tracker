@@ -1,4 +1,4 @@
-import { AUTH_CONFIG, AUTH0_AUDIENCE, AUTH0_DOMAIN } from "../config";
+import * as config from "../config";
 import { KnexUserService } from "../services";
 import { Request, Response, NextFunction } from "express";
 
@@ -66,7 +66,7 @@ export async function isEditor(
 }
 
 async function loadUserProfileFromIdp(token: string) {
-  const url = `${AUTH_CONFIG.issuerBaseURL}/userinfo`; // replace with your endpoint
+  const url = `${config.ISSUER_BASE_URL}/userinfo`; // replace with your endpoint
   return await fetch(url, {
     method: "GET",
     headers: {

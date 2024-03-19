@@ -2,18 +2,13 @@ import express, { Request, Response, NextFunction, Errback } from "express";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
+import * as config from "./config";
 
 // import { auth } from "express-oauth2-jwt-bearer";
 import { loadUser, isEditor, isSystemAdministrator } from "./middleware";
-// import { checkJwt } from "./middleware/authn.middleware";
-import {
-  API_PORT,
-  FRONTEND_URL,
-  APPLICATION_NAME,
-  AUTH0_DOMAIN,
-  AUTH_CONFIG,
-} from "./config";
-// import { doHealthCheck } from "./utils/healthCheck";
+import { checkJwt } from "./middleware/authn.middleware";
+import { API_PORT, FRONTEND_URL, APPLICATION_NAME } from "./config";
+//z import { doHealthCheck } from "./utils/healthCheck";
 // import { userRouter, authoritiesRouter, employeeRouter, departmentRouter, formARouter } from "./routes";
 
 //import { configureLocalAuthentication } from "./routes/auth-local";
@@ -38,18 +33,12 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(fileUpload());
 
-// app.use(
-//   auth({
-//     audience: AUTH_CONFIG.audience,
-//     issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
-//     authRequired: false,
-//   })
-// ); //check for JWT token but don't require it
+app.use(checkJwt); //check for JWT token but don't require it
 
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      "default-src": ["'self'", AUTH0_DOMAIN],
+      "default-src": ["'self'", config.ISSUER_BASE_URL],
       "base-uri": ["'self'"],
       "block-all-mixed-content": [],
       "font-src": ["'self'", "https:", "data:"],

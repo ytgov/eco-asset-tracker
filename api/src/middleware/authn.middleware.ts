@@ -1,12 +1,12 @@
-import { AUTH_CONFIG } from "../config";
+import * as config from "../config";
 import { auth } from "express-oauth2-jwt-bearer";
 import { Request, Response, NextFunction } from "express";
 
 //JWT Checks
 //This populates `req.auth` with the decoded token.
 export const checkJwt = auth({
-  audience: AUTH_CONFIG.audience,
-  issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
+  issuerBaseURL: config.ISSUER_BASE_URL,
+  audience: config.AUDIENCE,
   authRequired: false,
 });
 

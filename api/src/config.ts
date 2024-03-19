@@ -14,14 +14,9 @@ if (NODE_ENV == "development") {
   dotenv.config();
 }
 
-export const AUTH_CONFIG = {
-  issuerBaseURL: process.env.VITE_ISSUER_BASE_URL,
-  baseURL: process.env.VITE_BASE_URL,
-  clientID: process.env.VITE_CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, //this doesn't need to be in the FE
-  secret: process.env.VITE_SECRET,
-  audience: process.env.VITE_AUDIENCE,
-};
+export const ISSUER_BASE_URL = process.env.VITE_ISSUER_BASE_URL || "";
+export const BASE_URL = process.env.BASE_URL || "";
+export const AUDIENCE = process.env.VITE_AUDIENCE || "";
 
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
 console.log(process.env);
@@ -31,9 +26,6 @@ export const apiBaseUrl =
 export const API_PORT = process.env.API_PORT || "3000";
 export const FRONTEND_URL = process.env.FRONTEND_URL || "";
 export const AUTH_REDIRECT = process.env.AUTH_REDIRECT || "";
-
-export const AUTH0_DOMAIN = `${process.env.VUE_APP_AUTH_DOMAIN}/` || "";
-export const AUTH0_AUDIENCE = process.env.VUE_APP_AUTH_AUDIENCE || "";
 
 export const APPLICATION_NAME = process.env.APPLICATION_NAME || "";
 
