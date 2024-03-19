@@ -3,6 +3,7 @@ import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 
+import { auth } from "express-oauth2-jwt-bearer";
 import {
   checkJwt,
   loadUser,
@@ -42,7 +43,13 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(fileUpload());
 
-app.use(checkJwt); //check for JWT token but don't require it
+app.use(
+  auth({
+    audience: AUTH_CONFIG.audience,
+    issuerBaseURL: AUTH_CONFIG.issuerBaseURL,
+    authRequired: false,
+  })
+); //check for JWT token but don't require it
 
 app.use(
   helmet.contentSecurityPolicy({
