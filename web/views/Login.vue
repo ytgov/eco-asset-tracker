@@ -13,7 +13,7 @@
         <v-card
           rounded="4"
           class="elevation-12 text-center">
-          <v-card-text> <v-btn :href="loginURL">Login</v-btn> </v-card-text>
+          <v-card-text> <v-btn @click="doLogin">Login</v-btn> </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -31,7 +31,11 @@ export default {
     loginURL: LOGIN_URL,
     applicationName: applicationName,
   }),
-  methods: {},
+  methods: {
+    doLogin: function () {
+      this.$auth0.loginWithRedirect();
+    },
+  },
   computed: {
     showOverlay: function () {
       return !this.isInitialized;
