@@ -1,16 +1,18 @@
 <template>
   <v-container class="fill-height">
     <v-row justify="center">
-      <v-col sm="2">
+      <v-col sm="4">
+        <v-toolbar
+          dark
+          color="secondary"
+          flat>
+          <v-toolbar-title class="no-icon-space text-center">{{
+            applicationName
+          }}</v-toolbar-title>
+        </v-toolbar>
         <v-card
           rounded="4"
           class="elevation-12 text-center">
-          <v-toolbar
-            dark
-            color="secondary"
-            flat>
-            <v-toolbar-title>{{ applicationName }}</v-toolbar-title>
-          </v-toolbar>
           <v-card-text> <v-btn :href="loginURL">Login</v-btn> </v-card-text>
         </v-card>
       </v-col>
@@ -38,3 +40,9 @@ export default {
   async mounted() {},
 };
 </script>
+
+<style scoped>
+.no-icon-space {
+  margin-left: 0 !important;
+}
+</style>
