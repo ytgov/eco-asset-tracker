@@ -1,13 +1,21 @@
 import express, { Request, Response } from "express";
 import { KnexService } from "../services/knex-service";
-import { migrateLatest, migrateDown, migrateUp } from "../data/migrator";
+import {
+  migrateLatest,
+  migrateDown,
+  migrateUp,
+  migrationStatus,
+} from "../data/migrator";
 
 //todo change migrations to post
 
 export const systemRouter = express.Router();
 
-systemRouter.get("/", (req: Request, res: Response) => {
-  res.send("System");
+systemRouter.get("/migrate", async (req: Request, res: Response) => {
+  console.log("-----Checking MIGRATION STATUS-----");
+  let y = await migrationStatus();
+  console.log(y);
+  res.json(y);
 });
 
 systemRouter.use("/migrate/latest", async (req: Request, res: Response) => {
@@ -18,10 +26,10 @@ systemRouter.use("/migrate/latest", async (req: Request, res: Response) => {
 systemRouter.use("/migrate/down", async (req: Request, res: Response) => {
   await migrateDown();
   console.log("Done!");
-  res.send("Complete");
+  res.json("Complete");
 });
 systemRouter.use("/migrate/up", async (req: Request, res: Response) => {
   await migrateUp();
   console.log("Done!");
-  res.send("Complete");
+  res.json({ status: "done" });
 });
