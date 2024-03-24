@@ -1,5 +1,4 @@
 import * as dotenv from "dotenv";
-import { toNumber } from "lodash";
 
 export const NODE_ENV = process.env.NODE_ENV || "development";
 
@@ -19,7 +18,6 @@ export const BASE_URL = process.env.BASE_URL || "";
 export const AUDIENCE = process.env.VITE_AUDIENCE || "";
 
 console.log(`LOADING ${NODE_ENV} CONFIG FROM ${path}`);
-console.log(process.env);
 
 export const apiBaseUrl =
   process.env.NODE_ENV == "production" ? "" : "http://localhost:3000";
