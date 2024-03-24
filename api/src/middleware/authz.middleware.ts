@@ -77,7 +77,7 @@ async function loadUserProfileFromIdp(token: string) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     })
     .catch((error) => {
@@ -88,7 +88,7 @@ async function loadUserProfileFromIdp(token: string) {
 async function loadUserProfileFromDb(email: string) {
   const db = new KnexUserService("users");
   let u = await db.getAll({ email: email });
-  console.log(u);
+  // console.log(u);
   return u;
 
   // await axios
