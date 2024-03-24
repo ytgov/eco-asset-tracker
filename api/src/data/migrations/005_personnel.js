@@ -1,6 +1,4 @@
-import * as knex from "knex";
-
-exports.up = function (knex: knex.Knex, Promise: any) {
+exports.up = function (knex) {
   console.log("Creating personnel table...");
   return knex.schema.createTable("personnel", function (table) {
     table.increments("_id").notNullable().primary();
@@ -19,7 +17,7 @@ exports.up = function (knex: knex.Knex, Promise: any) {
   });
 };
 
-exports.down = function (knex: knex.Knex, Promise: any) {
+exports.down = function (knex) {
   console.log("Dropping personnel table");
   return knex.schema.dropTable("personnel");
 };

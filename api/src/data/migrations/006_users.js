@@ -1,6 +1,4 @@
-import * as knex from "knex";
-
-exports.up = function (knex: knex.Knex, Promise: any) {
+exports.up = function (knex) {
   console.log("Creating users table...");
   return knex.schema.createTable("users", function (table) {
     //table.increments("_id")
@@ -21,7 +19,7 @@ exports.up = function (knex: knex.Knex, Promise: any) {
   });
 };
 
-exports.down = function (knex: knex.Knex, Promise: any) {
+exports.down = function (knex) {
   console.log("Dropping users table");
   return knex.schema.dropTable("users");
 };

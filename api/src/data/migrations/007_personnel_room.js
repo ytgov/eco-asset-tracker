@@ -1,6 +1,4 @@
-import * as knex from "knex";
-
-exports.up = function (knex: knex.Knex, Promise: any) {
+exports.up = function (knex) {
   console.log("Creating personnel room join table...");
   return knex.schema.createTable("personnel_room", function (table) {
     table.increments("_id").primary();
@@ -16,7 +14,7 @@ exports.up = function (knex: knex.Knex, Promise: any) {
   });
 };
 
-exports.down = function (knex: knex.Knex, Promise: any) {
+exports.down = function (knex) {
   console.log("Dropping personnel room join table");
   return knex.schema.dropTable("personnel_room");
 };
