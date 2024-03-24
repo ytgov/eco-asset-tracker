@@ -56,9 +56,11 @@ export default {
 }
 .login-background {
   background: url("@/assets/images/kristina-delp-CoGyhon1Q1E-unsplash.jpg")
-    no-repeat center center fixed;
+    no-repeat center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
+  height: 100vh; /* Set the height to 100% of the viewport */
+  width: 100vw; /* Set the width to 100% of the viewport */
 }
 </style>
